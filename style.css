@@ -1,0 +1,196 @@
+/* Root Colors & Variables */
+:root {
+  --brand-color: #3B82F6;
+  --text-dark: #0f1724;
+  --text-light: #f5f5f5;
+  --bg-light: #ffffff;
+  --bg-dark: #121212;
+  --neutral-gray: #9a9b9c;
+  --spacing-unit: 8px;
+  --transition: all 0.3s ease;
+}
+
+/* Global Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: var(--transition);
+}
+
+/* Header */
+header .header-section {
+  width: 100%;
+  background: var(--brand-color);
+  color: var(--text-light);
+  text-align: center;
+  padding: 20px 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 0 0 12px 12px;
+  transition: var(--transition);
+}
+
+/* Center content without forcing scroll */
+.search-section {
+  flex: 1; /* take remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* vertical center */
+  align-items: center;     /* horizontal center */
+  padding: 20px;
+}
+
+/* Title */
+.site-title {
+  font-size: 4rem;
+  margin: 0 0 20px 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--brand-color);
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Footer */
+footer .footer-section {
+  width: 100%;
+  background: var(--brand-color);
+  color: var(--text-light);
+  text-align: center;
+  padding: 20px 0;
+  margin-top: auto;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+  border-radius: 12px 12px 0 0;
+  transition: var(--transition);
+}
+
+/* Results Header */
+.results-header {
+  width: 100%;
+  background: var(--bg-light);
+  padding: 15px 30px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  transition: var(--transition);
+}
+
+.results-header-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.results-name {
+  height: 50px;
+  width: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  color: var(--brand-color);
+  font-weight: bold;
+}
+
+/* Searchbar next to logo */
+.searchbar-container {
+  flex: 1;
+}
+
+/* Main Results */
+.results-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background: var(--bg-light);
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+  transition: var(--transition);
+}
+
+/* Google Search Styles */
+.gsc-input-box {
+  border-radius: 20px !important;
+  padding: 8px 12px !important;
+  width: 550px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  transition: var(--transition);
+}
+
+.gsc-input-box:focus {
+  border-color: var(--brand-color) !important;
+  box-shadow: 0 4px 12px rgba(59,130,246,0.2);
+  outline: none !important;
+}
+
+.gsc-search-button {
+  border-radius: 20px !important;
+  background: var(--brand-color) !important;
+  color: #fff !important;
+  transition: transform 0.3s ease;
+}
+
+.gsc-search-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Remove underline from result titles */
+.gsc-control-cse a,
+.gsc-control-cse .gs-title,
+.gsc-control-cse .gs-title b {
+  text-decoration: none !important;
+}
+
+/* Style titles */
+.gsc-webResult .gsc-result .gs-title {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  color: #222 !important;
+}
+
+/* Style snippet/description */
+.gsc-webResult .gsc-result .gs-snippet {
+  font-size: 14px !important;
+  color: #555 !important;
+}
+
+/* Style URL below title */
+.gsc-webResult .gsc-result .gs-visibleUrl {
+  font-size: 13px !important;
+  color: #006621 !important;
+}
+
+/* Clean up box */
+.gsc-control-cse {
+  background: transparent !important;
+  border: none !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+/* Dark Mode Support */
+body.dark {
+  background: var(--bg-dark);
+  color: var(--text-light);
+}
+
+body.dark header .header-section,
+body.dark footer .footer-section,
+body.dark .results-header,
+body.dark .results-container {
+  background: #1f1f1f;
+  color: var(--text-light);
+}
+
+body.dark .gsc-input-box {
+  background: #2a2a2a !important;
+  color: #f5f5f5 !important;
+  border: 1px solid #555 !important;
+}
