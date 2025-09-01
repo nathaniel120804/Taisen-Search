@@ -3,66 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taisen</title>
-  <link rel="icon" type="image/png" href="original.png">
-  <link rel="stylesheet" href="style.css?v=20250901">
+  <title>Taisen Search Logger</title>
+  <!-- Google CSE Script -->
+  <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
 </head>
 <body>
+  <h1>Search Something</h1>
 
-  <!-- Header -->
-  <header>
-    <section class="header-section">
-    </section>
-  </header>
+  <!-- Search Box -->
+  <div class="gcse-searchbox-only" data-resultsUrl="results.html" data-newWindow="false"></div>
 
-  <!-- Search Section -->
-  <section class="search-section">
-    <div><h1 class="site-title">Taisen</h1></div>
-    <div class="search-container">
-      <div class="gcse-searchbox-only" data-resultsUrl="results.html" data-newWindow="false"></div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <section class="footer-section">
-      <p>&copy; 2025 Taisen. All rights reserved.</p>
-    </section>
-  </footer>
-
-  <!-- Google Custom Search Script -->
-  <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
-
-  <!-- Search Logging JS -->
   <script>
+    // Replace with your deployed Apps Script URL
     const SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbye72BaC5itl9lQNV8k8OrO_E4VjdFbqm3quUX6RnS8s9tOE_UbvVd8WBPLDhpgUp6W/exec";
 
     window.onload = () => {
+      console.log("Google Custom Search Engine loaded!");
+
       function initCSE() {
         if (typeof google === "undefined" || !google.search || !google.search.cse) {
           setTimeout(initCSE, 100);
           return;
         }
 
+        // Get the search box element
         const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
         if (!searchBox) return;
 
         const originalExecute = searchBox.execute;
 
+        // Override execute to log searches
         searchBox.execute = function(query) {
           console.log("User searched:", query);
 
-          // Send search to Google Sheet
+          // Send search data to Google Sheet
           fetch(SHEET_WEB_APP_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ query, timestamp: new Date() })
           })
           .then(res => res.json())
-          .then(data => console.log("Logged:", data))
+          .then(data => console.log("Logged to sheet:", data))
           .catch(err => console.error("Failed to log search:", err));
 
-          // Call original search function (redirect to results.html)
+          // Call original search function to display results
           originalExecute.call(searchBox, query);
         };
       }
@@ -70,6 +54,5 @@
       initCSE();
     };
   </script>
-
 </body>
 </html>
