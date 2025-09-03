@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taisen Search Ads & Boosting</title>
+<style>
+    /* Root Colors & Variables */
+    :root {
+        --brand-color: #3B82F6;
+        --accent-color: #2563EB;
+        --text-dark: #111827;
+        --text-light: #6B7280;
+        --bg-light: #F9FAFB;
+        --card-bg: #FFFFFF;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --radius: 12px;
+        --padding: 1rem;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+
+    header {
+        background: var(--brand-color);
+        color: #fff;
+        padding: 2rem;
+        text-align: center;
+        border-bottom-left-radius: var(--radius);
+        border-bottom-right-radius: var(--radius);
+        box-shadow: var(--shadow);
+    }
+    header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+    header p { font-size: 1rem; color: #E0E7FF; }
+
+    .container { max-width: 1200px; margin: 2rem auto; padding: 0 var(--padding); }
+    h2 { color: var(--text-dark); font-size: 1.8rem; margin-bottom: 1rem; }
+    p { color: var(--text-light); margin-bottom: 1.5rem; }
+
+    .card {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .btn {
+        background: var(--brand-color);
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: var(--radius);
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .btn:hover { background: var(--accent-color); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+
+    footer {
+        background: #F3F4F6;
+        padding: 2rem;
+        text-align: center;
+        color: var(--text-light);
+        margin-top: 2rem;
+        border-radius: var(--radius);
+    }
+
+    ul.annotations { list-style: none; padding-left: 0; }
+    ul.annotations li {
+        background: #EFF6FF;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.75rem;
+        border-radius: var(--radius);
+        color: var(--text-dark);
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Boost Your Visibility with Taisen Ads</h1>
+    <p>Enhance your search presence, annotate results, and drive traffic professionally.</p>
+</header>
+
+<div class="container">
+    <!-- Overview -->
+    <section class="card">
+        <h2>Why Advertise with Taisen Search?</h2>
+        <p>Our boosting system allows you to highlight your most important results, create contextual annotations, and reach your target audience efficiently.</p>
+        <a href="https://YOUR-FORM-URL-HERE" target="_blank" class="btn">Start Boosting Now</a>
+    </section>
+
+    <!-- Boosting Options -->
+    <section class="card">
+        <h2>Boosting Options</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Featured Placement</h3>
+                <p>Get your links on top with priority placement in search results.</p>
+            </div>
+            <div class="card">
+                <h3>Annotations</h3>
+                <p>Highlight key information using annotations for context, reviews, or tips.</p>
+            </div>
+            <div class="card">
+                <h3>Custom Context</h3>
+                <p>Create search context for your site using CSE context settings to control relevance and appearance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Use Annotations -->
+    <section class="card">
+        <h2>Annotations & Context Tips</h2>
+        <ul class="annotations">
+            <li>Use clear, concise descriptions for each annotation.</li>
+            <li>Highlight key points like promotions or updates.</li>
+            <li>Keep annotations relevant to the content and audience.</li>
+            <li>Combine multiple annotations for richer context.</li>
+        </ul>
+    </section>
+
+    <!-- Call to Action for External Form -->
+    <section class="card" style="text-align:center;">
+        <h2>Ready to Boost Your Results?</h2>
+        <p>Fill out our external form to submit your boosting request. Your results will be professionally enhanced in Taisen Search.</p>
+        <a href="https://YOUR-FORM-URL-HERE" target="_blank" class="btn">Submit Your Request</a>
+    </section>
+</div>
+
+ <!-- Footer -->
+  <footer class="Footer">
+    <div class="footer-section">
+      <nav class="">
+        <a href="about.html">About</a> ·
+        <a href="advertising.html">Advertising</a> ·
+        <a href="privacy.html">Privacy Policy</a> ·
+        <a href="help center.html">Help Center</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>
