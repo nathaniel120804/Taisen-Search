@@ -77,6 +77,11 @@
       initCSE();
     };
   </script>
+<script>
+  if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    document.body.innerHTML = "<h1>Sorry, this website is not available on mobile devices.</h1>";
+  }
+</script>
 
 </body>
 </html>
