@@ -1,32 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search Results</title>
-  <link rel="icon" type="image/png" href="original.png">
-  <link rel="stylesheet" href="style.css?v=20250901">
-  <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search Results</title>
+<link rel="icon" type="image/png" href="original.png">
+<link rel="stylesheet" href="style.css?v=20250901">
+<script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
+
+<style>
+/* Toggle slider CSS */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+.switch input { display: none; }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 28px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px; width: 22px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider { background-color: #3B82F6; }
+input:checked + .slider:before { transform: translateX(22px); }
+</style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="results-header">
-    <div class="results-header-inner">
-      <a href="index.html" class="logo-link">
-        <h1 class="results-name">Taisen</h1>
-      </a>
-      <div class="searchbar-container">
-        <div class="gcse-searchbox-only" data-resultsUrl="results.html" data-newWindow="false"></div>
-      </div>
+<header class="results-header">
+  <div class="results-header-inner">
+    <a href="index.html" class="logo-link">
+      <h1 class="results-name">Taisen</h1>
+    </a>
+    <div class="searchbar-container">
+      <div class="gcse-searchbox-only" data-resultsUrl="results.html" data-newWindow="false"></div>
     </div>
-  </header>
+  </div>
+</header>
 
-  <!-- Main Results -->
-  <main class="results-container">
-    <div class="gcse-searchresults-only"></div>
-  </main>
+<main class="results-container">
+
+  <!-- Labs toggle -->
+  <div style="margin-bottom: 15px; display:flex; align-items:center; gap:10px;">
+    <label for="labsToggle" style="font-weight:bold;">Show Labs:</label>
+    <label class="switch">
+      <input type="checkbox" id="labsToggle" checked>
+      <span class="slider round"></span>
+    </label>
+  </div>
+
+  <!-- Filter dropdown -->
+  <div style="margin-bottom: 15px; display:flex; gap:10px; align-items:center;">
+    <label for="filter" style="font-weight:bold;">Filter:</label>
+    <select id="filter">
+      <option value="all">All</option>
+      <option value="STEM">STEM</option>
+      <option value="Psychology">Psychology</option>
+      <option value="Experiments / Labs">Experiments / Labs</option>
+    </select>
+  </div>
+
+  <!-- Internal results -->
+  <div id="results-internal"></div>
+
+  <!-- Google CSE Results -->
+  <div class="gcse-searchresults-only"></div>
+
+</main>
+
+<script>
+let data = [];
+
+// Helpers
+function getQuery() {
+  return new URLSearchParams(window.location.search).get('q') || '';
+}
+function getLabsPreference() {
+  const saved = localStorage.getItem('showLabs');
+  return saved === null ? true : saved === 'true';
+}
+function saveLabsPreference(value) {
+  localStorage.setItem('showLabs', value);
+}
+
+// Load internal JSON data
+async function loadData() {
+  const response = await fetch('taisenData.json');
+  data = await response.json();
+
+  const labsToggle = document.getElementById('labsToggle');
+  const filterEl = document.getElementById('filter');
+
+  // Initialize toggle from localStorage
+  labsToggle.checked = getLabsPreference();
+
+  function updateResults() {
+    const showLabs = labsToggle.checked;
+    const label = filterEl.value;
+    const query = getQuery();
+
+    let resultsDiv = document.getElementById('results-internal');
+
+    if (!showLabs) {
+      // If toggle OFF, hide internal results completely
+      resultsDiv.innerHTML = '';
+      return;
+    }
+
+    // Filter results based on query & label
+    const filtered = data.filter(item => {
+      const matchesQuery = item.title.toLowerCase().includes(query.toLowerCase()) ||
+                           item.snippet.toLowerCase().includes(query.toLowerCase());
+      const matchesLabel = label === 'all' || item.label === label;
+      return matchesQuery && matchesLabel;
+    });
+
+    // Display
+    resultsDiv.innerHTML = '';
+    if (!filtered.length) {
+      resultsDiv.innerHTML = '<p>No internal results found.</p>';
+      return;
+    }
+    filtered.forEach(item => {
+      const card = document.createElement('div');
+      card.style.background = "#fff";
+      card.style.borderRadius = "12px";
+      card.style.padding = "15px";
+      card.style.marginBottom = "15px";
+      card.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)";
+      card.innerHTML = `
+        <h3 style="color:#3B82F6;margin:0 0 8px 0;">${item.title}</h3>
+        <p style="margin-bottom:8px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${item.snippet}</p>
+        <p><strong>Type:</strong> ${item.type} | <strong>Source:</strong> ${item.source}</p>
+        <a href="${item.link}" target="_blank" style="color:#3B82F6;font-weight:bold;text-decoration:none;">Visit</a>
+      `;
+      resultsDiv.appendChild(card);
+    });
+  }
+
+  // Event listeners
+  labsToggle.addEventListener('change', () => {
+    saveLabsPreference(labsToggle.checked);
+    updateResults();
+  });
+  filterEl.addEventListener('change', updateResults);
+
+  // Initial display
+  updateResults();
+}
+
+window.addEventListener('load', loadData);
+</script>
 
 </body>
 </html>
-

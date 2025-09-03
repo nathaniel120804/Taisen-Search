@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Basics of Psychology",
+    "snippet": "An introductory guide to human behavior and mental processes...",
+    "link": "labs/psychology-basics.html",
+    "type": "Article",
+    "source": "Taisen Labs",
+    "label": "Psychology"
+  },
+  {
+    "title": "Calculus Made Simple",
+    "snippet": "Learn the fundamentals of calculus with step-by-step examples...",
+    "link": "https://khanacademy.org/math/calculus",
+    "type": "Article",
+    "source": "Khan Academy",
+    "label": "STEM"
+  }
+]
