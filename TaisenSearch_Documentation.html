@@ -124,6 +124,11 @@
 <td>Planned</td>
 <td>Future enhancements: internal search algorithms, personalization, advanced filters, analytics, multi-language support.</td>
 </tr>
+<tr>
+<td><span class="version-badge">1.8</span></td>
+<td>TBD</td>
+<td>Captcha verification flow added: users must pass human check before accessing results.</td>
+</tr>
 </table>
 
 <h2 class="icon-section">Detailed Version Improvements</h2>
@@ -191,6 +196,20 @@
 <li>Multi-language interface support.</li>
 </ul>
 
+<h3>Version 1.8 – Captcha Security Integration</h3>
+<ul>
+<li>Introduced Captcha verification step before search results are displayed.</li>
+<li>Redirect flow:
+  <ol>
+    <li>User enters a query.</li>
+    <li>Redirected to Captcha verification page.</li>
+    <li>On success, redirected back to results with query preserved.</li>
+  </ol>
+</li>
+<li>Improves bot protection and reduces spam queries.</li>
+<li>Designed for minimal disruption to user experience.</li>
+</ul>
+
 <h2 class="icon-section">Features Summary</h2>
 <ul>
 <li><strong>User Experience & Interface:</strong> Modern card-based search results, modal popups, animated doodle backgrounds, responsive design.</li>
@@ -216,4 +235,3 @@
 
 </body>
 </html>
-

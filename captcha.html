@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Human - Taisen</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+    .captcha-box {
+      background: #f4f4f4;
+      padding: 20px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-top: 20px;
+    }
+    .captcha-question {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .captcha-input {
+      padding: 5px;
+      width: 80px;
+      text-align: center;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 20px;
+      background: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover { background: #005fcc; }
+  </style>
+</head>
+<body>
+
+  <h1>🤖 Human Verification</h1>
+  <p>Please solve the CAPTCHA before continuing your search.</p>
+
+  <div class="captcha-box">
+    <div class="captcha-question" id="captchaQuestion"></div>
+    <input type="text" id="captchaAnswer" class="captcha-input" placeholder="?" required>
+    <br>
+    <button onclick="checkCaptcha()">Verify</button>
+  </div>
+
+  <script>
+    let num1, num2, correctAnswer;
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("q");
+
+    function generateCaptcha() {
+      num1 = Math.floor(Math.random() * 10) + 1;
+      num2 = Math.floor(Math.random() * 10) + 1;
+      correctAnswer = num1 + num2;
+      document.getElementById("captchaQuestion").textContent =
+        `What is ${num1} + ${num2}?`;
+      document.getElementById("captchaAnswer").value = "";
+    }
+
+    function checkCaptcha() {
+      let userAnswer = parseInt(document.getElementById("captchaAnswer").value);
+      if (userAnswer === correctAnswer) {
+        // ✅ Redirect back to results with query
+        window.location.href = "results.html?q=" + encodeURIComponent(query);
+      } else {
+        alert("❌ Wrong answer. Try again.");
+        generateCaptcha();
+      }
+    }
+
+    generateCaptcha();
+  </script>
+
+</body>
+</html>
