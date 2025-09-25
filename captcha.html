@@ -36,9 +36,14 @@
 
   <script>
     let num1, num2, correctAnswer;
-    let attempts = 0;
+    
+    // Get query param
     const params = new URLSearchParams(window.location.search);
     const query = params.get("q") || "";
+
+    // Track attempts per query
+    const attemptsKey = 'captchaAttempts_' + query;
+    let attempts = parseInt(sessionStorage.getItem(attemptsKey) || '0');
 
     function generateCaptcha() {
       num1 = Math.floor(Math.random() * 10) + 1;
@@ -57,6 +62,8 @@
 
     function checkCaptcha() {
       attempts++;
+      sessionStorage.setItem(attemptsKey, attempts);
+
       const userAnswer = parseInt(document.getElementById("captchaAnswer").value);
       if (isNaN(userAnswer)) {
         alert("Please enter a valid number.");
@@ -86,7 +93,10 @@
     function checkAlreadyVerified() {
       const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
       const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
-      const verification = sessionVerify || localVerify;
+
+      // Only redirect if token is for the SAME query and still valid
+      const verification = (sessionVerify && sessionVerify.query === query) || 
+                           (localVerify && localVerify.query === query);
 
       if (verification && verification.verified) {
         const twoHours = 2 * 60 * 60 * 1000;
@@ -99,6 +109,7 @@
       }
     }
 
+    // Initialize page
     checkAlreadyVerified();
     generateCaptcha();
   </script>
