@@ -25,25 +25,24 @@
 <body>
 
   <h1>🤖 Human Verification</h1>
-  <p>Please solve the CAPTCHA before continuing your search.</p>
+  <p>Solve the CAPTCHA before continuing your search.</p>
 
   <div class="captcha-box">
     <div class="captcha-question" id="captchaQuestion"></div>
     <input type="text" id="captchaAnswer" class="captcha-input" placeholder="?" required>
     <br>
-    <button onclick="checkCaptcha()">Verify</button>
+    <button id="verifyBtn">Verify</button>
   </div>
 
   <script>
     let num1, num2, correctAnswer;
-    
-    // Get query param
-    const params = new URLSearchParams(window.location.search);
-    const query = params.get("q") || "";
+    let attempts = 0;
 
-    // Track attempts per query
-    const attemptsKey = 'captchaAttempts_' + query;
-    let attempts = parseInt(sessionStorage.getItem(attemptsKey) || '0');
+    // Grab query from URL
+    function getQuery() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("q") || "";
+    }
 
     function generateCaptcha() {
       num1 = Math.floor(Math.random() * 10) + 1;
@@ -53,7 +52,7 @@
       document.getElementById("captchaAnswer").value = "";
     }
 
-    function logCaptcha(status, info) {
+    function logCaptcha(status, query, info) {
       const logs = JSON.parse(localStorage.getItem('captchaLogs') || '[]');
       logs.push({ status, query, attempts, info, timestamp: new Date().toISOString() });
       localStorage.setItem('captchaLogs', JSON.stringify(logs));
@@ -61,25 +60,30 @@
     }
 
     function checkCaptcha() {
+      const query = getQuery();
+      if (!query) {
+        alert("No query provided.");
+        return;
+      }
+
       attempts++;
-      sessionStorage.setItem(attemptsKey, attempts);
 
       const userAnswer = parseInt(document.getElementById("captchaAnswer").value);
       if (isNaN(userAnswer)) {
-        alert("Please enter a valid number.");
+        alert("Please enter a valid number for CAPTCHA.");
         return;
       }
 
       if (userAnswer === correctAnswer) {
-        logCaptcha("pass", userAnswer);
+        logCaptcha("pass", query, userAnswer);
 
-        const verificationToken = { verified: true, timestamp: Date.now(), query: query };
+        const verificationToken = { verified: true, timestamp: Date.now(), query };
         sessionStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
         localStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
 
         window.location.href = `results.html?q=${encodeURIComponent(query)}`;
       } else {
-        logCaptcha("fail", userAnswer);
+        logCaptcha("fail", query, userAnswer);
         if (attempts >= 3) {
           alert("❌ Too many failed attempts. Please try again later.");
           window.location.href = `debug.html?captcha=blocked&q=${encodeURIComponent(query)}&attempts=${attempts}`;
@@ -91,11 +95,11 @@
     }
 
     function checkAlreadyVerified() {
+      const query = getQuery();
       const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
       const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
 
-      // Only redirect if token is for the SAME query and still valid
-      const verification = (sessionVerify && sessionVerify.query === query) || 
+      const verification = (sessionVerify && sessionVerify.query === query) ||
                            (localVerify && localVerify.query === query);
 
       if (verification && verification.verified) {
@@ -109,10 +113,14 @@
       }
     }
 
-    // Initialize page
-    checkAlreadyVerified();
-    generateCaptcha();
+    // Initialize
+    window.addEventListener('load', () => {
+      checkAlreadyVerified();
+      generateCaptcha();
+      document.getElementById("verifyBtn").addEventListener("click", checkCaptcha);
+    });
   </script>
 
 </body>
 </html>
+
