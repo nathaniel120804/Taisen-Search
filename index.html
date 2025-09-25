@@ -6,6 +6,41 @@
   <title>Taisen</title>
   <link rel="icon" type="image/png" href="original.png">
   <link rel="stylesheet" href="style.css?v=20250901">
+  <style>
+    /* Additional styles for trivia feature */
+    .trivia-container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: none;
+    }
+    
+    .trivia-title {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #1a0dab;
+    }
+    
+    .trivia-snippet {
+      color: #4d5156;
+      line-height: 1.4;
+    }
+    
+    .trivia-link {
+      display: block;
+      margin-top: 10px;
+      color: #1a0dab;
+      text-decoration: none;
+    }
+    
+    .trivia-link:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
@@ -23,7 +58,14 @@
     </div>
   </section>
 
-    <!-- Footer -->
+  <!-- Trivia Section -->
+  <section id="triviaSection" class="trivia-container">
+    <div class="trivia-title" id="triviaTitle"></div>
+    <div class="trivia-snippet" id="triviaSnippet"></div>
+    <a href="#" class="trivia-link" id="triviaLink" target="_blank">Read more</a>
+  </section>
+
+  <!-- Footer -->
   <footer>
     <section class="footer-section">
       <nav class="footer-links">
@@ -36,13 +78,27 @@
     </section>
   </footer>
 
-
   <!-- Google Custom Search Script -->
   <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
 
   <!-- Search Logging JS -->
   <script>
     const SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbye72BaC5itl9lQNV8k8OrO_E4VjdFbqm3quUX6RnS8s9tOE_UbvVd8WBPLDhpgUp6W/exec";
+    const CSE_CX = "178f66b21f928448b";
+
+    // Predefined trivia search terms
+    const TRIVIA_TOPICS = [
+      "interesting science facts",
+      "historical events today",
+      "amazing animal facts",
+      "space exploration discoveries",
+      "technology innovations",
+      "world records facts",
+      "cultural traditions around the world",
+      "famous inventions history",
+      "natural wonders of the world",
+      "human body amazing facts"
+    ];
 
     window.onload = () => {
       function initCSE() {
@@ -59,6 +115,12 @@
         searchBox.execute = function(query) {
           console.log("User searched:", query);
 
+          // If query is empty, show trivia instead
+          if (!query || query.trim() === "") {
+            showRandomTrivia();
+            return; // Don't proceed with normal search
+          }
+
           // Send search to Google Sheet
           fetch(SHEET_WEB_APP_URL, {
             method: "POST",
@@ -74,14 +136,130 @@
         };
       }
 
+      // Function to show random trivia
+      function showRandomTrivia() {
+        const randomTopic = TRIVIA_TOPICS[Math.floor(Math.random() * TRIVIA_TOPICS.length)];
+        
+        // Use Google Custom Search API to get trivia
+        fetch(`https://www.googleapis.com/customsearch/v1?key=AIzaSyCjAJ9y0oY7dI5qDZ_WbYqJ9Q8nQ9Q8nQ8&cx=${CSE_CX}&q=${encodeURIComponent(randomTopic)}&num=1`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.items && data.items.length > 0) {
+              const result = data.items[0];
+              displayTrivia(result.title, result.snippet, result.link);
+            } else {
+              // Fallback if no results found
+              displayTrivia(
+                "Did you know?",
+                "The world is full of interesting facts! Try searching for something specific to learn more.",
+                "https://www.funtrivia.com/"
+              );
+            }
+          })
+          .catch(error => {
+            console.error("Error fetching trivia:", error);
+            displayTrivia(
+              "Search Tip",
+              "Enter a search term to explore the web. You can search for anything from science to history!",
+              "https://www.funtrivia.com/"
+            );
+          });
+      }
+
+      // Function to display trivia in the UI
+      function displayTrivia(title, snippet, link) {
+        const triviaSection = document.getElementById('triviaSection');
+        const triviaTitle = document.getElementById('triviaTitle');
+        const triviaSnippet = document.getElementById('triviaSnippet');
+        const triviaLink = document.getElementById('triviaLink');
+
+        triviaTitle.textContent = title;
+        triviaSnippet.textContent = snippet;
+        triviaLink.href = link;
+        triviaLink.textContent = "Learn more about this topic";
+
+        // Show the trivia section
+        triviaSection.style.display = 'block';
+
+        // Hide trivia after 10 seconds
+        setTimeout(() => {
+          triviaSection.style.display = 'none';
+        }, 10000);
+      }
+
+      // Add event listeners for both click and enter key
+      function setupSearchListeners() {
+        // Wait for CSE to load and then find the search elements
+        const checkElements = setInterval(() => {
+          const searchButton = document.querySelector('.gsc-search-button');
+          const searchInput = document.querySelector('.gsc-input input');
+          
+          if (searchButton && searchInput) {
+            clearInterval(checkElements);
+            
+            // Click event for search button
+            searchButton.addEventListener('click', function() {
+              if (searchInput.value.trim() === '') {
+                showRandomTrivia();
+              }
+            });
+            
+            // Enter key event for search input
+            searchInput.addEventListener('keypress', function(event) {
+              if (event.key === 'Enter') {
+                // Small delay to ensure the input value is captured correctly
+                setTimeout(() => {
+                  if (searchInput.value.trim() === '') {
+                    event.preventDefault();
+                    showRandomTrivia();
+                  }
+                }, 10);
+              }
+            });
+
+            // Additional safety check on form submission
+            const searchForm = document.querySelector('.gsc-search-box');
+            if (searchForm) {
+              searchForm.addEventListener('submit', function(event) {
+                if (searchInput.value.trim() === '') {
+                  event.preventDefault();
+                  showRandomTrivia();
+                }
+              });
+            }
+          }
+        }, 100);
+      }
+
+      // Alternative approach: Monitor the entire document for enter key presses
+      function setupGlobalEnterKeyListener() {
+        document.addEventListener('keypress', function(event) {
+          // Check if enter key is pressed and search input is focused and empty
+          if (event.key === 'Enter') {
+            const searchInput = document.querySelector('.gsc-input input');
+            const activeElement = document.activeElement;
+            
+            // Check if the focused element is the search input and it's empty
+            if (searchInput && activeElement === searchInput && searchInput.value.trim() === '') {
+              event.preventDefault();
+              event.stopPropagation();
+              showRandomTrivia();
+            }
+          }
+        });
+      }
+
       initCSE();
+      setupSearchListeners();
+      setupGlobalEnterKeyListener(); // Added as backup
     };
   </script>
-<script>
-  if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    document.body.innerHTML = "<h1>Sorry, this website is not available on mobile devices.</h1>";
-  }
-</script>
+
+  <script>
+    if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      document.body.innerHTML = "<h1>Sorry, this website is not available on mobile devices.</h1>";
+    }
+  </script>
 
 </body>
 </html>
