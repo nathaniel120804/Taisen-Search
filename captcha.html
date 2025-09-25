@@ -38,7 +38,6 @@
     let num1, num2, correctAnswer;
     let attempts = 0;
 
-    // Grab query from URL
     function getQuery() {
       const params = new URLSearchParams(window.location.search);
       return params.get("q") || "";
@@ -67,8 +66,8 @@
       }
 
       attempts++;
-
       const userAnswer = parseInt(document.getElementById("captchaAnswer").value);
+
       if (isNaN(userAnswer)) {
         alert("Please enter a valid number for CAPTCHA.");
         return;
@@ -84,6 +83,7 @@
         window.location.href = `results.html?q=${encodeURIComponent(query)}`;
       } else {
         logCaptcha("fail", query, userAnswer);
+
         if (attempts >= 3) {
           alert("❌ Too many failed attempts. Please try again later.");
           window.location.href = `debug.html?captcha=blocked&q=${encodeURIComponent(query)}&attempts=${attempts}`;
@@ -94,6 +94,7 @@
       }
     }
 
+    // Always log attempts even if already verified
     function checkAlreadyVerified() {
       const query = getQuery();
       const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
@@ -105,6 +106,7 @@
       if (verification && verification.verified) {
         const twoHours = 2 * 60 * 60 * 1000;
         if (Date.now() - verification.timestamp < twoHours) {
+          logCaptcha("skipped", query, "Already verified, CAPTCHA skipped");
           window.location.href = `results.html?q=${encodeURIComponent(query)}`;
         } else {
           sessionStorage.removeItem('captchaVerified');
@@ -113,7 +115,6 @@
       }
     }
 
-    // Initialize
     window.addEventListener('load', () => {
       checkAlreadyVerified();
       generateCaptcha();
@@ -123,4 +124,3 @@
 
 </body>
 </html>
-
