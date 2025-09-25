@@ -54,17 +54,6 @@
     const params = new URLSearchParams(window.location.search);
     const query = params.get("q") || "";
 
-    // Log events to console or send to debug page/server
-    function logCaptchaEvent(status, info = "") {
-      console.log(`CAPTCHA ${status}: ${info}`);
-      // Example: send to server/debug page
-      // fetch('debug.html', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ status, info, query, timestamp: new Date() })
-      // });
-    }
-
     function generateCaptcha() {
       num1 = Math.floor(Math.random() * 10) + 1;
       num2 = Math.floor(Math.random() * 10) + 1;
@@ -72,26 +61,24 @@
       document.getElementById("captchaQuestion").textContent =
         `What is ${num1} + ${num2}?`;
       document.getElementById("captchaAnswer").value = "";
-      logCaptchaEvent("GENERATED", `Captcha generated: ${num1}+${num2}`);
+    }
+
+    function logCaptcha(status, info) {
+      // Redirect to debug page with parameters
+      const debugUrl = `debug.html?captcha=${status}&q=${encodeURIComponent(query)}&attempts=${attempts}&info=${info}`;
+      // Use fetch to log silently without leaving page
+      fetch(debugUrl).catch(e => console.log("Debug log error:", e));
     }
 
     function checkCaptcha() {
       attempts++;
-      let input = document.getElementById("captchaAnswer").value.trim();
-      let userAnswer = parseInt(input);
-
-      if (isNaN(userAnswer)) {
-        logCaptchaEvent("ERROR", `Non-numeric input: "${input}" (Attempt ${attempts})`);
-        alert("❌ Please enter a valid number.");
-        return;
-      }
-
+      let userAnswer = parseInt(document.getElementById("captchaAnswer").value);
       if (userAnswer === correctAnswer) {
-        logCaptchaEvent("PASS", `Captcha solved correctly in ${attempts} attempt(s)`);
-        // Redirect back to results page with captcha status
-        window.location.href = "results.html?q=" + encodeURIComponent(query) + "&captcha=pass&attempts=" + attempts;
+        logCaptcha("pass", userAnswer);
+        // ✅ Redirect back to results with query
+        window.location.href = `results.html?q=${encodeURIComponent(query)}`;
       } else {
-        logCaptchaEvent("FAIL", `Wrong answer: ${userAnswer} (Attempt ${attempts}), expected: ${correctAnswer}`);
+        logCaptcha("fail", userAnswer);
         alert("❌ Wrong answer. Try again.");
         generateCaptcha();
       }
