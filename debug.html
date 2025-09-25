@@ -6,50 +6,50 @@
 <title>Taisen Debug Dashboard</title>
 <style>
 :root {
-  --primary: #0077ff; --primary-dark: #005fcc;
-  --success: #28a745; --danger: #dc3545; --warning: #ffc107;
-  --light: #f8f9fa; --dark: #343a40; --gray: #6c757d;
-  --border-radius: 8px; --box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  --transition: all 0.3s ease;
+  --primary:#0077ff; --primary-dark:#005fcc;
+  --success:#28a745; --danger:#dc3545; --warning:#ffc107;
+  --light:#f8f9fa; --dark:#343a40; --gray:#6c757d;
+  --border-radius:8px; --box-shadow:0 4px 6px rgba(0,0,0,0.1);
+  --transition:all 0.3s ease;
 }
-* {margin:0; padding:0; box-sizing:border-box;}
-body {
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);
-  min-height:100vh; color: var(--dark); padding:20px;
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);
+  min-height:100vh; color:var(--dark); padding:20px;
 }
-.container {max-width:1200px; margin:0 auto;}
-.header {text-align:center; margin-bottom:30px; padding:20px; background:white; border-radius: var(--border-radius); box-shadow: var(--box-shadow);}
-.header h1 {font-size:2.5rem; margin-bottom:10px; color: var(--primary); display:flex; align-items:center; justify-content:center; gap:10px;}
-.header p {font-size:1.1rem; color: var(--gray);}
-.controls {display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;}
-.stats {display:flex; gap:15px; flex-wrap:wrap;}
-.stat-card {background:white; padding:15px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); min-width:150px; text-align:center;}
-.stat-value {font-size:1.8rem; font-weight:bold;}
-.stat-label {font-size:0.9rem; color:var(--gray);}
-.btn {padding:10px 20px; font-size:1rem; font-weight:600; border:none; border-radius: var(--border-radius); cursor:pointer; transition: var(--transition); display:inline-flex; align-items:center; justify-content:center; gap:8px;}
-.btn-primary {background: var(--primary); color:white;}
-.btn-primary:hover {background: var(--primary-dark);}
-.btn-secondary {background: var(--light); color: var(--dark); border:1px solid #dee2e6;}
-.btn-secondary:hover {background:#e9ecef;}
-.table-container {background:white; border-radius: var(--border-radius); box-shadow: var(--box-shadow); overflow:hidden; margin-top:20px;}
-table {width:100%; border-collapse:collapse;}
-thead {background:var(--light);}
-th {padding:15px; text-align:left; font-weight:600; border-bottom:2px solid #dee2e6;}
-td {padding:12px 15px; border-bottom:1px solid #e9ecef;}
-tr:last-child td {border-bottom:none;}
-tr:hover {background:#f8f9fa;}
-.status-badge {padding:5px 10px; border-radius:20px; font-size:0.8rem; font-weight:600; text-transform:uppercase;}
-.status-pass {background: rgba(40,167,69,0.1); color: var(--success);}
-.status-fail {background: rgba(220,53,69,0.1); color: var(--danger);}
-.status-skipped {background: rgba(255,193,7,0.1); color: var(--warning);}
-.loading, .empty-state {text-align:center; padding:40px; color: var(--gray);}
-.spinner {border:4px solid rgba(0,0,0,0.1); border-left-color: var(--primary); border-radius:50%; width:40px; height:40px; animation:spin 1s linear infinite; margin:0 auto 20px;}
-@keyframes spin {to {transform:rotate(360deg);}}
-.footer {text-align:center; margin-top:30px; color: var(--gray); font-size:0.9rem;}
-.filter-btns {display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap;}
-.toggle-switch {display:flex; align-items:center; gap:5px;}
-@media (max-width:768px){.controls{flex-direction:column; align-items:stretch;}.stats{justify-content:center;} th,td{padding:8px 10px; font-size:0.9rem;} .table-container{overflow-x:auto;}}
+.container{max-width:1200px;margin:0 auto;}
+.header{padding:20px;margin-bottom:30px;background:white;border-radius:var(--border-radius);box-shadow:var(--box-shadow);text-align:center;}
+.header h1{font-size:2.5rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:10px;}
+.header p{font-size:1.1rem;color:var(--gray);}
+.controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+.stats{display:flex;gap:15px;flex-wrap:wrap;}
+.stat-card{background:white;padding:15px;border-radius:var(--border-radius);box-shadow:var(--box-shadow);min-width:150px;text-align:center;}
+.stat-value{font-size:1.8rem;font-weight:bold;}
+.stat-label{font-size:0.9rem;color:var(--gray);}
+.btn{padding:10px 20px;font-size:1rem;font-weight:600;border:none;border-radius:var(--border-radius);cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;justify-content:center;gap:8px;}
+.btn-primary{background:var(--primary);color:white;}
+.btn-primary:hover{background:var(--primary-dark);}
+.btn-secondary{background:var(--light);color:var(--dark);border:1px solid #dee2e6;}
+.btn-secondary:hover{background:#e9ecef;}
+.table-container{background:white;border-radius:var(--border-radius);box-shadow:var(--box-shadow);overflow:hidden;margin-top:20px;}
+table{width:100%;border-collapse:collapse;}
+thead{background:var(--light);}
+th{padding:15px;text-align:left;font-weight:600;border-bottom:2px solid #dee2e6;}
+td{padding:12px 15px;border-bottom:1px solid #e9ecef;}
+tr:last-child td{border-bottom:none;}
+tr:hover{background:#f8f9fa;}
+.status-badge{padding:5px 10px;border-radius:20px;font-size:0.8rem;font-weight:600;text-transform:uppercase;}
+.status-pass{background:rgba(40,167,69,0.1);color:var(--success);}
+.status-fail{background:rgba(220,53,69,0.1);color:var(--danger);}
+.status-skipped{background:rgba(255,193,7,0.1);color:var(--warning);}
+.loading,.empty-state{text-align:center;padding:40px;color:var(--gray);}
+.spinner{border:4px solid rgba(0,0,0,0.1);border-left-color:var(--primary);border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;margin:0 auto 20px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.footer{text-align:center;margin-top:30px;color:var(--gray);font-size:0.9rem;}
+.filter-btns{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.toggle-switch{display:flex;align-items:center;gap:5px;}
+@media(max-width:768px){.controls{flex-direction:column;align-items:stretch;}.stats{justify-content:center;} th,td{padding:8px 10px;font-size:0.9rem;}.table-container{overflow-x:auto;}}
 </style>
 </head>
 <body>
@@ -74,7 +74,7 @@ tr:hover {background:#f8f9fa;}
       <div class="stat-card"><div class="stat-value" id="domNodes">N/A</div><div class="stat-label">DOM Nodes</div></div>
     </div>
 
-    <div style="display:flex; flex-direction:column; gap:10px;">
+    <div style="display:flex;flex-direction:column;gap:10px;">
       <div class="filter-btns">
         <button data-filter="all" class="btn btn-secondary">All</button>
         <button data-filter="pass" class="btn btn-success">Pass</button>
@@ -87,7 +87,7 @@ tr:hover {background:#f8f9fa;}
         <label for="debugToggle">Debug Mode</label>
         <input type="checkbox" id="debugToggle">
       </div>
-      <div style="display:flex; gap:5px; flex-wrap:wrap;">
+      <div style="display:flex;gap:5px;flex-wrap:wrap;">
         <button id="refreshBtn" class="btn btn-primary">🔄 Refresh Logs</button>
         <button id="triggerDummySearch" class="btn btn-primary">⚡ Dummy Search</button>
         <button id="resetAppState" class="btn btn-secondary">♻ Reset App State</button>
@@ -103,11 +103,7 @@ tr:hover {background:#f8f9fa;}
     <table id="captchaTable">
       <thead>
         <tr>
-          <th>Timestamp</th>
-          <th>Query</th>
-          <th>Status</th>
-          <th>Info</th>
-          <th>Attempts</th>
+          <th>Timestamp</th><th>Query</th><th>Status</th><th>Info</th><th>Attempts</th>
         </tr>
       </thead>
       <tbody id="tableBody">
@@ -119,9 +115,7 @@ tr:hover {background:#f8f9fa;}
   <!-- App & Environment Info -->
   <div class="table-container">
     <table>
-      <thead>
-        <tr><th>App Info</th><th>Value</th></tr>
-      </thead>
+      <thead><tr><th>App Info</th><th>Value</th></tr></thead>
       <tbody>
         <tr><td>Version / Build</td><td id="appVersion">1.9.0</td></tr>
         <tr><td>Environment</td><td id="appEnv">Production</td></tr>
@@ -133,16 +127,12 @@ tr:hover {background:#f8f9fa;}
   <!-- CSS Variables -->
   <div class="table-container">
     <table>
-      <thead>
-        <tr><th>CSS Variable</th><th>Value</th></tr>
-      </thead>
+      <thead><tr><th>CSS Variable</th><th>Value</th></tr></thead>
       <tbody id="cssVarsBody"></tbody>
     </table>
   </div>
 
-  <div class="footer">
-    <p>Taisen Security System &copy; 2023</p>
-  </div>
+  <div class="footer"><p>Taisen Security System &copy; 2025</p></div>
 </div>
 
 <script type="module">
@@ -150,155 +140,69 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebas
 import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBZQarXeg-km3dY8vuEN3FffzWtwzkZDuk",
-  authDomain: "taisenlogs.firebaseapp.com",
-  projectId: "taisenlogs",
-  storageBucket: "taisenlogs.firebasestorage.app",
-  messagingSenderId: "404806925329",
-  appId: "1:404806925329:web:c74775ebb199bf40c085b0",
-  measurementId: "G-6JQNJXVTLT"
+const firebaseConfig={
+  apiKey:"AIzaSyBZQarXeg-km3dY8vuEN3FffzWtwzkZDuk",
+  authDomain:"taisenlogs.firebaseapp.com",
+  projectId:"taisenlogs",
+  storageBucket:"taisenlogs.firebasestorage.app",
+  messagingSenderId:"404806925329",
+  appId:"1:404806925329:web:c74775ebb199bf40c085b0",
+  measurementId:"G-6JQNJXVTLT"
 };
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const analytics = getAnalytics(app);
 
-// DOM Elements
-const tableBody = document.getElementById('tableBody');
-const refreshBtn = document.getElementById('refreshBtn');
-const totalLogsEl = document.getElementById('totalLogs');
-const passCountEl = document.getElementById('passCount');
-const failCountEl = document.getElementById('failCount');
-const skipCountEl = document.getElementById('skipCount');
-const pageLoadTimeEl = document.getElementById('pageLoadTime');
-const indexLoadTimeEl = document.getElementById('indexLoadTime');
-const resultsLoadTimeEl = document.getElementById('resultsLoadTime');
-const memoryUsageEl = document.getElementById('memoryUsage');
-const cpuUsageEl = document.getElementById('cpuUsage');
-const domNodesEl = document.getElementById('domNodes');
-const cssVarsBody = document.getElementById('cssVarsBody');
-const debugToggle = document.getElementById('debugToggle');
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+const analytics=getAnalytics(app);
 
-let logs = [];
-let filterType = 'all';
-let debugMode = false;
+const tableBody=document.getElementById('tableBody');
+const refreshBtn=document.getElementById('refreshBtn');
+const totalLogsEl=document.getElementById('totalLogs');
+const passCountEl=document.getElementById('passCount');
+const failCountEl=document.getElementById('failCount');
+const skipCountEl=document.getElementById('skipCount');
+const pageLoadTimeEl=document.getElementById('pageLoadTime');
+const indexLoadTimeEl=document.getElementById('indexLoadTime');
+const resultsLoadTimeEl=document.getElementById('resultsLoadTime');
+const memoryUsageEl=document.getElementById('memoryUsage');
+const cpuUsageEl=document.getElementById('cpuUsage');
+const domNodesEl=document.getElementById('domNodes');
+const cssVarsBody=document.getElementById('cssVarsBody');
+const debugToggle=document.getElementById('debugToggle');
 
-// Logging
-function log(type,message){
-  logs.push({type,message,time:new Date().toLocaleTimeString()});
-  if(debugMode) console[type==='error'?'error':'log'](message);
-}
+let logs=[], filterType='all', debugMode=false;
 
-// Page Latency
-async function measurePageLoad(url){
-  const start = performance.now();
-  try{
-    const res = await fetch(url,{cache:"no-store"});
-    if(!res.ok) throw new Error(`Status ${res.status}`);
-    await res.text();
-    return (performance.now()-start).toFixed(2);
-  }catch(e){ log('error',`Failed to fetch ${url}: ${e.message}`); return 'Error'; }
-}
-async function updatePageLatencies(){
-  indexLoadTimeEl.textContent = `${await measurePageLoad('index.html')} ms`;
-  resultsLoadTimeEl.textContent = `${await measurePageLoad('results.html')} ms`;
-}
+function log(type,message){logs.push({type,message,time:new Date().toLocaleTimeString()}); if(debugMode) console[type==='error'?'error':'log'](message);}
+async function measurePageLoad(url){const start=performance.now(); try{const res=await fetch(url,{cache:"no-store"}); if(!res.ok) throw new Error(`Status ${res.status}`); await res.text(); return (performance.now()-start).toFixed(2);}catch(e){log('error',`Failed to fetch ${url}: ${e.message}`); return 'Error';}}
+async function updatePageLatencies(){indexLoadTimeEl.textContent=`${await measurePageLoad('index.html')} ms`; resultsLoadTimeEl.textContent=`${await measurePageLoad('results.html')} ms`;}
 
-// CAPTCHA Logs
 async function loadCaptchaLogs(){
-  tableBody.innerHTML = `<tr><td colspan="5" class="loading"><div class="spinner"></div><p>Loading CAPTCHA logs...</p></td></tr>`;
+  tableBody.innerHTML=`<tr><td colspan="5" class="loading"><div class="spinner"></div><p>Loading CAPTCHA logs...</p></td></tr>`;
   resetStats();
   try{
-    const q = query(collection(db,"captchaLogs"), orderBy("timestamp","desc"));
-    const snapshot = await getDocs(q);
-    if(snapshot.empty){ tableBody.innerHTML=`<tr><td colspan="5" class="empty-state">No logs found.</td></tr>`; return; }
+    const q=query(collection(db,"captchaLogs"),orderBy("timestamp","desc"));
+    const snapshot=await getDocs(q);
+    if(snapshot.empty){ tableBody.innerHTML=`<tr><td colspan="5" class="empty-state">No logs found.</td></tr>`; return;}
     tableBody.innerHTML='';
-    snapshot.forEach(doc=>{
-      const data = doc.data();
-      addLogToTable(data);
-      updateStats(data.status);
-    });
-  }catch(err){
-    console.error(err);
-    tableBody.innerHTML=`<tr><td colspan="5" class="empty-state">Error: ${err.message}</td></tr>`;
-  }
+    snapshot.forEach(doc=>{const data=doc.data(); addLogToTable(data); updateStats(data.status); });
+  }catch(err){console.error(err); tableBody.innerHTML=`<tr><td colspan="5" class="empty-state">Error: ${err.message}</td></tr>`;}
 }
-function addLogToTable(data){
-  const tr = document.createElement('tr');
-  const ts = new Date(data.timestamp).toLocaleString();
-  const badge = document.createElement('span');
-  badge.className=`status-badge status-${data.status}`;
-  badge.textContent = data.status.toUpperCase();
-  tr.innerHTML=`<td>${ts}</td><td>${data.query||'N/A'}</td><td></td><td>${data.info}</td><td>${data.attempts}</td>`;
-  tr.cells[2].appendChild(badge);
-  tableBody.appendChild(tr);
-}
+function addLogToTable(data){const tr=document.createElement('tr'); const ts=new Date(data.timestamp).toLocaleString(); const badge=document.createElement('span'); badge.className=`status-badge status-${data.status}`; badge.textContent=data.status.toUpperCase(); tr.innerHTML=`<td>${ts}</td><td>${data.query||'N/A'}</td><td></td><td>${data.info}</td><td>${data.attempts}</td>`; tr.cells[2].appendChild(badge); tableBody.appendChild(tr);}
 function resetStats(){ totalLogsEl.textContent='0'; passCountEl.textContent='0'; failCountEl.textContent='0'; skipCountEl.textContent='0'; }
-function updateStats(status){
-  totalLogsEl.textContent=parseInt(totalLogsEl.textContent)+1;
-  if(status==='pass') passCountEl.textContent=parseInt(passCountEl.textContent)+1;
-  else if(status==='fail') failCountEl.textContent=parseInt(failCountEl.textContent)+1;
-  else if(status==='skipped') skipCountEl.textContent=parseInt(skipCountEl.textContent)+1;
-}
+function updateStats(status){ totalLogsEl.textContent=parseInt(totalLogsEl.textContent)+1; if(status==='pass') passCountEl.textContent=parseInt(passCountEl.textContent)+1; else if(status==='fail') failCountEl.textContent=parseInt(failCountEl.textContent)+1; else if(status==='skipped') skipCountEl.textContent=parseInt(skipCountEl.textContent)+1;}
 
-// Dummy Search
 function triggerDummySearch(){ log('info','Dummy search triggered'); alert('Dummy search triggered.'); }
-
-// Reset App State
 function resetAppState(){ logs=[]; loadCaptchaLogs(); updatePageLatencies(); alert('App state reset'); log('info','App state reset'); }
 
-// Export JSON
-function exportLogs(){ 
-  const blob = new Blob([JSON.stringify(logs,null,2)],{type:'application/json'});
-  const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download='taisen_logs.json'; link.click();
-}
+function exportLogs(){ const blob=new Blob([JSON.stringify(logs,null,2)],{type:'application/json'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download='taisen_logs.json'; link.click();}
+function exportLogsCSV(){ if(logs.length===0){ alert('No logs to export'); return;} const headers=['Timestamp','Query','Status','Info','Attempts']; const csvRows=logs.map(l=>[l.time,l.query||'N/A',l.status||'info',l.message||'',l.attempts||''].map(v=>`"${v}"`).join(',')); const csvContent=[headers.join(','),...csvRows].join('\n'); const blob=new Blob([csvContent],{type:'text/csv;charset=utf-8;'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.setAttribute('download','taisen_logs.csv'); link.click();}
 
-// Export CSV
-function exportLogsCSV(){
-  if(logs.length===0){ alert('No logs to export'); return; }
-  const headers=['Timestamp','Query','Status','Info','Attempts'];
-  const csvRows = logs.map(l=>[l.time,l.query||'N/A',l.status||'info',l.message||'',l.attempts||''].map(v=>`"${v}"`).join(','));
-  const csvContent = [headers.join(','),...csvRows].join('\n');
-  const blob = new Blob([csvContent],{type:'text/csv;charset=utf-8;'});
-  const link = document.createElement('a'); link.href=URL.createObjectURL(blob); link.setAttribute('download','taisen_logs.csv'); link.click();
-}
+function loadCSSVars(){cssVarsBody.innerHTML=''; const styles=getComputedStyle(document.documentElement); for(const s of styles){if(s.startsWith('--')){const val=styles.getPropertyValue(s).trim(); const tr=document.createElement('tr'); tr.innerHTML=`<td>${s}</td><td>${val}</td>`; cssVarsBody.appendChild(tr);}}}
 
-// CSS Variables
-function loadCSSVars(){
-  cssVarsBody.innerHTML='';
-  const styles = getComputedStyle(document.documentElement);
-  for(const s of styles){
-    if(s.startsWith('--')){
-      const val = styles.getPropertyValue(s).trim();
-      const tr = document.createElement('tr');
-      tr.innerHTML=`<td>${s}</td><td>${val}</td>`;
-      cssVarsBody.appendChild(tr);
-    }
-  }
-}
-
-// Live System Stats
-function updateSystemStats(){
-  if(performance.memory){
-    memoryUsageEl.textContent=(performance.memory.usedJSHeapSize/1024/1024).toFixed(2)+' MB';
-    cpuUsageEl.textContent=((performance.memory.usedJSHeapSize/performance.memory.jsHeapSizeLimit)*100).toFixed(2)+'%';
-  } else {
-    memoryUsageEl.textContent='N/A'; cpuUsageEl.textContent='N/A';
-  }
-  domNodesEl.textContent=document.getElementsByTagName('*').length;
-}
+function updateSystemStats(){if(performance.memory){memoryUsageEl.textContent=(performance.memory.usedJSHeapSize/1024/1024).toFixed(2)+' MB'; cpuUsageEl.textContent=((performance.memory.usedJSHeapSize/performance.memory.jsHeapSizeLimit)*100).toFixed(2)+'%';}else{memoryUsageEl.textContent='N/A'; cpuUsageEl.textContent='N/A';} domNodesEl.textContent=document.getElementsByTagName('*').length;}
 setInterval(updateSystemStats,3000);
 
-// Filter Logs
-function filterLogs(type){
-  filterType = type;
-  Array.from(tableBody.children).forEach(tr=>{
-    const status = tr.cells[2].innerText.toLowerCase();
-    tr.style.display = (type==='all' || status.includes(type))?'':'none';
-  });
-}
+function filterLogs(type){filterType=type; Array.from(tableBody.children).forEach(tr=>{const status=tr.cells[2].innerText.toLowerCase(); tr.style.display=(type==='all'||status.includes(type))?'':'none';});}
 
-// Event Listeners
 document.addEventListener('DOMContentLoaded',()=>{
   loadCaptchaLogs();
   updatePageLatencies();
