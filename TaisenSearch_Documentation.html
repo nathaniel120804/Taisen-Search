@@ -70,11 +70,11 @@
 <p><strong>Prepared by:</strong> Nathaniel Don Joseph I. De Guzman</p>
 <p><strong>Role:</strong> Project Lead</p>
 <p><strong>Date:</strong> September 25, 2025</p>
-<p><strong>Documentation Version:</strong> 1.8</p>
+<p><strong>Documentation Version:</strong> 1.9</p>
 
 <h2 class="icon-section">Introduction</h2>
 <p><strong>Purpose:</strong> This document provides a detailed account of the development, improvements, and version history of Taisen Search. It serves as a reference for stakeholders, developers, and future maintainers.</p>
-<p><strong>Scope:</strong> Taisen Search is a search platform combining internal resources (Taisen Labs) and external results via Google Custom Search Engine (CSE), focusing on usability, modern design, internal research functionality, and security.</p>
+<p><strong>Scope:</strong> Taisen Search is a search platform combining internal resources (Taisen Labs) and external results via Google Custom Search Engine (CSE), focusing on usability, modern design, internal research functionality, security, and user-configurable settings.</p>
 <p><strong>Audience:</strong> Project stakeholders, development team, QA testers, future maintainers.</p>
 
 <h2 class="icon-section">Versioning Overview</h2>
@@ -127,16 +127,21 @@
 <tr>
 <td><span class="version-badge">1.8</span></td>
 <td>TBD</td>
+<td>Captcha verification flow added and debug dashboard integrated.</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.9</span></td>
+<td>September 25, 2025</td>
 <td>
-Captcha verification flow added and debug dashboard integrated:
+User-configurable Settings added:
 <ul>
-<li>App & Environment Info: version/build, environment (development/staging/production), feature flags.</li>
-<li>Network & API Debugging: API endpoints, status codes, response times (no user queries).</li>
-<li>Console & Logs: internal messages, warnings/errors, filterable by type.</li>
-<li>Performance Metrics: page load, API latency, memory/CPU usage placeholders.</li>
-<li>State & UI Debugging: component state placeholders, DOM structure, CSS variable inspection.</li>
-<li>Testing Tools: trigger dummy searches, toggle debug mode.</li>
-<li>Export & Reset: download logs without user data, reset app state.</li>
+<li>Theme Selection: Light/Dark mode applied immediately.</li>
+<li>Language & Region: saved and restored from localStorage.</li>
+<li>SafeSearch Toggle: stored preference for search filtering.</li>
+<li>Privacy Mode Toggle: stored preference (IP masking/logging placeholder).</li>
+<li>Save Settings button: saves to localStorage and redirects to main page.</li>
+<li>Settings persist across page reloads.</li>
+<li>Mobile and desktop compatibility for settings UI.</li>
 </ul>
 </td>
 </tr>
@@ -232,25 +237,41 @@ Captcha verification flow added and debug dashboard integrated:
 <li>Designed for minimal disruption to user experience.</li>
 </ul>
 
-<h2 class="icon-section">Features Summary</h2>
+<h3>Version 1.9 – User Settings Integration</h3>
 <ul>
-<li><strong>User Experience & Interface:</strong> Modern card-based search results, modal popups, animated doodle backgrounds, responsive design.</li>
-<li><strong>Functionality:</strong> Toggle for internal Labs results, full-text access, “Open in New Tab”, input validation, captcha verification.</li>
-<li><strong>Debug & Testing:</strong> Debug dashboard, logs, performance metrics, export/reset, testing tools.</li>
-<li><strong>Performance:</strong> Optimized modal/card rendering, reduced load times, smooth animations.</li>
-<li><strong>Accessibility:</strong> Mobile-friendly layouts, clear visual hierarchy, ARIA-friendly markup.</li>
+<li>Settings page added with:
+  <ul>
+    <li>Theme selection: Light / Dark mode (applied immediately).</li>
+    <li>Language & Region selection (saved in localStorage).</li>
+    <li>SafeSearch toggle (preference stored).</li>
+    <li>Privacy Mode toggle (preference stored, placeholder functionality).</li>
+  </ul>
+</li>
+<li>Save Settings button stores all values in localStorage and redirects to main page.</li>
+<li>Settings persist across page reloads.</li>
+<li>Mobile-friendly layout for all devices.</li>
+<li>Fully compatible with existing debug dashboard and captcha features.</li>
+</ul>
+
+<h2 class="icon-section">Features Summary (v1.9)</h2>
+<ul>
+<li><strong>UI & UX:</strong> Modern, responsive settings panel with mobile optimization.</li>
+<li><strong>Functional Settings:</strong> Theme, language, region, SafeSearch, privacy mode saved in localStorage and applied where applicable.</li>
+<li><strong>Navigation:</strong> Save Settings button redirects to main page.</li>
+<li><strong>Persistence:</strong> All settings restored on page load.</li>
+<li><strong>Debug & Testing:</strong> Works alongside debug dashboard (v1.8).</li>
 </ul>
 
 <h2 class="icon-section">Future Roadmap</h2>
 <ul>
-<li>Independent search algorithm development.</li>
-<li>User personalization and preferences.</li>
-<li>Multi-language support.</li>
-<li>Advanced filtering and analytics integration.</li>
+<li>Apply SafeSearch and Privacy Mode settings actively in search results.</li>
+<li>Enhance multi-language support across UI and results.</li>
+<li>Integrate user preferences with internal Labs filtering.</li>
+<li>Analytics for user settings usage and behavior.</li>
 </ul>
 
 <h2 class="icon-section">Conclusion</h2>
-<p>Taisen Search has evolved into a modern, user-friendly search platform combining internal resources and external results. Continuous improvements focus on usability, design, performance, accessibility, and security, with future plans to expand capabilities further.</p>
+<p>Taisen Search continues evolving into a modern, user-friendly platform with both functional search improvements and user-configurable settings. The addition of v1.9 makes the search experience more personalized and adaptable for both desktop and mobile users.</p>
 
 <footer>
 © 2025 Taisen Search. All Rights Reserved.
@@ -258,3 +279,4 @@ Captcha verification flow added and debug dashboard integrated:
 
 </body>
 </html>
+
