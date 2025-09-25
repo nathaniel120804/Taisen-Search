@@ -3,16 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Debug Logs - Taisen</title>
+<title>Taisen Debug Dashboard</title>
 <style>
 :root {
-  --primary: #0077ff; --primary-dark: #005fcc; --success: #28a745; --danger: #dc3545;
-  --warning: #ffc107; --light: #f8f9fa; --dark: #343a40; --gray: #6c757d;
-  --border-radius: 8px; --box-shadow: 0 4px 6px rgba(0,0,0,0.1); --transition: all 0.3s ease;
+  --primary: #0077ff; --primary-dark: #005fcc;
+  --success: #28a745; --danger: #dc3545; --warning: #ffc107;
+  --light: #f8f9fa; --dark: #343a40; --gray: #6c757d;
+  --border-radius: 8px; --box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  --transition: all 0.3s ease;
 }
 * {margin:0; padding:0; box-sizing:border-box;}
-body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%); min-height:100vh; color: var(--dark); padding:20px;}
-.container {max-width:1200px;margin:0 auto;}
+body {
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);
+  min-height:100vh; color: var(--dark); padding:20px;
+}
+.container {max-width:1200px; margin:0 auto;}
 .header {text-align:center; margin-bottom:30px; padding:20px; background:white; border-radius: var(--border-radius); box-shadow: var(--box-shadow);}
 .header h1 {font-size:2.5rem; margin-bottom:10px; color: var(--primary); display:flex; align-items:center; justify-content:center; gap:10px;}
 .header p {font-size:1.1rem; color: var(--gray);}
@@ -26,7 +32,7 @@ body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: l
 .btn-primary:hover {background: var(--primary-dark);}
 .btn-secondary {background: var(--light); color: var(--dark); border:1px solid #dee2e6;}
 .btn-secondary:hover {background:#e9ecef;}
-.table-container {background:white; border-radius: var(--border-radius); box-shadow: var(--box-shadow); overflow:hidden;}
+.table-container {background:white; border-radius: var(--border-radius); box-shadow: var(--box-shadow); overflow:hidden; margin-top:20px;}
 table {width:100%; border-collapse:collapse;}
 thead {background:var(--light);}
 th {padding:15px; text-align:left; font-weight:600; border-bottom:2px solid #dee2e6;}
@@ -37,11 +43,12 @@ tr:hover {background:#f8f9fa;}
 .status-pass {background: rgba(40,167,69,0.1); color: var(--success);}
 .status-fail {background: rgba(220,53,69,0.1); color: var(--danger);}
 .status-skipped {background: rgba(255,193,7,0.1); color: var(--warning);}
-.loading {text-align:center; padding:40px;}
+.loading, .empty-state {text-align:center; padding:40px; color: var(--gray);}
 .spinner {border:4px solid rgba(0,0,0,0.1); border-left-color: var(--primary); border-radius:50%; width:40px; height:40px; animation:spin 1s linear infinite; margin:0 auto 20px;}
 @keyframes spin {to {transform:rotate(360deg);}}
-.empty-state {text-align:center; padding:40px; color: var(--gray);}
 .footer {text-align:center; margin-top:30px; color: var(--gray); font-size:0.9rem;}
+.filter-btns {display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap;}
+.toggle-switch {display:flex; align-items:center; gap:5px;}
 @media (max-width:768px){.controls{flex-direction:column; align-items:stretch;}.stats{justify-content:center;} th,td{padding:8px 10px; font-size:0.9rem;} .table-container{overflow-x:auto;}}
 </style>
 </head>
@@ -49,7 +56,7 @@ tr:hover {background:#f8f9fa;}
 <div class="container">
   <div class="header">
     <h1>🛠 Taisen Debug Dashboard</h1>
-    <p>App, network, performance, and CAPTCHA verification logs</p>
+    <p>App, network, performance, CAPTCHA logs & system inspection</p>
   </div>
 
   <!-- Controls & Stats -->
@@ -60,14 +67,34 @@ tr:hover {background:#f8f9fa;}
       <div class="stat-card"><div class="stat-value" id="failCount">0</div><div class="stat-label">Failed</div></div>
       <div class="stat-card"><div class="stat-value" id="skipCount">0</div><div class="stat-label">Skipped</div></div>
       <div class="stat-card"><div class="stat-value" id="pageLoadTime">0 ms</div><div class="stat-label">Dashboard Load</div></div>
-      <div class="stat-card"><div class="stat-value" id="indexLoadTime">0 ms</div><div class="stat-label">Index Page Load</div></div>
-      <div class="stat-card"><div class="stat-value" id="resultsLoadTime">0 ms</div><div class="stat-label">Results Page Load</div></div>
+      <div class="stat-card"><div class="stat-value" id="indexLoadTime">0 ms</div><div class="stat-label">Index Load</div></div>
+      <div class="stat-card"><div class="stat-value" id="resultsLoadTime">0 ms</div><div class="stat-label">Results Load</div></div>
+      <div class="stat-card"><div class="stat-value" id="memoryUsage">N/A</div><div class="stat-label">Memory</div></div>
+      <div class="stat-card"><div class="stat-value" id="cpuUsage">N/A</div><div class="stat-label">CPU</div></div>
+      <div class="stat-card"><div class="stat-value" id="domNodes">N/A</div><div class="stat-label">DOM Nodes</div></div>
     </div>
-    <div>
-      <button id="refreshBtn" class="btn btn-primary">🔄 Refresh</button>
-      <button id="triggerDummySearch" class="btn btn-primary">⚡ Dummy Search</button>
-      <button id="resetAppState" class="btn btn-secondary">♻ Reset App State</button>
-      <a href="index.html" class="btn btn-secondary">← Back to Verification</a>
+
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div class="filter-btns">
+        <button data-filter="all" class="btn btn-secondary">All</button>
+        <button data-filter="pass" class="btn btn-success">Pass</button>
+        <button data-filter="fail" class="btn btn-danger">Fail</button>
+        <button data-filter="skipped" class="btn btn-warning">Skipped</button>
+        <button data-filter="info" class="btn btn-primary">Info</button>
+        <button data-filter="error" class="btn btn-danger">Error</button>
+      </div>
+      <div class="toggle-switch">
+        <label for="debugToggle">Debug Mode</label>
+        <input type="checkbox" id="debugToggle">
+      </div>
+      <div style="display:flex; gap:5px; flex-wrap:wrap;">
+        <button id="refreshBtn" class="btn btn-primary">🔄 Refresh Logs</button>
+        <button id="triggerDummySearch" class="btn btn-primary">⚡ Dummy Search</button>
+        <button id="resetAppState" class="btn btn-secondary">♻ Reset App State</button>
+        <button id="exportLogs" class="btn btn-secondary">⬇ Export JSON</button>
+        <button id="exportLogsCSV" class="btn btn-secondary">⬇ Export CSV</button>
+        <a href="index.html" class="btn btn-secondary">← Back to Verification</a>
+      </div>
     </div>
   </div>
 
@@ -90,7 +117,7 @@ tr:hover {background:#f8f9fa;}
   </div>
 
   <!-- App & Environment Info -->
-  <div class="table-container" style="margin-top:20px;">
+  <div class="table-container">
     <table>
       <thead>
         <tr><th>App Info</th><th>Value</th></tr>
@@ -103,7 +130,16 @@ tr:hover {background:#f8f9fa;}
     </table>
   </div>
 
-  <!-- Footer -->
+  <!-- CSS Variables -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr><th>CSS Variable</th><th>Value</th></tr>
+      </thead>
+      <tbody id="cssVarsBody"></tbody>
+    </table>
+  </div>
+
   <div class="footer">
     <p>Taisen Security System &copy; 2023</p>
   </div>
@@ -114,7 +150,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebas
 import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
 
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBZQarXeg-km3dY8vuEN3FffzWtwzkZDuk",
   authDomain: "taisenlogs.firebaseapp.com",
@@ -128,32 +163,41 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const analytics = getAnalytics(app);
 
-// DOM elements
+// DOM Elements
 const tableBody = document.getElementById('tableBody');
 const refreshBtn = document.getElementById('refreshBtn');
 const totalLogsEl = document.getElementById('totalLogs');
 const passCountEl = document.getElementById('passCount');
 const failCountEl = document.getElementById('failCount');
 const skipCountEl = document.getElementById('skipCount');
-
 const pageLoadTimeEl = document.getElementById('pageLoadTime');
 const indexLoadTimeEl = document.getElementById('indexLoadTime');
 const resultsLoadTimeEl = document.getElementById('resultsLoadTime');
+const memoryUsageEl = document.getElementById('memoryUsage');
+const cpuUsageEl = document.getElementById('cpuUsage');
+const domNodesEl = document.getElementById('domNodes');
+const cssVarsBody = document.getElementById('cssVarsBody');
+const debugToggle = document.getElementById('debugToggle');
 
-// Simple log system
 let logs = [];
-function log(type, message){ logs.push({type,message,time:new Date().toLocaleTimeString()}); console[type==='error'?'error':'log'](message); }
+let filterType = 'all';
+let debugMode = false;
 
-// Measure latency for pages
+// Logging
+function log(type,message){
+  logs.push({type,message,time:new Date().toLocaleTimeString()});
+  if(debugMode) console[type==='error'?'error':'log'](message);
+}
+
+// Page Latency
 async function measurePageLoad(url){
   const start = performance.now();
-  try {
-    const response = await fetch(url,{cache:"no-store"});
-    if(!response.ok) throw new Error(`Status ${response.status}`);
-    await response.text();
-    const end = performance.now();
-    return (end-start).toFixed(2);
-  } catch(e){ log('error', `Failed to fetch ${url}: ${e.message}`); return 'Error'; }
+  try{
+    const res = await fetch(url,{cache:"no-store"});
+    if(!res.ok) throw new Error(`Status ${res.status}`);
+    await res.text();
+    return (performance.now()-start).toFixed(2);
+  }catch(e){ log('error',`Failed to fetch ${url}: ${e.message}`); return 'Error'; }
 }
 async function updatePageLatencies(){
   indexLoadTimeEl.textContent = `${await measurePageLoad('index.html')} ms`;
@@ -167,47 +211,108 @@ async function loadCaptchaLogs(){
   try{
     const q = query(collection(db,"captchaLogs"), orderBy("timestamp","desc"));
     const snapshot = await getDocs(q);
-    if(snapshot.empty){ tableBody.innerHTML=`<tr><td colspan="5" class="empty-state">No logs found. Try a verification.</td></tr>`; return;}
+    if(snapshot.empty){ tableBody.innerHTML=`<tr><td colspan="5" class="empty-state">No logs found.</td></tr>`; return; }
     tableBody.innerHTML='';
     snapshot.forEach(doc=>{
-      const logData = doc.data(); addLogToTable(logData); updateStats(logData.status);
+      const data = doc.data();
+      addLogToTable(data);
+      updateStats(data.status);
     });
   }catch(err){
-    console.error("Error loading logs:", err);
+    console.error(err);
     tableBody.innerHTML=`<tr><td colspan="5" class="empty-state">Error: ${err.message}</td></tr>`;
   }
 }
-function addLogToTable(logData){
-  const tr = document.createElement("tr");
-  const timestamp = new Date(logData.timestamp).toLocaleString();
-  const statusBadge = document.createElement("span");
-  statusBadge.className=`status-badge status-${logData.status}`;
-  statusBadge.textContent = logData.status.toUpperCase();
-  tr.innerHTML=`<td>${timestamp}</td><td>${logData.query||"N/A"}</td><td></td><td>${logData.info}</td><td>${logData.attempts}</td>`;
-  tr.cells[2].appendChild(statusBadge);
+function addLogToTable(data){
+  const tr = document.createElement('tr');
+  const ts = new Date(data.timestamp).toLocaleString();
+  const badge = document.createElement('span');
+  badge.className=`status-badge status-${data.status}`;
+  badge.textContent = data.status.toUpperCase();
+  tr.innerHTML=`<td>${ts}</td><td>${data.query||'N/A'}</td><td></td><td>${data.info}</td><td>${data.attempts}</td>`;
+  tr.cells[2].appendChild(badge);
   tableBody.appendChild(tr);
 }
-function resetStats(){ totalLogsEl.textContent="0"; passCountEl.textContent="0"; failCountEl.textContent="0"; skipCountEl.textContent="0";}
+function resetStats(){ totalLogsEl.textContent='0'; passCountEl.textContent='0'; failCountEl.textContent='0'; skipCountEl.textContent='0'; }
 function updateStats(status){
   totalLogsEl.textContent=parseInt(totalLogsEl.textContent)+1;
-  if(status==="pass") passCountEl.textContent=parseInt(passCountEl.textContent)+1;
-  else if(status==="fail") failCountEl.textContent=parseInt(failCountEl.textContent)+1;
-  else if(status==="skipped") skipCountEl.textContent=parseInt(skipCountEl.textContent)+1;
+  if(status==='pass') passCountEl.textContent=parseInt(passCountEl.textContent)+1;
+  else if(status==='fail') failCountEl.textContent=parseInt(failCountEl.textContent)+1;
+  else if(status==='skipped') skipCountEl.textContent=parseInt(skipCountEl.textContent)+1;
 }
 
-// Dummy search trigger
+// Dummy Search
 function triggerDummySearch(){ log('info','Dummy search triggered'); alert('Dummy search triggered.'); }
 
-// Reset app state
+// Reset App State
 function resetAppState(){ logs=[]; loadCaptchaLogs(); updatePageLatencies(); alert('App state reset'); log('info','App state reset'); }
 
+// Export JSON
+function exportLogs(){ 
+  const blob = new Blob([JSON.stringify(logs,null,2)],{type:'application/json'});
+  const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download='taisen_logs.json'; link.click();
+}
+
+// Export CSV
+function exportLogsCSV(){
+  if(logs.length===0){ alert('No logs to export'); return; }
+  const headers=['Timestamp','Query','Status','Info','Attempts'];
+  const csvRows = logs.map(l=>[l.time,l.query||'N/A',l.status||'info',l.message||'',l.attempts||''].map(v=>`"${v}"`).join(','));
+  const csvContent = [headers.join(','),...csvRows].join('\n');
+  const blob = new Blob([csvContent],{type:'text/csv;charset=utf-8;'});
+  const link = document.createElement('a'); link.href=URL.createObjectURL(blob); link.setAttribute('download','taisen_logs.csv'); link.click();
+}
+
+// CSS Variables
+function loadCSSVars(){
+  cssVarsBody.innerHTML='';
+  const styles = getComputedStyle(document.documentElement);
+  for(const s of styles){
+    if(s.startsWith('--')){
+      const val = styles.getPropertyValue(s).trim();
+      const tr = document.createElement('tr');
+      tr.innerHTML=`<td>${s}</td><td>${val}</td>`;
+      cssVarsBody.appendChild(tr);
+    }
+  }
+}
+
+// Live System Stats
+function updateSystemStats(){
+  if(performance.memory){
+    memoryUsageEl.textContent=(performance.memory.usedJSHeapSize/1024/1024).toFixed(2)+' MB';
+    cpuUsageEl.textContent=((performance.memory.usedJSHeapSize/performance.memory.jsHeapSizeLimit)*100).toFixed(2)+'%';
+  } else {
+    memoryUsageEl.textContent='N/A'; cpuUsageEl.textContent='N/A';
+  }
+  domNodesEl.textContent=document.getElementsByTagName('*').length;
+}
+setInterval(updateSystemStats,3000);
+
+// Filter Logs
+function filterLogs(type){
+  filterType = type;
+  Array.from(tableBody.children).forEach(tr=>{
+    const status = tr.cells[2].innerText.toLowerCase();
+    tr.style.display = (type==='all' || status.includes(type))?'':'none';
+  });
+}
+
+// Event Listeners
 document.addEventListener('DOMContentLoaded',()=>{
   loadCaptchaLogs();
   updatePageLatencies();
-  refreshBtn.addEventListener('click', loadCaptchaLogs);
-  document.getElementById('triggerDummySearch').addEventListener('click', triggerDummySearch);
-  document.getElementById('resetAppState').addEventListener('click', resetAppState);
-  const loadTime = performance.now().toFixed(2); pageLoadTimeEl.textContent=`${loadTime} ms`; log('info',`Dashboard loaded in ${loadTime} ms`);
+  loadCSSVars();
+  updateSystemStats();
+  refreshBtn.addEventListener('click',loadCaptchaLogs);
+  document.getElementById('triggerDummySearch').addEventListener('click',triggerDummySearch);
+  document.getElementById('resetAppState').addEventListener('click',resetAppState);
+  document.getElementById('exportLogs').addEventListener('click',exportLogs);
+  document.getElementById('exportLogsCSV').addEventListener('click',exportLogsCSV);
+  document.querySelectorAll('.filter-btns button').forEach(btn=>{ btn.addEventListener('click',()=>filterLogs(btn.dataset.filter)); });
+  debugToggle.addEventListener('change',(e)=>{ debugMode=e.target.checked; alert('Debug mode '+(debugMode?'enabled':'disabled')); });
+  pageLoadTimeEl.textContent=`${performance.now().toFixed(2)} ms`;
+  log('info',`Dashboard loaded in ${pageLoadTimeEl.textContent}`);
 });
 </script>
 </body>
