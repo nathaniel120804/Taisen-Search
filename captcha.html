@@ -469,7 +469,7 @@
         if (attempts >= maxAttempts) {
           showStatusMessage("❌ Too many failed attempts. Please try again later.", "error");
           setTimeout(() => {
-            window.location.href = `debug.html?captcha=blocked&q=${encodeURIComponent(query)}&attempts=${attempts}`;
+            window.location.href = `https://taisen.pages.dev`;
           }, 2000);
         } else {
           showStatusMessage("❌ Incorrect answer. Please try again.", "error");
