@@ -38,9 +38,10 @@
     let num1, num2, correctAnswer;
     let attempts = 0;
 
+    // Normalize query from URL
     function getQuery() {
       const params = new URLSearchParams(window.location.search);
-      return params.get("q") || "";
+      return (params.get("q") || "").trim().toLowerCase();
     }
 
     function generateCaptcha() {
@@ -94,7 +95,7 @@
       }
     }
 
-    // Always log attempts even if already verified
+    // Always log attempts and optionally skipped if already verified
     function checkAlreadyVerified() {
       const query = getQuery();
       const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');

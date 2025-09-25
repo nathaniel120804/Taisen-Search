@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <title>Taisen Debug</title>
   <style>
-    /* --- Your provided stylesheet --- */
-    /* Root Colors & Variables */
     :root {
       --brand-color: #3B82F6;
       --text-dark: #0f1724;
@@ -53,18 +51,15 @@
       text-align: left;
     }
 
-    th {
-      background: #eee;
-    }
+    th { background: #eee; }
 
     .pass { color: green; }
     .fail { color: red; }
+    .skipped { color: blue; }
     .error-row { color: orange; }
-    
-    .controls {
-      margin: 20px 0;
-    }
-    
+
+    .controls { margin: 20px 0; }
+
     button {
       padding: 8px 16px;
       background: var(--brand-color);
@@ -74,10 +69,8 @@
       cursor: pointer;
       margin-right: 10px;
     }
-    
-    button:hover {
-      opacity: 0.9;
-    }
+
+    button:hover { opacity: 0.9; }
   </style>
 </head>
 <body>
@@ -119,7 +112,6 @@
       console[isError ? "error" : "log"](message);
     }
 
-    // Global error catcher
     window.onerror = function(message, source, lineno, colno, error) {
       log(`JS Error: ${message} at ${source}:${lineno}:${colno}`, true);
     };
@@ -129,7 +121,7 @@
     const query = params.get("q");
     log("Query param = " + (query || "none"));
 
-    // Test loading internal dataset
+    // Load internal dataset
     fetch("taisenData.json")
       .then(res => {
         log("Dataset fetch status = " + res.status);
@@ -161,7 +153,7 @@
       }
     };
 
-    // Capture fetch logging (simulated)
+    // Capture fetch logging
     const origFetch = window.fetch;
     window.fetch = async (...args) => {
       log("Fetch called → " + args[0]);
@@ -175,21 +167,24 @@
       }
     };
 
-    // ---------- CAPTCHA Debugging ----------
+    // CAPTCHA debug functions
     function loadCaptchaLogs() {
       const logs = JSON.parse(localStorage.getItem('captchaLogs') || '[]');
       const tbody = document.querySelector("#captchaTable tbody");
-      tbody.innerHTML = ''; // Clear existing rows
+      tbody.innerHTML = '';
       
       if (logs.length === 0) {
         tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No CAPTCHA logs found</td></tr>';
         log("No CAPTCHA logs found in localStorage");
         return;
       }
-      
+
       logs.forEach(log => {
         const tr = document.createElement("tr");
-        tr.className = log.status === "pass" ? "pass" : log.status === "fail" ? "fail" : "error-row";
+        if (log.status === "pass") tr.className = "pass";
+        else if (log.status === "fail") tr.className = "fail";
+        else if (log.status === "skipped") tr.className = "skipped";
+        else tr.className = "error-row";
         tr.innerHTML = `
           <td>${new Date(log.timestamp).toLocaleString()}</td>
           <td>${log.query || "N/A"}</td>
@@ -199,16 +194,16 @@
         `;
         tbody.appendChild(tr);
       });
-      
+
       log(`Loaded ${logs.length} CAPTCHA log entries from localStorage`);
     }
-    
+
     function clearCaptchaLogs() {
       localStorage.removeItem('captchaLogs');
       document.querySelector("#captchaTable tbody").innerHTML = '<tr><td colspan="5" style="text-align:center;">No CAPTCHA logs found</td></tr>';
       log("CAPTCHA logs cleared from localStorage");
     }
-    
+
     function checkVerificationStatus() {
       const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
       const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
@@ -229,20 +224,19 @@
       } else {
         html += `<p><strong>Local Storage:</strong> NOT VERIFIED</p>`;
       }
-      
+
       html += '</div>';
       statusDiv.innerHTML = html;
     }
-    
+
     function clearVerification() {
       sessionStorage.removeItem('captchaVerified');
       localStorage.removeItem('captchaVerified');
       log("Verification tokens cleared from sessionStorage and localStorage");
       checkVerificationStatus();
     }
-    
-    // Load logs and check verification when page loads
-    window.addEventListener('load', function() {
+
+    window.addEventListener('load', () => {
       loadCaptchaLogs();
       checkVerificationStatus();
       log("Debug page loaded successfully");
