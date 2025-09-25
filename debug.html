@@ -2,248 +2,450 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Taisen Debug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Logs - Taisen</title>
   <style>
     :root {
-      --brand-color: #3B82F6;
-      --text-dark: #0f1724;
-      --text-light: #f5f5f5;
-      --bg-light: #ffffff;
-      --bg-dark: #121212;
-      --neutral-gray: #9a9b9c;
-      --spacing-unit: 8px;
+      --primary: #0077ff;
+      --primary-dark: #005fcc;
+      --success: #28a745;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --light: #f8f9fa;
+      --dark: #343a40;
+      --gray: #6c757d;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       --transition: all 0.3s ease;
     }
-
-    body {
-      font-family: 'Arial', sans-serif;
+    
+    * {
       margin: 0;
-      background: var(--bg-light);
-      color: var(--text-dark);
-      line-height: 1.5;
-      display: flex;
-      flex-direction: column;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       min-height: 100vh;
-      transition: var(--transition);
+      color: var(--dark);
       padding: 20px;
     }
-
-    h1 { color: var(--brand-color); margin-bottom: 20px; }
-
-    .log {
-      margin-bottom: 10px;
-      border-bottom: 1px dashed #ddd;
-      padding-bottom: 10px;
-      font-family: monospace;
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
     }
-
-    .error { color: #f55; }
-
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .header p {
+      font-size: 1.1rem;
+      color: var(--gray);
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 15px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      min-width: 150px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+    
+    .btn-secondary {
+      background: var(--light);
+      color: var(--dark);
+      border: 1px solid #dee2e6;
+    }
+    
+    .btn-secondary:hover {
+      background: #e9ecef;
+    }
+    
+    .table-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+    }
+    
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
     }
-
-    th, td {
-      border: 1px solid var(--brand-color);
-      padding: 5px;
+    
+    thead {
+      background: var(--light);
+    }
+    
+    th {
+      padding: 15px;
       text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid #dee2e6;
     }
-
-    th { background: #eee; }
-
-    .pass { color: green; }
-    .fail { color: red; }
-    .skipped { color: blue; }
-    .error-row { color: orange; }
-
-    .controls { margin: 20px 0; }
-
-    button {
-      padding: 8px 16px;
-      background: var(--brand-color);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-right: 10px;
+    
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #e9ecef;
     }
-
-    button:hover { opacity: 0.9; }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    tr:hover {
+      background: #f8f9fa;
+    }
+    
+    .status-badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .status-pass {
+      background: rgba(40, 167, 69, 0.1);
+      color: var(--success);
+    }
+    
+    .status-fail {
+      background: rgba(220, 53, 69, 0.1);
+      color: var(--danger);
+    }
+    
+    .status-skipped {
+      background: rgba(255, 193, 7, 0.1);
+      color: var(--warning);
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--gray);
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .stats {
+        justify-content: center;
+      }
+      
+      th, td {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+      }
+      
+      .table-container {
+        overflow-x: auto;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>🛠 Taisen Debug Page</h1>
-  
-  <div class="controls">
-    <button onclick="loadCaptchaLogs()">Refresh CAPTCHA Logs</button>
-    <button onclick="clearCaptchaLogs()">Clear CAPTCHA Logs</button>
-    <button onclick="clearVerification()">Clear Verification Tokens</button>
+  <div class="container">
+    <div class="header">
+      <h1>🛠 Taisen Debug Dashboard</h1>
+      <p>CAPTCHA verification logs and analytics</p>
+    </div>
+    
+    <div class="controls">
+      <div class="stats" id="statsContainer">
+        <div class="stat-card">
+          <div class="stat-value" id="totalLogs">0</div>
+          <div class="stat-label">Total Logs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="passCount">0</div>
+          <div class="stat-label">Successful</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="failCount">0</div>
+          <div class="stat-label">Failed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="skipCount">0</div>
+          <div class="stat-label">Skipped</div>
+        </div>
+      </div>
+      
+      <div>
+        <button id="refreshBtn" class="btn btn-primary">
+          <span>🔄 Refresh</span>
+        </button>
+        <a href="index.html" class="btn btn-secondary">
+          <span>← Back to Verification</span>
+        </a>
+      </div>
+    </div>
+    
+    <div class="table-container">
+      <table id="captchaTable">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Query</th>
+            <th>Status</th>
+            <th>Info</th>
+            <th>Attempts</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr>
+            <td colspan="5" class="loading">
+              <div class="spinner"></div>
+              <p>Loading CAPTCHA logs...</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="footer">
+      <p>Taisen Security System &copy; 2023</p>
+    </div>
   </div>
-  
-  <div id="log"></div>
 
-  <h2>CAPTCHA Log</h2>
-  <table id="captchaTable">
-    <thead>
-      <tr>
-        <th>Time</th>
-        <th>Query</th>
-        <th>Status</th>
-        <th>Info</th>
-        <th>Attempts</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
 
-  <h2>Verification Status</h2>
-  <div id="verificationStatus"></div>
-
-  <script>
-    const logBox = document.getElementById("log");
-
-    function log(message, isError=false) {
-      const div = document.createElement("div");
-      div.className = "log" + (isError ? " error" : "");
-      div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-      logBox.appendChild(div);
-      console[isError ? "error" : "log"](message);
-    }
-
-    window.onerror = function(message, source, lineno, colno, error) {
-      log(`JS Error: ${message} at ${source}:${lineno}:${colno}`, true);
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZQarXeg-km3dY8vuEN3FffzWtwzkZDuk",
+      authDomain: "taisenlogs.firebaseapp.com",
+      projectId: "taisenlogs",
+      storageBucket: "taisenlogs.firebasestorage.app",
+      messagingSenderId: "404806925329",
+      appId: "1:404806925329:web:c74775ebb199bf40c085b0",
+      measurementId: "G-6JQNJXVTLT"
     };
 
-    // Capture query from URL
-    const params = new URLSearchParams(window.location.search);
-    const query = params.get("q");
-    log("Query param = " + (query || "none"));
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const analytics = getAnalytics(app);
 
-    // Load internal dataset
-    fetch("taisenData.json")
-      .then(res => {
-        log("Dataset fetch status = " + res.status);
-        return res.json();
-      })
-      .then(json => {
-        log("Dataset loaded. Items: " + json.length);
-        if (query) {
-          const results = json.filter(item =>
-            item.title.toLowerCase().includes(query.toLowerCase()) ||
-            item.snippet.toLowerCase().includes(query.toLowerCase())
-          );
-          log("Internal matches: " + results.length);
-          results.forEach(r => log("Match → " + r.title));
-        }
-      })
-      .catch(err => log("Dataset error: " + err, true));
+    // DOM elements
+    const tableBody = document.getElementById('tableBody');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const totalLogsEl = document.getElementById('totalLogs');
+    const passCountEl = document.getElementById('passCount');
+    const failCountEl = document.getElementById('failCount');
+    const skipCountEl = document.getElementById('skipCount');
 
-    // Capture Google CSE load
-    window.__gcse = {
-      callback: function() {
-        log("Google CSE loaded successfully");
-        try {
-          const searchBox = google.search.cse.element.getElement("searchbox");
-          if (searchBox) log("Google searchbox found");
-        } catch(e) {
-          log("Google CSE access error: " + e, true);
-        }
-      }
-    };
-
-    // Capture fetch logging
-    const origFetch = window.fetch;
-    window.fetch = async (...args) => {
-      log("Fetch called → " + args[0]);
-      try {
-        const res = await origFetch(...args);
-        log("Fetch success: " + res.status + " " + args[0]);
-        return res;
-      } catch (err) {
-        log("Fetch failed: " + err, true);
-        throw err;
-      }
-    };
-
-    // CAPTCHA debug functions
-    function loadCaptchaLogs() {
-      const logs = JSON.parse(localStorage.getItem('captchaLogs') || '[]');
-      const tbody = document.querySelector("#captchaTable tbody");
-      tbody.innerHTML = '';
-      
-      if (logs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No CAPTCHA logs found</td></tr>';
-        log("No CAPTCHA logs found in localStorage");
-        return;
-      }
-
-      logs.forEach(log => {
-        const tr = document.createElement("tr");
-        if (log.status === "pass") tr.className = "pass";
-        else if (log.status === "fail") tr.className = "fail";
-        else if (log.status === "skipped") tr.className = "skipped";
-        else tr.className = "error-row";
-        tr.innerHTML = `
-          <td>${new Date(log.timestamp).toLocaleString()}</td>
-          <td>${log.query || "N/A"}</td>
-          <td>${log.status.toUpperCase()}</td>
-          <td>${log.info}</td>
-          <td>${log.attempts}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      log(`Loaded ${logs.length} CAPTCHA log entries from localStorage`);
-    }
-
-    function clearCaptchaLogs() {
-      localStorage.removeItem('captchaLogs');
-      document.querySelector("#captchaTable tbody").innerHTML = '<tr><td colspan="5" style="text-align:center;">No CAPTCHA logs found</td></tr>';
-      log("CAPTCHA logs cleared from localStorage");
-    }
-
-    function checkVerificationStatus() {
-      const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
-      const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
-      const statusDiv = document.getElementById('verificationStatus');
-      
-      let html = '<div style="margin:10px 0;">';
-      
-      if (sessionVerify) {
-        const timeAgo = Math.floor((Date.now() - sessionVerify.timestamp) / 1000 / 60);
-        html += `<p><strong>Session Storage:</strong> VERIFIED (${timeAgo} minutes ago) - Query: "${sessionVerify.query}"</p>`;
-      } else {
-        html += `<p><strong>Session Storage:</strong> NOT VERIFIED</p>`;
-      }
-      
-      if (localVerify) {
-        const timeAgo = Math.floor((Date.now() - localVerify.timestamp) / 1000 / 60);
-        html += `<p><strong>Local Storage:</strong> VERIFIED (${timeAgo} minutes ago) - Query: "${localVerify.query}"</p>`;
-      } else {
-        html += `<p><strong>Local Storage:</strong> NOT VERIFIED</p>`;
-      }
-
-      html += '</div>';
-      statusDiv.innerHTML = html;
-    }
-
-    function clearVerification() {
-      sessionStorage.removeItem('captchaVerified');
-      localStorage.removeItem('captchaVerified');
-      log("Verification tokens cleared from sessionStorage and localStorage");
-      checkVerificationStatus();
-    }
-
-    window.addEventListener('load', () => {
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', () => {
       loadCaptchaLogs();
-      checkVerificationStatus();
-      log("Debug page loaded successfully");
+      
+      // Set up event listeners
+      refreshBtn.addEventListener('click', loadCaptchaLogs);
     });
-  </script>
 
-  <!-- Load CSE -->
-  <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
+    async function loadCaptchaLogs() {
+      // Show loading state
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="5" class="loading">
+            <div class="spinner"></div>
+            <p>Loading CAPTCHA logs...</p>
+          </td>
+        </tr>
+      `;
+      
+      // Reset stats
+      resetStats();
+      
+      try {
+        const q = query(collection(db, "captchaLogs"), orderBy("timestamp", "desc"));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="5" class="empty-state">
+                <p>No CAPTCHA logs found in the database.</p>
+                <p>Try completing a verification on the main page first.</p>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        // Clear table
+        tableBody.innerHTML = '';
+        
+        // Process logs and update stats
+        snapshot.forEach(doc => {
+          const log = doc.data();
+          addLogToTable(log);
+          updateStats(log.status);
+        });
+        
+      } catch (err) {
+        console.error("Error loading CAPTCHA logs from Firebase:", err);
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="5" class="empty-state">
+              <p>Error loading logs: ${err.message}</p>
+              <p>Please check your connection and try again.</p>
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    function addLogToTable(log) {
+      const tr = document.createElement("tr");
+      
+      // Format timestamp
+      const timestamp = new Date(log.timestamp);
+      const formattedTime = timestamp.toLocaleString();
+      
+      // Create status badge
+      const statusBadge = document.createElement("span");
+      statusBadge.className = `status-badge status-${log.status}`;
+      statusBadge.textContent = log.status.toUpperCase();
+      
+      tr.innerHTML = `
+        <td>${formattedTime}</td>
+        <td>${log.query || "N/A"}</td>
+        <td></td> <!-- Status badge will be inserted here -->
+        <td>${log.info}</td>
+        <td>${log.attempts}</td>
+      `;
+      
+      // Insert the status badge into the correct cell
+      tr.cells[2].appendChild(statusBadge);
+      
+      tableBody.appendChild(tr);
+    }
+
+    function resetStats() {
+      totalLogsEl.textContent = "0";
+      passCountEl.textContent = "0";
+      failCountEl.textContent = "0";
+      skipCountEl.textContent = "0";
+    }
+
+    function updateStats(status) {
+      // Increment total
+      totalLogsEl.textContent = parseInt(totalLogsEl.textContent) + 1;
+      
+      // Increment specific status counter
+      switch(status) {
+        case "pass":
+          passCountEl.textContent = parseInt(passCountEl.textContent) + 1;
+          break;
+        case "fail":
+          failCountEl.textContent = parseInt(failCountEl.textContent) + 1;
+          break;
+        case "skipped":
+          skipCountEl.textContent = parseInt(skipCountEl.textContent) + 1;
+          break;
+      }
+    }
+  </script>
 </body>
 </html>
