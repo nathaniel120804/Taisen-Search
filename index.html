@@ -46,6 +46,12 @@
 
   <!-- Header -->
   <header>
+    <!-- Hamburger Icon -->
+<div id="hamburger" class="hamburger">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
     <section class="header-section">
     </section>
   </header>
@@ -261,6 +267,19 @@
       document.body.innerHTML = "<h1>Sorry, this website is not available on mobile devices.</h1>";
     }
   </script>
+<script>
+const hamburger = document.getElementById('hamburger');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  window.location.href = 'settings.html'; // Opens settings page
+});
+
+// Apply saved theme on index page
+window.addEventListener('load', () => {
+  const theme = localStorage.getItem('theme');
+  if(theme === 'dark') document.body.classList.add('dark');
+});
+</script>
 
 </body>
 </html>

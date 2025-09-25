@@ -206,6 +206,22 @@ window.addEventListener('load', loadData);
   import { protectPage } from './antiBypass.js';
   protectPage(); // will redirect if bypass attempt is detected
 </script>
+<script>
+// Apply saved theme
+window.addEventListener('load', () => {
+  const theme = localStorage.getItem('theme');
+  if(theme === 'dark') document.body.classList.add('dark');
+
+  // You can also access language, region, SafeSearch, privacyMode
+  const lang = localStorage.getItem('language');
+  const region = localStorage.getItem('region');
+  const safe = localStorage.getItem('safeSearch') === 'true';
+  const privacy = localStorage.getItem('privacyMode') === 'true';
+  
+  // Hook these into your CSE queries if needed
+  // Example: append &safe=active for SafeSearch
+});
+</script>
 
 
 </body>

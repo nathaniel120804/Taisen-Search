@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taisen Settings</title>
+<link rel="stylesheet" href="style.css?v=20250901">
+<style>
+/* Settings Panel */
+.settings-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  background: var(--bg-light);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transition: var(--transition);
+}
+
+.settings-container h2 {
+  margin-bottom: 20px;
+  color: var(--brand-color);
+  text-align: center;
+}
+
+.settings-container label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.settings-container select,
+.settings-container input[type="checkbox"] {
+  margin-top: 5px;
+  transition: var(--transition);
+}
+
+button#saveSettings {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: var(--brand-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button#saveSettings:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Dark Mode */
+body.dark .settings-container {
+  background: var(--bg-dark);
+  color: var(--text-light);
+}
+
+body.dark .settings-container label {
+  color: var(--text-light);
+}
+
+body.dark select,
+body.dark input[type="checkbox"] {
+  background: #2a2a2a;
+  color: var(--text-light);
+  border: 1px solid #555;
+}
+</style>
+</head>
+<body>
+
+<div class="settings-container">
+  <h2>Settings</h2>
+
+  <label for="themeSelect">Theme:
+    <select id="themeSelect">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+  </label>
+
+  <label for="langSelect">Language:
+    <select id="langSelect">
+      <option value="en">English</option>
+      <option value="fil">Filipino</option>
+    </select>
+  </label>
+
+  <label for="regionSelect">Region:
+    <select id="regionSelect">
+      <option value="">Global</option>
+      <option value="ph">Philippines</option>
+    </select>
+  </label>
+
+  <label>
+    <input type="checkbox" id="safeSearch"> SafeSearch
+  </label>
+
+  <label>
+    <input type="checkbox" id="privacyMode"> Privacy Mode (mask IP, no logging)
+  </label>
+
+  <button id="saveSettings">Save Settings</button>
+</div>
+
+<script>
+// Save settings and redirect
+function saveSettings() {
+  localStorage.setItem('theme', document.getElementById('themeSelect').value);
+  localStorage.setItem('language', document.getElementById('langSelect').value);
+  localStorage.setItem('region', document.getElementById('regionSelect').value);
+  localStorage.setItem('safeSearch', document.getElementById('safeSearch').checked);
+  localStorage.setItem('privacyMode', document.getElementById('privacyMode').checked);
+
+  // Apply theme immediately
+  applyTheme();
+  
+  // Redirect to main page
+  window.location.href = 'index.html';
+}
+
+// Load saved settings
+function loadSettings() {
+  const theme = localStorage.getItem('theme') || 'light';
+  const lang = localStorage.getItem('language') || 'en';
+  const region = localStorage.getItem('region') || '';
+  const safeSearch = localStorage.getItem('safeSearch') === 'true';
+  const privacy = localStorage.getItem('privacyMode') === 'true';
+
+  document.getElementById('themeSelect').value = theme;
+  document.getElementById('langSelect').value = lang;
+  document.getElementById('regionSelect').value = region;
+  document.getElementById('safeSearch').checked = safeSearch;
+  document.getElementById('privacyMode').checked = privacy;
+
+  applyTheme();
+}
+
+// Apply theme class
+function applyTheme() {
+  const theme = document.getElementById('themeSelect').value;
+  if(theme === 'dark') {
+    document.body.classList.add('dark');
+  } else {
+    document.body.classList.remove('dark');
+  }
+}
+
+document.getElementById('saveSettings').addEventListener('click', saveSettings);
+window.addEventListener('load', loadSettings);
+</script>
+
+</body>
+</html>
