@@ -13,25 +13,11 @@
       display: inline-block;
       margin-top: 20px;
     }
-    .captcha-question {
-      font-weight: bold;
-      margin-bottom: 10px;
-      font-size: 18px;
-    }
-    .captcha-input {
-      padding: 5px;
-      width: 80px;
-      text-align: center;
-      font-size: 16px;
-    }
+    .captcha-question { font-weight: bold; margin-bottom: 10px; font-size: 18px; }
+    .captcha-input { padding: 5px; width: 80px; text-align: center; font-size: 16px; }
     button {
-      margin-top: 10px;
-      padding: 8px 20px;
-      background: #0077ff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+      margin-top: 10px; padding: 8px 20px; background: #0077ff; color: white;
+      border: none; border-radius: 5px; cursor: pointer;
     }
     button:hover { background: #005fcc; }
   </style>
@@ -58,43 +44,32 @@
       num1 = Math.floor(Math.random() * 10) + 1;
       num2 = Math.floor(Math.random() * 10) + 1;
       correctAnswer = num1 + num2;
-      document.getElementById("captchaQuestion").textContent =
-        `What is ${num1} + ${num2}?`;
+      document.getElementById("captchaQuestion").textContent = `What is ${num1} + ${num2}?`;
       document.getElementById("captchaAnswer").value = "";
     }
 
     function logCaptcha(status, info) {
-      const logEntry = {
-        status: status,
-        query: query,
-        attempts: attempts,
-        info: info,
-        timestamp: new Date().toISOString()
-      };
-      
-      // Get existing logs or initialize
       const logs = JSON.parse(localStorage.getItem('captchaLogs') || '[]');
-      logs.push(logEntry);
+      logs.push({ status, query, attempts, info, timestamp: new Date().toISOString() });
       localStorage.setItem('captchaLogs', JSON.stringify(logs));
-      console.log('CAPTCHA logged:', logEntry); // Debug log
+      console.log('CAPTCHA logged:', logs[logs.length-1]);
     }
 
     function checkCaptcha() {
       attempts++;
-      let userAnswer = parseInt(document.getElementById("captchaAnswer").value);
+      const userAnswer = parseInt(document.getElementById("captchaAnswer").value);
+      if (isNaN(userAnswer)) {
+        alert("Please enter a valid number.");
+        return;
+      }
+
       if (userAnswer === correctAnswer) {
         logCaptcha("pass", userAnswer);
-        
-        // Set verification token with timestamp (2 hour expiry)
-        const verificationToken = {
-          verified: true,
-          timestamp: Date.now(),
-          query: query
-        };
+
+        const verificationToken = { verified: true, timestamp: Date.now(), query: query };
         sessionStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
         localStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
-        
-        // ✅ Redirect back to results with query
+
         window.location.href = `results.html?q=${encodeURIComponent(query)}`;
       } else {
         logCaptcha("fail", userAnswer);
@@ -108,27 +83,22 @@
       }
     }
 
-    // Check if already verified
     function checkAlreadyVerified() {
       const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
       const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
       const verification = sessionVerify || localVerify;
-      
+
       if (verification && verification.verified) {
-        // Check if verification is still valid (2 hours)
         const twoHours = 2 * 60 * 60 * 1000;
         if (Date.now() - verification.timestamp < twoHours) {
-          // Still verified, redirect to results
           window.location.href = `results.html?q=${encodeURIComponent(query)}`;
         } else {
-          // Token expired, remove it
           sessionStorage.removeItem('captchaVerified');
           localStorage.removeItem('captchaVerified');
         }
       }
     }
-    
-    // Check on page load
+
     checkAlreadyVerified();
     generateCaptcha();
   </script>
