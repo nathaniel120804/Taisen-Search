@@ -69,12 +69,12 @@
 
 <p><strong>Prepared by:</strong> Nathaniel Don Joseph I. De Guzman</p>
 <p><strong>Role:</strong> Project Lead</p>
-<p><strong>Date:</strong> September 3, 2025</p>
-<p><strong>Documentation Version:</strong> 1.0</p>
+<p><strong>Date:</strong> September 25, 2025</p>
+<p><strong>Documentation Version:</strong> 1.8</p>
 
 <h2 class="icon-section">Introduction</h2>
 <p><strong>Purpose:</strong> This document provides a detailed account of the development, improvements, and version history of Taisen Search. It serves as a reference for stakeholders, developers, and future maintainers.</p>
-<p><strong>Scope:</strong> Taisen Search is a search platform combining internal resources (Taisen Labs) and external results via Google Custom Search Engine (CSE), focusing on usability, modern design, and internal research functionality.</p>
+<p><strong>Scope:</strong> Taisen Search is a search platform combining internal resources (Taisen Labs) and external results via Google Custom Search Engine (CSE), focusing on usability, modern design, internal research functionality, and security.</p>
 <p><strong>Audience:</strong> Project stakeholders, development team, QA testers, future maintainers.</p>
 
 <h2 class="icon-section">Versioning Overview</h2>
@@ -127,7 +127,18 @@
 <tr>
 <td><span class="version-badge">1.8</span></td>
 <td>TBD</td>
-<td>Captcha verification flow added: users must pass human check before accessing results.</td>
+<td>
+Captcha verification flow added and debug dashboard integrated:
+<ul>
+<li>App & Environment Info: version/build, environment (development/staging/production), feature flags.</li>
+<li>Network & API Debugging: API endpoints, status codes, response times (no user queries).</li>
+<li>Console & Logs: internal messages, warnings/errors, filterable by type.</li>
+<li>Performance Metrics: page load, API latency, memory/CPU usage placeholders.</li>
+<li>State & UI Debugging: component state placeholders, DOM structure, CSS variable inspection.</li>
+<li>Testing Tools: trigger dummy searches, toggle debug mode.</li>
+<li>Export & Reset: download logs without user data, reset app state.</li>
+</ul>
+</td>
 </tr>
 </table>
 
@@ -196,9 +207,20 @@
 <li>Multi-language interface support.</li>
 </ul>
 
-<h3>Version 1.8 – Captcha Security Integration</h3>
+<h3>Version 1.8 – Captcha & Debug Dashboard Integration</h3>
 <ul>
-<li>Introduced Captcha verification step before search results are displayed.</li>
+<li>Added Captcha verification step before search results are displayed.</li>
+<li>Debug dashboard with the following features:
+  <ul>
+    <li>App & Environment Info: version/build, environment, feature flags.</li>
+    <li>Network & API Debugging: API endpoints, status codes, response times (no user data).</li>
+    <li>Console & Logs: internal messages, warnings/errors, filterable by type.</li>
+    <li>Performance Metrics: page load, API latency, memory/CPU usage placeholders.</li>
+    <li>State & UI Debugging: component state placeholders, DOM structure, CSS variables inspection.</li>
+    <li>Testing Tools: trigger dummy searches, toggle debug mode.</li>
+    <li>Export & Reset: download logs without user data, reset app state for testing.</li>
+  </ul>
+</li>
 <li>Redirect flow:
   <ol>
     <li>User enters a query.</li>
@@ -213,7 +235,8 @@
 <h2 class="icon-section">Features Summary</h2>
 <ul>
 <li><strong>User Experience & Interface:</strong> Modern card-based search results, modal popups, animated doodle backgrounds, responsive design.</li>
-<li><strong>Functionality:</strong> Toggle for internal Labs results, full-text access, “Open in New Tab”, input validation.</li>
+<li><strong>Functionality:</strong> Toggle for internal Labs results, full-text access, “Open in New Tab”, input validation, captcha verification.</li>
+<li><strong>Debug & Testing:</strong> Debug dashboard, logs, performance metrics, export/reset, testing tools.</li>
 <li><strong>Performance:</strong> Optimized modal/card rendering, reduced load times, smooth animations.</li>
 <li><strong>Accessibility:</strong> Mobile-friendly layouts, clear visual hierarchy, ARIA-friendly markup.</li>
 </ul>
@@ -227,7 +250,7 @@
 </ul>
 
 <h2 class="icon-section">Conclusion</h2>
-<p>Taisen Search has evolved into a modern, user-friendly search platform combining internal resources and external results. Continuous improvements focus on usability, design, performance, and accessibility, with future plans to expand capabilities further.</p>
+<p>Taisen Search has evolved into a modern, user-friendly search platform combining internal resources and external results. Continuous improvements focus on usability, design, performance, accessibility, and security, with future plans to expand capabilities further.</p>
 
 <footer>
 © 2025 Taisen Search. All Rights Reserved.
