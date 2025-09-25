@@ -60,10 +60,34 @@
     .pass { color: green; }
     .fail { color: red; }
     .error-row { color: orange; }
+    
+    .controls {
+      margin: 20px 0;
+    }
+    
+    button {
+      padding: 8px 16px;
+      background: var(--brand-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    
+    button:hover {
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
   <h1>🛠 Taisen Debug Page</h1>
+  
+  <div class="controls">
+    <button onclick="loadCaptchaLogs()">Refresh CAPTCHA Logs</button>
+    <button onclick="clearCaptchaLogs()">Clear CAPTCHA Logs</button>
+  </div>
+  
   <div id="log"></div>
 
   <h2>CAPTCHA Log</h2>
@@ -148,28 +172,35 @@
     };
 
     // ---------- CAPTCHA Debugging ----------
-    const captchaStatus = params.get("captcha"); // "pass", "fail", or "error"
-    const captchaQuery = params.get("q") || "N/A";
-    const captchaAttempts = params.get("attempts") || "N/A";
-    const captchaInfo = params.get("info") || "";
-
-    if (captchaStatus) {
+    function loadCaptchaLogs() {
+      const logs = JSON.parse(localStorage.getItem('captchaLogs') || '[]');
       const tbody = document.querySelector("#captchaTable tbody");
-      const tr = document.createElement("tr");
-      let rowClass = "";
-      if (captchaStatus === "pass") rowClass = "pass";
-      else if (captchaStatus === "fail") rowClass = "fail";
-      else if (captchaStatus === "error") rowClass = "error-row";
-      tr.className = rowClass;
-      tr.innerHTML = `
-        <td>${new Date().toLocaleString()}</td>
-        <td>${captchaQuery}</td>
-        <td>${captchaStatus.toUpperCase()}</td>
-        <td>${captchaInfo}</td>
-        <td>${captchaAttempts}</td>
-      `;
-      tbody.appendChild(tr);
+      tbody.innerHTML = ''; // Clear existing rows
+      
+      logs.forEach(log => {
+        const tr = document.createElement("tr");
+        tr.className = log.status === "pass" ? "pass" : log.status === "fail" ? "fail" : "error-row";
+        tr.innerHTML = `
+          <td>${new Date(log.timestamp).toLocaleString()}</td>
+          <td>${log.query || "N/A"}</td>
+          <td>${log.status.toUpperCase()}</td>
+          <td>${log.info}</td>
+          <td>${log.attempts}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      
+      log(`Loaded ${logs.length} CAPTCHA log entries`);
     }
+    
+    function clearCaptchaLogs() {
+      localStorage.removeItem('captchaLogs');
+      document.querySelector("#captchaTable tbody").innerHTML = '';
+      log("CAPTCHA logs cleared");
+    }
+    
+    // Load logs when page loads
+    loadCaptchaLogs();
   </script>
 
   <!-- Load CSE -->

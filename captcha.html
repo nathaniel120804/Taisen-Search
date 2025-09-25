@@ -64,10 +64,18 @@
     }
 
     function logCaptcha(status, info) {
-      // Redirect to debug page with parameters
-      const debugUrl = `debug.html?captcha=${status}&q=${encodeURIComponent(query)}&attempts=${attempts}&info=${info}`;
-      // Use fetch to log silently without leaving page
-      fetch(debugUrl).catch(e => console.log("Debug log error:", e));
+      const logEntry = {
+        status: status,
+        query: query,
+        attempts: attempts,
+        info: info,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Get existing logs or initialize
+      const logs = JSON.parse(localStorage.getItem('captchaLogs') || '[]');
+      logs.push(logEntry);
+      localStorage.setItem('captchaLogs', JSON.stringify(logs));
     }
 
     function checkCaptcha() {
