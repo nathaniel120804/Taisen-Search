@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Taisen Debug</title>
+  <style>
+    /* --- Your provided stylesheet --- */
+    /* Root Colors & Variables */
+    :root {
+      --brand-color: #3B82F6;
+      --text-dark: #0f1724;
+      --text-light: #f5f5f5;
+      --bg-light: #ffffff;
+      --bg-dark: #121212;
+      --neutral-gray: #9a9b9c;
+      --spacing-unit: 8px;
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      transition: var(--transition);
+      padding: 20px;
+    }
+
+    h1 { color: var(--brand-color); margin-bottom: 20px; }
+
+    .log {
+      margin-bottom: 10px;
+      border-bottom: 1px dashed #ddd;
+      padding-bottom: 10px;
+      font-family: monospace;
+    }
+
+    .error { color: #f55; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid var(--brand-color);
+      padding: 5px;
+      text-align: left;
+    }
+
+    th {
+      background: #eee;
+    }
+
+    .pass { color: green; }
+    .fail { color: red; }
+    .error-row { color: orange; }
+  </style>
+</head>
+<body>
+  <h1>🛠 Taisen Debug Page</h1>
+  <div id="log"></div>
+
+  <h2>CAPTCHA Log</h2>
+  <table id="captchaTable">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Query</th>
+        <th>Status</th>
+        <th>Info</th>
+        <th>Attempts</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const logBox = document.getElementById("log");
+
+    function log(message, isError=false) {
+      const div = document.createElement("div");
+      div.className = "log" + (isError ? " error" : "");
+      div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      logBox.appendChild(div);
+      console[isError ? "error" : "log"](message);
+    }
+
+    // Global error catcher
+    window.onerror = function(message, source, lineno, colno, error) {
+      log(`JS Error: ${message} at ${source}:${lineno}:${colno}`, true);
+    };
+
+    // Capture query from URL
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("q");
+    log("Query param = " + (query || "none"));
+
+    // Test loading internal dataset
+    fetch("taisenData.json")
+      .then(res => {
+        log("Dataset fetch status = " + res.status);
+        return res.json();
+      })
+      .then(json => {
+        log("Dataset loaded. Items: " + json.length);
+        if (query) {
+          const results = json.filter(item =>
+            item.title.toLowerCase().includes(query.toLowerCase()) ||
+            item.snippet.toLowerCase().includes(query.toLowerCase())
+          );
+          log("Internal matches: " + results.length);
+          results.forEach(r => log("Match → " + r.title));
+        }
+      })
+      .catch(err => log("Dataset error: " + err, true));
+
+    // Capture Google CSE load
+    window.__gcse = {
+      callback: function() {
+        log("Google CSE loaded successfully");
+        try {
+          const searchBox = google.search.cse.element.getElement("searchbox");
+          if (searchBox) log("Google searchbox found");
+        } catch(e) {
+          log("Google CSE access error: " + e, true);
+        }
+      }
+    };
+
+    // Capture fetch logging (simulated)
+    const origFetch = window.fetch;
+    window.fetch = async (...args) => {
+      log("Fetch called → " + args[0]);
+      try {
+        const res = await origFetch(...args);
+        log("Fetch success: " + res.status + " " + args[0]);
+        return res;
+      } catch (err) {
+        log("Fetch failed: " + err, true);
+        throw err;
+      }
+    };
+
+    // ---------- CAPTCHA Debugging ----------
+    const captchaStatus = params.get("captcha"); // "pass", "fail", or "error"
+    const captchaQuery = params.get("q") || "N/A";
+    const captchaAttempts = params.get("attempts") || "N/A";
+    const captchaInfo = params.get("info") || "";
+
+    if (captchaStatus) {
+      const tbody = document.querySelector("#captchaTable tbody");
+      const tr = document.createElement("tr");
+      let rowClass = "";
+      if (captchaStatus === "pass") rowClass = "pass";
+      else if (captchaStatus === "fail") rowClass = "fail";
+      else if (captchaStatus === "error") rowClass = "error-row";
+      tr.className = rowClass;
+      tr.innerHTML = `
+        <td>${new Date().toLocaleString()}</td>
+        <td>${captchaQuery}</td>
+        <td>${captchaStatus.toUpperCase()}</td>
+        <td>${captchaInfo}</td>
+        <td>${captchaAttempts}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+  </script>
+
+  <!-- Load CSE -->
+  <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
+</body>
+</html>

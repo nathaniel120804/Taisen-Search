@@ -50,8 +50,20 @@
 
   <script>
     let num1, num2, correctAnswer;
+    let attempts = 0;
     const params = new URLSearchParams(window.location.search);
-    const query = params.get("q");
+    const query = params.get("q") || "";
+
+    // Log events to console or send to debug page/server
+    function logCaptchaEvent(status, info = "") {
+      console.log(`CAPTCHA ${status}: ${info}`);
+      // Example: send to server/debug page
+      // fetch('debug.html', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ status, info, query, timestamp: new Date() })
+      // });
+    }
 
     function generateCaptcha() {
       num1 = Math.floor(Math.random() * 10) + 1;
@@ -60,14 +72,26 @@
       document.getElementById("captchaQuestion").textContent =
         `What is ${num1} + ${num2}?`;
       document.getElementById("captchaAnswer").value = "";
+      logCaptchaEvent("GENERATED", `Captcha generated: ${num1}+${num2}`);
     }
 
     function checkCaptcha() {
-      let userAnswer = parseInt(document.getElementById("captchaAnswer").value);
+      attempts++;
+      let input = document.getElementById("captchaAnswer").value.trim();
+      let userAnswer = parseInt(input);
+
+      if (isNaN(userAnswer)) {
+        logCaptchaEvent("ERROR", `Non-numeric input: "${input}" (Attempt ${attempts})`);
+        alert("❌ Please enter a valid number.");
+        return;
+      }
+
       if (userAnswer === correctAnswer) {
-        // ✅ Redirect back to results with query
-        window.location.href = "results.html?q=" + encodeURIComponent(query);
+        logCaptchaEvent("PASS", `Captcha solved correctly in ${attempts} attempt(s)`);
+        // Redirect back to results page with captcha status
+        window.location.href = "results.html?q=" + encodeURIComponent(query) + "&captcha=pass&attempts=" + attempts;
       } else {
+        logCaptchaEvent("FAIL", `Wrong answer: ${userAnswer} (Attempt ${attempts}), expected: ${correctAnswer}`);
         alert("❌ Wrong answer. Try again.");
         generateCaptcha();
       }
