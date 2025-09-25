@@ -1,127 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verify Human - Taisen</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-    .captcha-box {
-      background: #f4f4f4;
-      padding: 20px;
-      border-radius: 8px;
-      display: inline-block;
-      margin-top: 20px;
-    }
-    .captcha-question { font-weight: bold; margin-bottom: 10px; font-size: 18px; }
-    .captcha-input { padding: 5px; width: 80px; text-align: center; font-size: 16px; }
-    button {
-      margin-top: 10px; padding: 8px 20px; background: #0077ff; color: white;
-      border: none; border-radius: 5px; cursor: pointer;
-    }
-    button:hover { background: #005fcc; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify Human - Taisen</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+  .captcha-box {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 20px;
+  }
+  .captcha-question {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  .captcha-input {
+    padding: 5px;
+    width: 80px;
+    text-align: center;
+    font-size: 16px;
+  }
+  button {
+    margin-top: 10px;
+    padding: 8px 20px;
+    background: #0077ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover { background: #005fcc; }
+</style>
 </head>
 <body>
 
-  <h1>🤖 Human Verification</h1>
-  <p>Solve the CAPTCHA before continuing your search.</p>
+<h1>🤖 Human Verification</h1>
+<p>Please solve the CAPTCHA before continuing your search.</p>
 
-  <div class="captcha-box">
-    <div class="captcha-question" id="captchaQuestion"></div>
-    <input type="text" id="captchaAnswer" class="captcha-input" placeholder="?" required>
-    <br>
-    <button id="verifyBtn">Verify</button>
-  </div>
+<div class="captcha-box">
+  <div class="captcha-question" id="captchaQuestion"></div>
+  <input type="text" id="captchaAnswer" class="captcha-input" placeholder="?" required>
+  <br>
+  <button onclick="checkCaptcha()">Verify</button>
+</div>
 
-  <script>
-    let num1, num2, correctAnswer;
-    let attempts = 0;
+<script>
+let num1, num2, correctAnswer;
+let attempts = 0;
+const params = new URLSearchParams(window.location.search);
+const query = (params.get("q") || "").trim();
 
-    // Normalize query from URL
-    function getQuery() {
-      const params = new URLSearchParams(window.location.search);
-      return (params.get("q") || "").trim().toLowerCase();
-    }
+function generateCaptcha() {
+  num1 = Math.floor(Math.random() * 10) + 1;
+  num2 = Math.floor(Math.random() * 10) + 1;
+  correctAnswer = num1 + num2;
+  document.getElementById("captchaQuestion").textContent = `What is ${num1} + ${num2}?`;
+  document.getElementById("captchaAnswer").value = "";
+}
 
-    function generateCaptcha() {
-      num1 = Math.floor(Math.random() * 10) + 1;
-      num2 = Math.floor(Math.random() * 10) + 1;
-      correctAnswer = num1 + num2;
-      document.getElementById("captchaQuestion").textContent = `What is ${num1} + ${num2}?`;
-      document.getElementById("captchaAnswer").value = "";
-    }
+// Log CAPTCHA attempt
+function logCaptcha(status, info) {
+  const logEntry = {
+    status: status,
+    query: query || "N/A",
+    attempts: attempts,
+    info: info,
+    timestamp: new Date().toISOString()
+  };
+  const logs = JSON.parse(localStorage.getItem('captchaLogs') || '[]');
+  logs.push(logEntry);
+  localStorage.setItem('captchaLogs', JSON.stringify(logs));
+  console.log('CAPTCHA logged:', logEntry);
+}
 
-    function logCaptcha(status, query, info) {
-      const logs = JSON.parse(localStorage.getItem('captchaLogs') || '[]');
-      logs.push({ status, query, attempts, info, timestamp: new Date().toISOString() });
-      localStorage.setItem('captchaLogs', JSON.stringify(logs));
-      console.log('CAPTCHA logged:', logs[logs.length-1]);
-    }
+// Check if already verified
+function checkAlreadyVerified() {
+  const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
+  const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
+  const verification = sessionVerify || localVerify;
+  const twoHours = 2 * 60 * 60 * 1000;
 
-    function checkCaptcha() {
-      const query = getQuery();
-      if (!query) {
-        alert("No query provided.");
-        return;
-      }
+  if (verification && verification.verified && (Date.now() - verification.timestamp < twoHours)) {
+    // Already verified, log as skipped
+    logCaptcha("skipped", "auto-verified");
+    // Redirect to results
+    window.location.href = `results.html?q=${encodeURIComponent(query)}`;
+    return true;
+  } else {
+    // Remove expired tokens
+    sessionStorage.removeItem('captchaVerified');
+    localStorage.removeItem('captchaVerified');
+    return false;
+  }
+}
 
-      attempts++;
-      const userAnswer = parseInt(document.getElementById("captchaAnswer").value);
+function checkCaptcha() {
+  attempts++;
+  const userAnswer = parseInt(document.getElementById("captchaAnswer").value);
+  if (userAnswer === correctAnswer) {
+    logCaptcha("pass", userAnswer);
 
-      if (isNaN(userAnswer)) {
-        alert("Please enter a valid number for CAPTCHA.");
-        return;
-      }
+    const verificationToken = { verified: true, timestamp: Date.now(), query: query };
+    sessionStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
+    localStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
 
-      if (userAnswer === correctAnswer) {
-        logCaptcha("pass", query, userAnswer);
-
-        const verificationToken = { verified: true, timestamp: Date.now(), query };
-        sessionStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
-        localStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
-
-        window.location.href = `results.html?q=${encodeURIComponent(query)}`;
-      } else {
-        logCaptcha("fail", query, userAnswer);
-
-        if (attempts >= 3) {
-          alert("❌ Too many failed attempts. Please try again later.");
-          window.location.href = `debug.html?captcha=blocked&q=${encodeURIComponent(query)}&attempts=${attempts}`;
-        } else {
-          alert("❌ Wrong answer. Try again.");
-          generateCaptcha();
-        }
-      }
-    }
-
-    // Always log attempts and optionally skipped if already verified
-    function checkAlreadyVerified() {
-      const query = getQuery();
-      const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
-      const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
-
-      const verification = (sessionVerify && sessionVerify.query === query) ||
-                           (localVerify && localVerify.query === query);
-
-      if (verification && verification.verified) {
-        const twoHours = 2 * 60 * 60 * 1000;
-        if (Date.now() - verification.timestamp < twoHours) {
-          logCaptcha("skipped", query, "Already verified, CAPTCHA skipped");
-          window.location.href = `results.html?q=${encodeURIComponent(query)}`;
-        } else {
-          sessionStorage.removeItem('captchaVerified');
-          localStorage.removeItem('captchaVerified');
-        }
-      }
-    }
-
-    window.addEventListener('load', () => {
-      checkAlreadyVerified();
+    window.location.href = `results.html?q=${encodeURIComponent(query)}`;
+  } else {
+    logCaptcha("fail", userAnswer);
+    if (attempts >= 3) {
+      alert("❌ Too many failed attempts. Please try again later.");
+      window.location.href = `debug.html?captcha=blocked&q=${encodeURIComponent(query)}&attempts=${attempts}`;
+    } else {
+      alert("❌ Wrong answer. Try again.");
       generateCaptcha();
-      document.getElementById("verifyBtn").addEventListener("click", checkCaptcha);
-    });
-  </script>
+    }
+  }
+}
+
+// Run on page load
+if (!checkAlreadyVerified()) {
+  generateCaptcha();
+}
+</script>
 
 </body>
 </html>
