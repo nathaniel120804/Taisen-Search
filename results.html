@@ -202,6 +202,11 @@ async function loadData() {
 
 window.addEventListener('load', loadData);
 </script>
+<script type="module">
+  import { protectPage } from './antiBypass.js';
+  protectPage(); // will redirect if bypass attempt is detected
+</script>
+
 
 </body>
 </html>
