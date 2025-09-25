@@ -76,6 +76,7 @@
       const logs = JSON.parse(localStorage.getItem('captchaLogs') || '[]');
       logs.push(logEntry);
       localStorage.setItem('captchaLogs', JSON.stringify(logs));
+      console.log('CAPTCHA logged:', logEntry); // Debug log
     }
 
     function checkCaptcha() {
@@ -83,15 +84,52 @@
       let userAnswer = parseInt(document.getElementById("captchaAnswer").value);
       if (userAnswer === correctAnswer) {
         logCaptcha("pass", userAnswer);
+        
+        // Set verification token with timestamp (2 hour expiry)
+        const verificationToken = {
+          verified: true,
+          timestamp: Date.now(),
+          query: query
+        };
+        sessionStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
+        localStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
+        
         // ✅ Redirect back to results with query
         window.location.href = `results.html?q=${encodeURIComponent(query)}`;
       } else {
         logCaptcha("fail", userAnswer);
-        alert("❌ Wrong answer. Try again.");
-        generateCaptcha();
+        if (attempts >= 3) {
+          alert("❌ Too many failed attempts. Please try again later.");
+          window.location.href = `debug.html?captcha=blocked&q=${encodeURIComponent(query)}&attempts=${attempts}`;
+        } else {
+          alert("❌ Wrong answer. Try again.");
+          generateCaptcha();
+        }
       }
     }
 
+    // Check if already verified
+    function checkAlreadyVerified() {
+      const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
+      const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
+      const verification = sessionVerify || localVerify;
+      
+      if (verification && verification.verified) {
+        // Check if verification is still valid (2 hours)
+        const twoHours = 2 * 60 * 60 * 1000;
+        if (Date.now() - verification.timestamp < twoHours) {
+          // Still verified, redirect to results
+          window.location.href = `results.html?q=${encodeURIComponent(query)}`;
+        } else {
+          // Token expired, remove it
+          sessionStorage.removeItem('captchaVerified');
+          localStorage.removeItem('captchaVerified');
+        }
+      }
+    }
+    
+    // Check on page load
+    checkAlreadyVerified();
     generateCaptcha();
   </script>
 

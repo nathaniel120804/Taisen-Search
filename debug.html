@@ -86,6 +86,7 @@
   <div class="controls">
     <button onclick="loadCaptchaLogs()">Refresh CAPTCHA Logs</button>
     <button onclick="clearCaptchaLogs()">Clear CAPTCHA Logs</button>
+    <button onclick="clearVerification()">Clear Verification Tokens</button>
   </div>
   
   <div id="log"></div>
@@ -103,6 +104,9 @@
     </thead>
     <tbody></tbody>
   </table>
+
+  <h2>Verification Status</h2>
+  <div id="verificationStatus"></div>
 
   <script>
     const logBox = document.getElementById("log");
@@ -177,6 +181,12 @@
       const tbody = document.querySelector("#captchaTable tbody");
       tbody.innerHTML = ''; // Clear existing rows
       
+      if (logs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No CAPTCHA logs found</td></tr>';
+        log("No CAPTCHA logs found in localStorage");
+        return;
+      }
+      
       logs.forEach(log => {
         const tr = document.createElement("tr");
         tr.className = log.status === "pass" ? "pass" : log.status === "fail" ? "fail" : "error-row";
@@ -190,17 +200,53 @@
         tbody.appendChild(tr);
       });
       
-      log(`Loaded ${logs.length} CAPTCHA log entries`);
+      log(`Loaded ${logs.length} CAPTCHA log entries from localStorage`);
     }
     
     function clearCaptchaLogs() {
       localStorage.removeItem('captchaLogs');
-      document.querySelector("#captchaTable tbody").innerHTML = '';
-      log("CAPTCHA logs cleared");
+      document.querySelector("#captchaTable tbody").innerHTML = '<tr><td colspan="5" style="text-align:center;">No CAPTCHA logs found</td></tr>';
+      log("CAPTCHA logs cleared from localStorage");
     }
     
-    // Load logs when page loads
-    loadCaptchaLogs();
+    function checkVerificationStatus() {
+      const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
+      const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
+      const statusDiv = document.getElementById('verificationStatus');
+      
+      let html = '<div style="margin:10px 0;">';
+      
+      if (sessionVerify) {
+        const timeAgo = Math.floor((Date.now() - sessionVerify.timestamp) / 1000 / 60);
+        html += `<p><strong>Session Storage:</strong> VERIFIED (${timeAgo} minutes ago) - Query: "${sessionVerify.query}"</p>`;
+      } else {
+        html += `<p><strong>Session Storage:</strong> NOT VERIFIED</p>`;
+      }
+      
+      if (localVerify) {
+        const timeAgo = Math.floor((Date.now() - localVerify.timestamp) / 1000 / 60);
+        html += `<p><strong>Local Storage:</strong> VERIFIED (${timeAgo} minutes ago) - Query: "${localVerify.query}"</p>`;
+      } else {
+        html += `<p><strong>Local Storage:</strong> NOT VERIFIED</p>`;
+      }
+      
+      html += '</div>';
+      statusDiv.innerHTML = html;
+    }
+    
+    function clearVerification() {
+      sessionStorage.removeItem('captchaVerified');
+      localStorage.removeItem('captchaVerified');
+      log("Verification tokens cleared from sessionStorage and localStorage");
+      checkVerificationStatus();
+    }
+    
+    // Load logs and check verification when page loads
+    window.addEventListener('load', function() {
+      loadCaptchaLogs();
+      checkVerificationStatus();
+      log("Debug page loaded successfully");
+    });
   </script>
 
   <!-- Load CSE -->

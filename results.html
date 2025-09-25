@@ -82,6 +82,39 @@ input:checked + .slider:before { transform: translateX(22px); }
 </main>
 
 <script>
+// CAPTCHA Verification Function - ADDED THIS FUNCTION
+function verifyCaptcha() {
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get('q') || '';
+  
+  // Check both session and local storage
+  const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
+  const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
+  const verification = sessionVerify || localVerify;
+  
+  // Validation checks
+  if (!verification || !verification.verified) {
+    redirectToCaptcha(query);
+    return false;
+  }
+  
+  // Check timestamp (expire after 2 hours)
+  const twoHours = 2 * 60 * 60 * 1000;
+  if (Date.now() - verification.timestamp > twoHours) {
+    redirectToCaptcha(query);
+    return false;
+  }
+  
+  return true;
+}
+
+function redirectToCaptcha(query) {
+  sessionStorage.removeItem('captchaVerified');
+  localStorage.removeItem('captchaVerified');
+  window.location.href = `captcha.html?q=${encodeURIComponent(query)}`;
+}
+
+// Original code below - UNCHANGED
 let data = [];
 
 // Helpers
@@ -98,6 +131,11 @@ function saveLabsPreference(value) {
 
 // Load internal JSON data
 async function loadData() {
+  // CAPTCHA Verification Check - ADDED THIS CHECK
+  if (!verifyCaptcha()) {
+    return; // Redirect will happen automatically
+  }
+
   const response = await fetch('taisenData.json');
   data = await response.json();
 
