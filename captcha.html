@@ -18,218 +18,81 @@
       --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       --transition: all 0.3s ease;
     }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      color: var(--dark);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; color: var(--dark);
     }
-    
-    .container {
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    
+    .container { width: 100%; max-width: 500px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 30px; }
     .header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      font-size: 2.5rem; margin-bottom: 10px; color: var(--primary);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
     }
-    
-    .header p {
-      font-size: 1.1rem;
-      color: var(--gray);
-    }
-    
+    .header p { font-size: 1.1rem; color: var(--gray); }
     .card {
-      background: white;
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
-      padding: 30px;
-      margin-bottom: 20px;
+      background: white; border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow); padding: 30px; margin-bottom: 20px;
     }
-    
-    .captcha-box {
-      text-align: center;
-    }
-    
-    .captcha-header {
-      margin-bottom: 20px;
-    }
-    
-    .captcha-header h2 {
-      font-size: 1.5rem;
-      margin-bottom: 5px;
-      color: var(--dark);
-    }
-    
-    .captcha-header p {
-      color: var(--gray);
-    }
-    
+    .captcha-box { text-align: center; }
+    .captcha-header { margin-bottom: 20px; }
+    .captcha-header h2 { font-size: 1.5rem; margin-bottom: 5px; color: var(--dark); }
+    .captcha-header p { color: var(--gray); }
     .captcha-display {
-      background: var(--light);
-      padding: 20px;
-      border-radius: var(--border-radius);
-      margin-bottom: 20px;
-      border: 1px solid #e9ecef;
+      background: var(--light); padding: 20px; border-radius: var(--border-radius);
+      margin-bottom: 20px; border: 1px solid #e9ecef;
     }
-    
     .captcha-question {
-      font-size: 2rem;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: var(--dark);
+      font-size: 2rem; font-weight: bold; margin-bottom: 15px; color: var(--dark);
     }
-    
-    .captcha-input-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    
+    .captcha-input-container { display: flex; justify-content: center; margin-bottom: 20px; }
     .captcha-input {
-      width: 120px;
-      padding: 12px;
-      font-size: 1.2rem;
-      text-align: center;
-      border: 2px solid #e9ecef;
-      border-radius: var(--border-radius);
-      transition: var(--transition);
+      width: 120px; padding: 12px; font-size: 1.2rem; text-align: center;
+      border: 2px solid #e9ecef; border-radius: var(--border-radius); transition: var(--transition);
     }
-    
     .captcha-input:focus {
-      border-color: var(--primary);
-      outline: none;
+      border-color: var(--primary); outline: none;
       box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1);
     }
-    
     .btn {
-      padding: 12px 24px;
-      font-size: 1rem;
-      font-weight: 600;
-      border: none;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      padding: 12px 24px; font-size: 1rem; font-weight: 600;
+      border: none; border-radius: var(--border-radius);
+      cursor: pointer; transition: var(--transition);
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     }
-    
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-    
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-    }
-    
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
     .btn-secondary {
-      background: var(--light);
-      color: var(--dark);
-      border: 1px solid #dee2e6;
+      background: var(--light); color: var(--dark); border: 1px solid #dee2e6;
     }
-    
-    .btn-secondary:hover {
-      background: #e9ecef;
-    }
-    
-    .attempts-counter {
-      margin-top: 15px;
-      font-size: 0.9rem;
-      color: var(--gray);
-    }
-    
-    .footer {
-      text-align: center;
-      margin-top: 30px;
-      color: var(--gray);
-      font-size: 0.9rem;
-    }
-    
+    .btn-secondary:hover { background: #e9ecef; }
+    .attempts-counter { margin-top: 15px; font-size: 0.9rem; color: var(--gray); }
+    .footer { text-align: center; margin-top: 30px; color: var(--gray); font-size: 0.9rem; }
     .status-message {
-      padding: 10px;
-      border-radius: var(--border-radius);
-      margin-top: 15px;
-      display: none;
+      padding: 10px; border-radius: var(--border-radius); margin-top: 15px; display: none;
     }
-    
     .status-success {
-      background: rgba(40, 167, 69, 0.1);
-      color: var(--success);
+      background: rgba(40, 167, 69, 0.1); color: var(--success);
       border: 1px solid rgba(40, 167, 69, 0.2);
     }
-    
     .status-error {
-      background: rgba(220, 53, 69, 0.1);
-      color: var(--danger);
+      background: rgba(220, 53, 69, 0.1); color: var(--danger);
       border: 1px solid rgba(220, 53, 69, 0.2);
     }
-    
-    .loading {
-      display: none;
-      text-align: center;
-      margin: 10px 0;
-    }
-    
+    .loading { display: none; text-align: center; margin: 10px 0; }
     .spinner {
-      border: 4px solid rgba(0, 0, 0, 0.1);
-      border-left-color: var(--primary);
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto;
+      border: 4px solid rgba(0, 0, 0, 0.1); border-left-color: var(--primary);
+      border-radius: 50%; width: 30px; height: 30px;
+      animation: spin 1s linear infinite; margin: 0 auto;
     }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .debug-link {
-      margin-top: 20px;
-      text-align: center;
-    }
-    
-    /* Responsive adjustments */
+    @keyframes spin { to { transform: rotate(360deg); } }
     @media (max-width: 576px) {
-      .card {
-        padding: 20px;
-      }
-      
-      .header h1 {
-        font-size: 2rem;
-      }
-      
-      .captcha-question {
-        font-size: 1.8rem;
-      }
+      .card { padding: 20px; }
+      .header h1 { font-size: 2rem; }
+      .captcha-question { font-size: 1.8rem; }
     }
   </style>
 </head>
@@ -239,14 +102,14 @@
       <h1>🔒 Human Verification</h1>
       <p>Please verify you're human to continue</p>
     </div>
-    
+
     <div class="card">
       <div class="captcha-box">
         <div class="captcha-header">
           <h2>CAPTCHA Challenge</h2>
           <p>Solve the simple math problem below</p>
         </div>
-        
+
         <div class="captcha-display">
           <div class="captcha-question" id="captchaQuestion">Loading...</div>
           <div class="captcha-input-container">
@@ -254,24 +117,19 @@
           </div>
           <div class="attempts-counter" id="attemptsCounter">Attempts: 0/3</div>
         </div>
-        
+
         <div class="loading" id="loadingIndicator">
           <div class="spinner"></div>
           <p>Verifying...</p>
         </div>
-        
+
         <div class="status-message" id="statusMessage"></div>
-        
-        <button id="verifyBtn" class="btn btn-primary">
-          <span>Verify</span>
-        </button>
-        
-        <button id="refreshBtn" class="btn btn-secondary" style="margin-left: 10px;">
-          <span>Refresh Question</span>
-        </button>
+
+        <button id="verifyBtn" class="btn btn-primary"><span>Verify</span></button>
+        <button id="refreshBtn" class="btn btn-secondary" style="margin-left: 10px;"><span>Refresh Question</span></button>
       </div>
     </div>
-    
+
     <div class="footer">
       <p>Taisen Security System &copy; 2025</p>
     </div>
@@ -280,9 +138,8 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
 
-    // Firebase configuration
+    // 🔹 Firebase config (yours)
     const firebaseConfig = {
       apiKey: "AIzaSyBZQarXeg-km3dY8vuEN3FffzWtwzkZDuk",
       authDomain: "taisenlogs.firebaseapp.com",
@@ -293,12 +150,10 @@
       measurementId: "G-6JQNJXVTLT"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const analytics = getAnalytics(app);
 
-    // DOM elements
+    // 🔹 DOM elements
     const captchaQuestionEl = document.getElementById('captchaQuestion');
     const captchaAnswerEl = document.getElementById('captchaAnswer');
     const verifyBtn = document.getElementById('verifyBtn');
@@ -307,177 +162,105 @@
     const loadingIndicator = document.getElementById('loadingIndicator');
     const statusMessageEl = document.getElementById('statusMessage');
 
-    // Application state
-    const params = new URLSearchParams(window.location.search);
-    const query = params.get("q") || "";
+    // 🔹 State
     let num1, num2, correctAnswer, attempts = 0;
     const maxAttempts = 3;
+    let startTime, mouseMoves = 0, keyPresses = 0;
 
-    // Initialize the application
-    document.addEventListener('DOMContentLoaded', () => {
-      // Check if user is already verified
-      if (checkAlreadyVerified()) {
-        return;
-      }
-      
-      // Generate initial CAPTCHA
-      generateCaptcha();
-      
-      // Set up event listeners
-      setupEventListeners();
-    });
-
-    function setupEventListeners() {
-      // Verify button click
-      verifyBtn.addEventListener('click', checkCaptcha);
-      
-      // Refresh button click
-      refreshBtn.addEventListener('click', generateCaptcha);
-      
-      // Allow Enter key to submit
-      captchaAnswerEl.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          checkCaptcha();
-        }
-      });
-      
-      // Input validation - only allow numbers
-      captchaAnswerEl.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-      });
-    }
+    // Track behavior
+    document.addEventListener("mousemove", () => mouseMoves++);
+    captchaAnswerEl.addEventListener("input", () => keyPresses++);
 
     function generateCaptcha() {
       num1 = Math.floor(Math.random() * 10) + 1;
       num2 = Math.floor(Math.random() * 10) + 1;
       correctAnswer = num1 + num2;
-      
+
       captchaQuestionEl.textContent = `What is ${num1} + ${num2}?`;
       captchaAnswerEl.value = "";
       captchaAnswerEl.focus();
-      
-      // Clear any status messages
+
+      startTime = Date.now();
+      mouseMoves = 0; keyPresses = 0;
       hideStatusMessage();
     }
 
-    async function logCaptcha(status, info) {
-      const logEntry = {
-        status: status,
-        query: query || "N/A",
-        attempts: attempts,
-        info: info,
-        timestamp: new Date().toISOString()
-      };
-      
-      try {
-        await addDoc(collection(db, "captchaLogs"), logEntry);
-        console.log("CAPTCHA logged to Firebase:", logEntry);
-      } catch (err) {
-        console.error("Firebase logging error:", err);
-      }
+    function riskScore(timeTaken) {
+      let score = 100;
+      if (mouseMoves < 2) score -= 40;
+      if (keyPresses < 1) score -= 30;
+      if (timeTaken < 2) score -= 20;
+      if (attempts > 1) score -= 10;
+      return score;
     }
 
-    function showStatusMessage(message, type) {
-      statusMessageEl.textContent = message;
+    async function logCaptcha(status, info, risk, timeTaken) {
+      const logEntry = {
+        status, attempts, info,
+        riskScore: risk,
+        behavior: { mouseMoves, keyPresses, timeTaken: timeTaken.toFixed(2) },
+        device: { ua: navigator.userAgent, platform: navigator.platform, lang: navigator.language },
+        timestamp: new Date().toISOString()
+      };
+      try {
+        await addDoc(collection(db, "captchaLogs"), logEntry);
+        console.log("CAPTCHA log:", logEntry);
+      } catch (e) { console.error("Log error:", e); }
+    }
+
+    function showStatusMessage(msg, type) {
+      statusMessageEl.textContent = msg;
       statusMessageEl.className = `status-message status-${type}`;
       statusMessageEl.style.display = 'block';
     }
-
-    function hideStatusMessage() {
-      statusMessageEl.style.display = 'none';
-    }
-
-    function showLoading() {
-      loadingIndicator.style.display = 'block';
-      verifyBtn.disabled = true;
-      refreshBtn.disabled = true;
-    }
-
-    function hideLoading() {
-      loadingIndicator.style.display = 'none';
-      verifyBtn.disabled = false;
-      refreshBtn.disabled = false;
-    }
-
-    function redirectVerified() {
-      window.location.href = `results.html?q=${encodeURIComponent(query)}`;
-    }
-
-    function checkAlreadyVerified() {
-      const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
-      const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
-      const verification = sessionVerify || localVerify;
-
-      if (verification && verification.verified) {
-        const twoHours = 2 * 60 * 60 * 1000;
-        if (Date.now() - verification.timestamp < twoHours) {
-          showStatusMessage("Already verified. Redirecting...", "success");
-          setTimeout(() => {
-            logCaptcha("skipped", "Auto-verified").then(() => redirectVerified());
-          }, 1000);
-          return true;
-        } else {
-          sessionStorage.removeItem('captchaVerified');
-          localStorage.removeItem('captchaVerified');
-        }
-      }
-      return false;
-    }
+    function hideStatusMessage() { statusMessageEl.style.display = 'none'; }
+    function showLoading() { loadingIndicator.style.display = 'block'; verifyBtn.disabled = true; refreshBtn.disabled = true; }
+    function hideLoading() { loadingIndicator.style.display = 'none'; verifyBtn.disabled = false; refreshBtn.disabled = false; }
 
     async function checkCaptcha() {
-      // Validate input
       const userAnswer = parseInt(captchaAnswerEl.value);
-      if (isNaN(userAnswer)) {
-        showStatusMessage("Please enter a valid number", "error");
-        captchaAnswerEl.focus();
-        return;
-      }
+      if (isNaN(userAnswer)) { showStatusMessage("Enter a number", "error"); return; }
 
       attempts++;
       attemptsCounterEl.textContent = `Attempts: ${attempts}/${maxAttempts}`;
-      
       showLoading();
-      
-      // Simulate network delay for better UX
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      if (userAnswer === correctAnswer) {
-        // Correct answer
-        await logCaptcha("pass", userAnswer);
-        
-        const verificationToken = { 
-          verified: true, 
-          timestamp: Date.now(), 
-          query: query 
-        };
-        sessionStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
-        localStorage.setItem('captchaVerified', JSON.stringify(verificationToken));
-        
-        showStatusMessage("✓ Verification successful! Redirecting...", "success");
-        
-        setTimeout(() => {
-          redirectVerified();
-        }, 1500);
+
+      const timeTaken = (Date.now() - startTime) / 1000;
+      const score = riskScore(timeTaken);
+
+      console.log("Risk:", score, "Mouse:", mouseMoves, "Keys:", keyPresses, "Time:", timeTaken);
+
+      await new Promise(res => setTimeout(res, 500));
+
+      if (score < 50) {
+        await logCaptcha("fail", "Suspicious activity", score, timeTaken);
+        showStatusMessage("❌ Suspicious activity detected.", "error");
+        generateCaptcha();
+      } else if (userAnswer === correctAnswer) {
+        await logCaptcha("pass", "Correct", score, timeTaken);
+        showStatusMessage("✅ Verification successful!", "success");
+        setTimeout(() => window.location.href = `results.html`, 1500);
       } else {
-        // Wrong answer
-        await logCaptcha("fail", userAnswer);
-        
+        await logCaptcha("fail", "Wrong answer", score, timeTaken);
         if (attempts >= maxAttempts) {
-          showStatusMessage("❌ Too many failed attempts. Please try again later.", "error");
-          setTimeout(() => {
-            window.location.href = `https://taisen.pages.dev`;
-          }, 2000);
+          showStatusMessage("❌ Too many attempts. Redirecting...", "error");
+          setTimeout(() => window.location.href = `https://taisen.pages.dev`, 2000);
         } else {
-          showStatusMessage("❌ Incorrect answer. Please try again.", "error");
-          setTimeout(() => {
-            generateCaptcha();
-            hideStatusMessage();
-          }, 1500);
+          showStatusMessage("❌ Wrong answer. Try again.", "error");
+          setTimeout(() => generateCaptcha(), 1200);
         }
       }
-      
       hideLoading();
     }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+      generateCaptcha();
+      verifyBtn.addEventListener('click', checkCaptcha);
+      refreshBtn.addEventListener('click', generateCaptcha);
+      captchaAnswerEl.addEventListener('keypress', e => { if (e.key === 'Enter') checkCaptcha(); });
+      captchaAnswerEl.addEventListener('input', e => e.target.value = e.target.value.replace(/[^0-9]/g, ''));
+    });
   </script>
 </body>
 </html>
