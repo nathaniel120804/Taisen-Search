@@ -4,16 +4,373 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Taisen Search Help Center</title>
-  <link rel="icon" type="image/png" href="original.png">
-  <link rel="stylesheet" href="style.css"> <!-- Your existing stylesheet -->
+  <style>
+    /* Taisen Design System Variables */
+    :root {
+      --brand-color: #3B82F6;
+      --text-dark: #0f1724;
+      --text-light: #f5f5f5;
+      --bg-light: #ffffff;
+      --bg-dark: #121212;
+      --neutral-gray: #9a9b9c;
+      --success: #28A745;
+      --danger: #FF4C4C;
+      --spacing-unit: 8px;
+      --border-radius: 8px;
+      --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Section */
+    .header-section {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 4);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .site-title2 {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--brand-color);
+      margin-bottom: calc(var(--spacing-unit) * 2);
+      text-align: center;
+    }
+
+    .back-link {
+      color: var(--brand-color);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing-unit) * 1);
+      transition: var(--transition);
+    }
+
+    .back-link:hover {
+      color: #2563eb;
+      transform: translateX(-2px);
+    }
+
+    /* Main Container */
+    .help-container {
+      display: flex;
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: calc(var(--spacing-unit) * 4);
+      gap: calc(var(--spacing-unit) * 4);
+    }
+
+    /* Sidebar */
+    .help-sidebar {
+      flex: 0 0 250px;
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 4);
+      border-radius: 14px;
+      box-shadow: var(--card-shadow);
+      height: fit-content;
+      position: sticky;
+      top: calc(var(--spacing-unit) * 4);
+    }
+
+    .help-sidebar h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: calc(var(--spacing-unit) * 3);
+      color: white;
+      border-bottom: 2px solid var(--brand-color);
+      padding-bottom: calc(var(--spacing-unit) * 1);
+    }
+
+    .help-sidebar ul {
+      list-style: none;
+    }
+
+    .help-sidebar li {
+      margin-bottom: calc(var(--spacing-unit) * 2);
+    }
+
+    .help-sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 2);
+      border-radius: var(--border-radius);
+      display: block;
+    }
+
+    .help-sidebar a:hover {
+      background: var(--brand-color);
+      color: white;
+      transform: translateX(4px);
+    }
+
+    /* Main Content */
+    .help-content {
+      flex: 1;
+      max-width: 800px;
+    }
+
+    /* Search Input */
+    #searchInput {
+      width: 100%;
+      padding: 14px 20px;
+      border: 2px solid var(--neutral-gray);
+      border-radius: var(--border-radius);
+      font-size: 16px;
+      margin-bottom: calc(var(--spacing-unit) * 4);
+      transition: var(--transition);
+      background: var(--bg-light);
+    }
+
+    #searchInput:focus {
+      border-color: var(--brand-color);
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+      outline: none;
+    }
+
+    /* Help Sections */
+    .help-section {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 4);
+      border-radius: 14px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: calc(var(--spacing-unit) * 4);
+      transition: var(--transition);
+    }
+
+    .help-section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .help-section h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: calc(var(--spacing-unit) * 3);
+      color: var(--text-dark);
+      border-bottom: 2px solid var(--brand-color);
+      padding-bottom: calc(var(--spacing-unit) * 1);
+    }
+
+    .help-section p, .help-section li {
+      margin-bottom: calc(var(--spacing-unit) * 2);
+      color: var(--text-dark);
+    }
+
+    .help-section ul {
+      padding-left: calc(var(--spacing-unit) * 4);
+    }
+
+    .help-section li {
+      margin-bottom: calc(var(--spacing-unit) * 2);
+    }
+
+    .help-section b {
+      color: var(--brand-color);
+    }
+
+    /* FAQ Items */
+    .faq-item {
+      margin-bottom: calc(var(--spacing-unit) * 2);
+      border: 1px solid #e0e0e0;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .faq-item:hover {
+      border-color: var(--brand-color);
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 4);
+      background: #f8f9fa;
+      border: none;
+      text-align: left;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-question::after {
+      content: '+';
+      font-size: 20px;
+      font-weight: 300;
+      transition: var(--transition);
+    }
+
+    .faq-item.active .faq-question::after {
+      content: '−';
+    }
+
+    .faq-question:hover {
+      background: var(--brand-color);
+      color: white;
+    }
+
+    .faq-answer {
+      padding: 0 calc(var(--spacing-unit) * 4);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      padding: calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 4);
+      max-height: 500px;
+    }
+
+    .faq-answer p {
+      margin: 0;
+      color: var(--text-dark);
+    }
+
+    /* Links */
+    a {
+      color: var(--brand-color);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    a:hover {
+      color: #2563eb;
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    .footer-section {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 4);
+      text-align: center;
+      color: var(--neutral-gray);
+      border-top: 1px solid #e0e0e0;
+      margin-top: auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: calc(var(--spacing-unit) * 2);
+    }
+
+    .footer-links a {
+      color: var(--neutral-gray);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--brand-color);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .help-container {
+        flex-direction: column;
+        padding: calc(var(--spacing-unit) * 2);
+        gap: calc(var(--spacing-unit) * 3);
+      }
+
+      .help-sidebar {
+        flex: none;
+        width: 100%;
+        position: static;
+      }
+
+      .site-title2 {
+        font-size: 24px;
+      }
+
+      .header-section {
+        padding: calc(var(--spacing-unit) * 3);
+      }
+
+      .help-section {
+        padding: calc(var(--spacing-unit) * 3);
+      }
+    }
+
+    /* Dark Theme Support */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: var(--bg-dark);
+        color: var(--text-light);
+      }
+
+      .header-section,
+      .footer-section,
+      .help-sidebar,
+      .help-section,
+      #searchInput {
+        background: #1f1f1f;
+      }
+
+      .help-sidebar a,
+      .help-section h2,
+      .help-section p,
+      .help-section li,
+      .faq-answer p {
+        color: var(--text-light);
+      }
+
+      .faq-question {
+        background: #2a2a2a;
+        color: var(--text-light);
+      }
+
+      .faq-item {
+        border-color: #333;
+      }
+
+      #searchInput {
+        border-color: #555;
+        color: var(--text-light);
+      }
+
+      .help-sidebar a:hover,
+      .faq-question:hover {
+        background: var(--brand-color);
+        color: white;
+      }
+
+      .card {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
     <section class="header-section">
       <h1 class="site-title2">Taisen Search Help Center</h1>
-    
-      <a href="index.html">← Back to Taisen</a>
-    </nav>
+      <a href="index.html" class="back-link">← Back to Taisen</a>
     </section>
   </header>
 
@@ -47,115 +404,114 @@
         </ul>
       </div>
 
-     <section class="help-section"> 
-  <h2>Frequently Asked Questions</h2>
+      <section id="faq" class="help-section"> 
+        <h2>❓ Frequently Asked Questions</h2>
 
-  <div class="faq-item">
-    <button class="faq-question">What is Taisen Search?</button>
-    <div class="faq-answer">
-      <p>Taisen Search is a privacy-focused search engine designed to give you fast, accurate results without tracking you.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">What is Taisen Search?</button>
+          <div class="faq-answer">
+            <p>Taisen Search is a privacy-focused search engine designed to give you fast, accurate results without tracking you.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">How do I enable Anonymous Search Mode?</button>
-    <div class="faq-answer">
-      <p>You can toggle Anonymous Search Mode from the extension settings. It hides your search history and anonymizes your queries.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">How do I enable Anonymous Search Mode?</button>
+          <div class="faq-answer">
+            <p>You can toggle Anonymous Search Mode from the extension settings. It hides your search history and anonymizes your queries.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Does Taisen Search use ads?</button>
-    <div class="faq-answer">
-      <p>No, Taisen Search does not track or sell your data. Our goal is to keep your browsing private and ad-free.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">Does Taisen Search use ads?</button>
+          <div class="faq-answer">
+            <p>No, Taisen Search does not track or sell your data. Our goal is to keep your browsing private and ad-free.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">How is Taisen Search different from Google or Bing?</button>
-    <div class="faq-answer">
-      <p>Unlike mainstream search engines, Taisen Search does not log your queries, build profiles, or sell your information to advertisers.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">How is Taisen Search different from Google or Bing?</button>
+          <div class="faq-answer">
+            <p>Unlike mainstream search engines, Taisen Search does not log your queries, build profiles, or sell your information to advertisers.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Can I use Taisen Search on mobile?</button>
-    <div class="faq-answer">
-      <p>Yes. Taisen Search is fully compatible with mobile browsers and can be set as your default search provider.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I use Taisen Search on mobile?</button>
+          <div class="faq-answer">
+            <p>Yes. Taisen Search is fully compatible with mobile browsers and can be set as your default search provider.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Does Taisen Search save my search history?</button>
-    <div class="faq-answer">
-      <p>No. Taisen Search does not store your search history. All queries are processed anonymously.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">Does Taisen Search save my search history?</button>
+          <div class="faq-answer">
+            <p>No. Taisen Search does not store your search history. All queries are processed anonymously.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Can I set Taisen Search as my default search engine?</button>
-    <div class="faq-answer">
-      <p>Yes. In your browser settings, you can set Taisen Search as the default search provider for quick access.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I set Taisen Search as my default search engine?</button>
+          <div class="faq-answer">
+            <p>Yes. In your browser settings, you can set Taisen Search as the default search provider for quick access.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Where do the search results come from?</button>
-    <div class="faq-answer">
-      <p>Taisen Search aggregates results from multiple trusted sources to provide a balanced, unbiased experience.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">Where do the search results come from?</button>
+          <div class="faq-answer">
+            <p>Taisen Search aggregates results from multiple trusted sources to provide a balanced, unbiased experience.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Does Taisen Search support images, videos, and news?</button>
-    <div class="faq-answer">
-      <p>Yes. You can search across categories such as web, images, videos, and news for a complete search experience.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">Does Taisen Search support images, videos, and news?</button>
+          <div class="faq-answer">
+            <p>Yes. You can search across categories such as web, images, videos, and news for a complete search experience.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Is there a dark mode available?</button>
-    <div class="faq-answer">
-      <p>Yes. You can switch between light and dark themes in the settings menu.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">Is there a dark mode available?</button>
+          <div class="faq-answer">
+            <p>Yes. You can switch between light and dark themes in the settings menu.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Is Taisen Search free to use?</button>
-    <div class="faq-answer">
-      <p>Yes. Taisen Search is completely free to use with no hidden charges or premium tiers.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">Is Taisen Search free to use?</button>
+          <div class="faq-answer">
+            <p>Yes. Taisen Search is completely free to use with no hidden charges or premium tiers.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Does Taisen Search filter inappropriate content?</button>
-    <div class="faq-answer">
-      <p>Yes. We apply safe search filters to minimize explicit content, which can be adjusted in settings.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">Does Taisen Search filter inappropriate content?</button>
+          <div class="faq-answer">
+            <p>Yes. We apply safe search filters to minimize explicit content, which can be adjusted in settings.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Can I give feedback or request a feature?</button>
-    <div class="faq-answer">
-      <p>Absolutely. Use the feedback option in the menu to share suggestions or report issues.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I give feedback or request a feature?</button>
+          <div class="faq-answer">
+            <p>Absolutely. Use the feedback option in the menu to share suggestions or report issues.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Why are my results different from other search engines?</button>
-    <div class="faq-answer">
-      <p>Taisen Search prioritizes unbiased, privacy-respecting sources, so results may differ from engines that personalize content.</p>
-    </div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question">Why are my results different from other search engines?</button>
+          <div class="faq-answer">
+            <p>Taisen Search prioritizes unbiased, privacy-respecting sources, so results may differ from engines that personalize content.</p>
+          </div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question">Is my location used in searches?</button>
-    <div class="faq-answer">
-      <p>No. By default, Taisen Search does not track or use your location. You can manually enable region-based results if desired.</p>
-    </div>
-  </div>
-</section>
-
+        <div class="faq-item">
+          <button class="faq-question">Is my location used in searches?</button>
+          <div class="faq-answer">
+            <p>No. By default, Taisen Search does not track or use your location. You can manually enable region-based results if desired.</p>
+          </div>
+        </div>
+      </section>
 
       <div id="support" class="help-section">
         <h2>📩 Contact Support</h2>
@@ -164,14 +520,14 @@
     </section>
   </main>
 
-  < <!-- Footer -->
+  <!-- Footer -->
   <footer>
     <section class="footer-section">
       <nav class="footer-links">
-        <a href="about.html">About</a> ·
-        <a href="advertising.html">Advertising</a> ·
-        <a href="privacy.html">Privacy Policy</a> ·
-        <a href="help center.html">Help Center</a> ·
+        <a href="about.html">About</a>
+        <a href="advertising.html">Advertising</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="help center.html">Help Center</a>
         <a href="labs.html">Labs</a>
         <a href="TaisenSearch_Documentation.html">Documentation</a>
       </nav>
@@ -179,23 +535,77 @@
   </footer>
 
   <script>
+    // Search functionality
     const searchInput = document.getElementById("searchInput");
     const faqItems = document.querySelectorAll(".faq-item");
+    const helpSections = document.querySelectorAll(".help-section");
 
     searchInput.addEventListener("input", function() {
-      const query = this.value.toLowerCase();
+      const query = this.value.toLowerCase().trim();
+      
+      if (query === '') {
+        // Show all content when search is empty
+        helpSections.forEach(section => section.style.display = 'block');
+        faqItems.forEach(item => item.style.display = 'block');
+        return;
+      }
+
+      // Search through FAQ items
+      let faqFound = false;
       faqItems.forEach(item => {
         const text = item.innerText.toLowerCase();
-        item.style.display = text.includes(query) ? "block" : "none";
+        if (text.includes(query)) {
+          item.style.display = 'block';
+          faqFound = true;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      // Search through help sections
+      helpSections.forEach(section => {
+        if (section.id === 'faq') {
+          section.style.display = faqFound ? 'block' : 'none';
+        } else {
+          const text = section.innerText.toLowerCase();
+          section.style.display = text.includes(query) ? 'block' : 'none';
+        }
       });
     });
-    document.querySelectorAll('.faq-question').forEach(button => {
-  button.addEventListener('click', () => {
-    const faqItem = button.parentElement;
-    faqItem.classList.toggle('active');
-  });
-});
 
+    // FAQ accordion functionality
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const faqItem = button.parentElement;
+        const isActive = faqItem.classList.contains('active');
+        
+        // Close all other FAQ items
+        document.querySelectorAll('.faq-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        // Toggle current item
+        if (!isActive) {
+          faqItem.classList.add('active');
+        }
+      });
+    });
+
+    // Smooth scrolling for sidebar links
+    document.querySelectorAll('.help-sidebar a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
   </script>
 </body>
 </html>

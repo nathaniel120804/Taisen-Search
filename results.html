@@ -9,33 +9,385 @@
 <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
 
 <style>
-/* Toggle slider CSS */
+:root {
+  --primary: #3B82F6;
+  --primary-dark: #2563EB;
+  --secondary: #6B7280;
+  --light: #F9FAFB;
+  --dark: #1F2937;
+  --white: #FFFFFF;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4B5563;
+  --gray-700: #374151;
+  --gray-800: #1F2937;
+  --gray-900: #111827;
+  --border-radius: 8px;
+  --border-radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --transition: all 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--gray-800);
+  background-color: var(--light);
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.results-header {
+  background: var(--white);
+  box-shadow: var(--shadow-md);
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.results-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.results-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.searchbar-container {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+}
+
+/* Main Content */
+.results-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* Controls Section */
+.controls-section {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-label {
+  font-weight: 600;
+  color: var(--gray-700);
+  white-space: nowrap;
+}
+
+/* Toggle Switch */
 .switch {
   position: relative;
   display: inline-block;
   width: 50px;
   height: 28px;
 }
-.switch input { display: none; }
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--gray-300);
+  transition: var(--transition);
   border-radius: 28px;
 }
+
 .slider:before {
   position: absolute;
   content: "";
-  height: 22px; width: 22px;
-  left: 3px; bottom: 3px;
-  background-color: white;
-  transition: 0.4s;
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--white);
+  transition: var(--transition);
   border-radius: 50%;
+  box-shadow: var(--shadow-sm);
 }
-input:checked + .slider { background-color: #3B82F6; }
-input:checked + .slider:before { transform: translateX(22px); }
+
+input:checked + .slider {
+  background-color: var(--primary);
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* Filter Dropdown */
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--border-radius);
+  background-color: var(--white);
+  color: var(--gray-700);
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Internal Results */
+#results-internal {
+  margin-bottom: 30px;
+}
+
+.result-card {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  border-left: 4px solid var(--primary);
+}
+
+.result-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.result-title {
+  color: var(--primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+}
+
+.result-snippet {
+  color: var(--gray-700);
+  margin-bottom: 12px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.result-meta {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 12px;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+.result-type, .result-source {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.result-link {
+  display: inline-block;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--primary);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.result-link:hover {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--gray-600);
+  font-style: italic;
+}
+
+/* Google CSE Results */
+.gsc-control-cse {
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.gsc-webResult .gsc-result {
+  padding: 20px !important;
+  margin-bottom: 20px !important;
+  background: var(--white) !important;
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: var(--shadow-md) !important;
+  border: none !important;
+}
+
+.gs-result .gs-title, 
+.gs-result .gs-title * {
+  color: var(--primary) !important;
+  text-decoration: none !important;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+}
+
+.gs-result .gs-snippet {
+  color: var(--gray-700) !important;
+  line-height: 1.5 !important;
+}
+
+/* Dark Mode */
+body.dark {
+  background-color: var(--gray-900);
+  color: var(--gray-200);
+}
+
+body.dark .results-header {
+  background-color: var(--gray-800);
+}
+
+body.dark .results-name {
+  color: var(--primary);
+}
+
+body.dark .controls-section,
+body.dark .result-card,
+body.dark .gsc-webResult .gsc-result {
+  background-color: var(--gray-800);
+  color: var(--gray-200);
+}
+
+body.dark .control-label {
+  color: var(--gray-300);
+}
+
+body.dark .filter-select {
+  background-color: var(--gray-700);
+  color: var(--gray-200);
+  border-color: var(--gray-600);
+}
+
+body.dark .result-title,
+body.dark .gs-result .gs-title,
+body.dark .gs-result .gs-title * {
+  color: var(--primary) !important;
+}
+
+body.dark .result-snippet,
+body.dark .gs-result .gs-snippet {
+  color: var(--gray-300) !important;
+}
+
+body.dark .result-meta {
+  color: var(--gray-400);
+}
+
+body.dark .slider {
+  background-color: var(--gray-600);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .results-header-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  
+  .searchbar-container {
+    min-width: 100%;
+  }
+  
+  .controls-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .control-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .results-container {
+    padding: 20px 15px;
+  }
+  
+  .result-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .results-name {
+    font-size: 1.75rem;
+  }
+  
+  .result-card {
+    padding: 15px;
+  }
+  
+  .result-title {
+    font-size: 1.1rem;
+  }
+}
 </style>
 </head>
 <body>
@@ -53,25 +405,28 @@ input:checked + .slider:before { transform: translateX(22px); }
 
 <main class="results-container">
 
-  <!-- Labs toggle -->
-  <div style="margin-bottom: 15px; display:flex; align-items:center; gap:10px;">
-    <label for="labsToggle" style="font-weight:bold;">Show Labs:</label>
-    <label class="switch">
-      <input type="checkbox" id="labsToggle" checked>
-      <span class="slider round"></span>
-    </label>
-  </div>
+  <!-- Controls Section -->
+  <section class="controls-section">
+    <!-- Labs toggle -->
+    <div class="control-group">
+      <span class="control-label">Show Labs:</span>
+      <label class="switch">
+        <input type="checkbox" id="labsToggle" checked>
+        <span class="slider round"></span>
+      </label>
+    </div>
 
-  <!-- Filter dropdown -->
-  <div style="margin-bottom: 15px; display:flex; gap:10px; align-items:center;">
-    <label for="filter" style="font-weight:bold;">Filter:</label>
-    <select id="filter">
-      <option value="all">All</option>
-      <option value="STEM">STEM</option>
-      <option value="Psychology">Psychology</option>
-      <option value="Experiments / Labs">Experiments / Labs</option>
-    </select>
-  </div>
+    <!-- Filter dropdown -->
+    <div class="control-group">
+      <label for="filter" class="control-label">Filter:</label>
+      <select id="filter" class="filter-select">
+        <option value="all">All</option>
+        <option value="STEM">STEM</option>
+        <option value="Psychology">Psychology</option>
+        <option value="Experiments / Labs">Experiments / Labs</option>
+      </select>
+    </div>
+  </section>
 
   <!-- Internal results -->
   <div id="results-internal"></div>
@@ -169,21 +524,21 @@ async function loadData() {
     // Display
     resultsDiv.innerHTML = '';
     if (!filtered.length) {
-      resultsDiv.innerHTML = '<p>No internal results found.</p>';
+      resultsDiv.innerHTML = '<div class="no-results">No internal results found.</div>';
       return;
     }
+    
     filtered.forEach(item => {
       const card = document.createElement('div');
-      card.style.background = "#fff";
-      card.style.borderRadius = "12px";
-      card.style.padding = "15px";
-      card.style.marginBottom = "15px";
-      card.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)";
+      card.className = 'result-card';
       card.innerHTML = `
-        <h3 style="color:#3B82F6;margin:0 0 8px 0;">${item.title}</h3>
-        <p style="margin-bottom:8px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${item.snippet}</p>
-        <p><strong>Type:</strong> ${item.type} | <strong>Source:</strong> ${item.source}</p>
-        <a href="${item.link}" target="_blank" style="color:#3B82F6;font-weight:bold;text-decoration:none;">Visit</a>
+        <h3 class="result-title">${item.title}</h3>
+        <p class="result-snippet">${item.snippet}</p>
+        <div class="result-meta">
+          <span class="result-type"><strong>Type:</strong> ${item.type}</span>
+          <span class="result-source"><strong>Source:</strong> ${item.source}</span>
+        </div>
+        <a href="${item.link}" target="_blank" class="result-link">Visit Resource</a>
       `;
       resultsDiv.appendChild(card);
     });
@@ -222,7 +577,6 @@ window.addEventListener('load', () => {
   // Example: append &safe=active for SafeSearch
 });
 </script>
-
 
 </body>
 </html>

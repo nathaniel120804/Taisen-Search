@@ -3,102 +3,428 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - Taisen</title>
-  <link rel="icon" type="image/png" href="original.png">
-  <link rel="stylesheet" href="style.css?v=20250901">
+  <title>Privacy Policy - Taisen Search</title>
+  <style>
+    /* Taisen Design System Variables */
+    :root {
+      --brand-color: #3B82F6;
+      --text-dark: #0f1724;
+      --text-light: #f5f5f5;
+      --bg-light: #ffffff;
+      --bg-dark: #121212;
+      --neutral-gray: #9a9b9c;
+      --success: #28A745;
+      --danger: #FF4C4C;
+      --spacing-unit: 8px;
+      --border-radius: 8px;
+      --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Section */
+    .header-section {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 5);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-bottom: 1px solid #e0e0e0;
+      text-align: center;
+    }
+
+    .site-title2 {
+      font-size: 36px;
+      font-weight: bold;
+      color: var(--brand-color);
+      margin-bottom: calc(var(--spacing-unit) * 2);
+    }
+
+    .back-link {
+      color: var(--brand-color);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing-unit) * 1);
+      transition: var(--transition);
+    }
+
+    .back-link:hover {
+      color: #2563eb;
+      transform: translateX(-2px);
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: calc(var(--spacing-unit) * 5);
+    }
+
+    .page-content {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    /* Typography */
+    h2 {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--text-dark);
+      margin-bottom: calc(var(--spacing-unit) * 3);
+      border-bottom: 3px solid var(--brand-color);
+      padding-bottom: calc(var(--spacing-unit) * 2);
+    }
+
+    h3 {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin: calc(var(--spacing-unit) * 4) 0 calc(var(--spacing-unit) * 2) 0;
+      padding-left: calc(var(--spacing-unit) * 2);
+      border-left: 4px solid var(--brand-color);
+    }
+
+    p {
+      margin-bottom: calc(var(--spacing-unit) * 3);
+      color: var(--text-dark);
+      font-size: 16px;
+    }
+
+    em {
+      color: var(--neutral-gray);
+      font-style: italic;
+    }
+
+    strong {
+      color: var(--brand-color);
+      font-weight: 600;
+    }
+
+    /* Lists */
+    ul {
+      margin: calc(var(--spacing-unit) * 2) 0 calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 4);
+    }
+
+    li {
+      margin-bottom: calc(var(--spacing-unit) * 2);
+      color: var(--text-dark);
+      position: relative;
+    }
+
+    li::before {
+      content: "•";
+      color: var(--brand-color);
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+    }
+
+    /* Links */
+    a {
+      color: var(--brand-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      border-bottom: 1px solid transparent;
+    }
+
+    a:hover {
+      color: #2563eb;
+      border-bottom-color: var(--brand-color);
+    }
+
+    /* Content Cards */
+    .content-section {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 4);
+      border-radius: 14px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: calc(var(--spacing-unit) * 4);
+      transition: var(--transition);
+    }
+
+    .content-section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    /* Footer */
+    .footer-section {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 4);
+      text-align: center;
+      color: var(--neutral-gray);
+      border-top: 1px solid #e0e0e0;
+      margin-top: auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: calc(var(--spacing-unit) * 3);
+    }
+
+    .footer-links a {
+      color: var(--neutral-gray);
+      text-decoration: none;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      color: var(--brand-color);
+    }
+
+    /* Last Updated Banner */
+    .update-banner {
+      background: linear-gradient(135deg, var(--brand-color), #2563eb);
+      color: white;
+      padding: calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 4);
+      border-radius: var(--border-radius);
+      margin-bottom: calc(var(--spacing-unit) * 4);
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* Privacy Highlights */
+    .privacy-highlights {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: calc(var(--spacing-unit) * 3);
+      margin: calc(var(--spacing-unit) * 4) 0;
+    }
+
+    .highlight-card {
+      background: #f8f9fa;
+      padding: calc(var(--spacing-unit) * 3);
+      border-radius: var(--border-radius);
+      border-left: 4px solid var(--brand-color);
+      text-align: center;
+    }
+
+    .highlight-card h4 {
+      color: var(--brand-color);
+      margin-bottom: calc(var(--spacing-unit) * 1);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .highlight-card p {
+      font-size: 14px;
+      margin: 0;
+      color: var(--text-dark);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header-section {
+        padding: calc(var(--spacing-unit) * 4);
+      }
+
+      .site-title2 {
+        font-size: 28px;
+      }
+
+      .main-content {
+        padding: calc(var(--spacing-unit) * 3);
+      }
+
+      .content-section {
+        padding: calc(var(--spacing-unit) * 3);
+      }
+
+      h2 {
+        font-size: 28px;
+      }
+
+      h3 {
+        font-size: 22px;
+      }
+
+      .privacy-highlights {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: calc(var(--spacing-unit) * 2);
+      }
+    }
+
+    /* Dark Theme Support */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: var(--bg-dark);
+        color: var(--text-light);
+      }
+
+      .header-section,
+      .footer-section,
+      .content-section {
+        background: #1f1f1f;
+      }
+
+      h2, h3, p, li {
+        color: var(--text-light);
+      }
+
+      .highlight-card {
+        background: #2a2a2a;
+      }
+
+      .highlight-card p {
+        color: var(--text-light);
+      }
+
+      .content-section {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      }
+    }
+  </style>
 </head>
 <body>
 
   <!-- Header -->
   <header>
     <div class="header-section">
-      <h1 class="site-title2">Privacy</h1>
+      <h1 class="site-title2">Privacy Policy</h1>
+      <a href="index.html" class="back-link">← Back to Taisen Search</a>
     </div>
   </header>
 
   <!-- Main Content -->
   <main class="main-content">
     <div class="page-content">
-      <h2>Privacy Policy</h2>
-      <p><em>Last updated: September 2, 2025</em></p>
+      <div class="update-banner">
+        Last updated: September 2, 2025
+      </div>
 
-      <p>
-        At <strong>Taisen</strong>, your privacy matters. This Privacy Policy explains what information we collect, 
-        how we use it, and the steps we take to keep your data secure when using our search services.
-      </p>
+      <div class="content-section">
+        <p>
+          At <strong>Taisen Search</strong>, your privacy matters. This Privacy Policy explains what information we collect, 
+          how we use it, and the steps we take to keep your data secure when using our search services.
+        </p>
 
-      <h3>1. Information We Do Not Collect</h3>
-      <ul>
-        <li>We do not track or log your search history.</li>
-        <li>We do not collect personal information such as your name, email, or IP address.</li>
-        <li>We do not use tracking cookies or profiling technologies.</li>
-      </ul>
+        <div class="privacy-highlights">
+          <div class="highlight-card">
+            <h4>🔒 No Tracking</h4>
+            <p>We don't track your searches or build profiles</p>
+          </div>
+          <div class="highlight-card">
+            <h4>📊 Minimal Data</h4>
+            <p>Only essential technical data is collected</p>
+          </div>
+          <div class="highlight-card">
+            <h4>🔐 Secure by Design</h4>
+            <p>HTTPS encryption protects all connections</p>
+          </div>
+        </div>
+      </div>
 
-      <h3>2. Limited Data We Collect</h3>
-      <p>
-        To improve service reliability, Taisen may temporarily collect non-identifiable technical data, such as:
-      </p>
-      <ul>
-        <li>Browser type and version</li>
-        <li>Language and display settings</li>
-        <li>Anonymous error logs (for debugging issues)</li>
-      </ul>
-      <p>This information is used strictly for performance optimization and is never shared with third parties.</p>
+      <div class="content-section">
+        <h3>1. Information We Do Not Collect</h3>
+        <ul>
+          <li>We do not track or log your search history</li>
+          <li>We do not collect personal information such as your name, email, or IP address</li>
+          <li>We do not use tracking cookies or profiling technologies</li>
+          <li>We do not sell or share your data with third parties</li>
+        </ul>
+      </div>
 
-      <h3>3. Use of Cookies</h3>
-      <p>
-        Taisen does not use cookies for tracking or advertising.  
-        Minimal session cookies may be used only to maintain site functionality and are automatically deleted when you close your browser.
-      </p>
+      <div class="content-section">
+        <h3>2. Limited Data We Collect</h3>
+        <p>
+          To improve service reliability, Taisen Search may temporarily collect non-identifiable technical data, such as:
+        </p>
+        <ul>
+          <li>Browser type and version</li>
+          <li>Language and display settings</li>
+          <li>Anonymous error logs (for debugging issues)</li>
+          <li>Search query performance metrics (without personal identifiers)</li>
+        </ul>
+        <p>This information is used strictly for performance optimization and is never shared with third parties.</p>
+      </div>
 
-      <h3>4. Third-Party Services</h3>
-      <p>
-        Our search results may include links to external websites.  
-        Taisen is not responsible for the privacy practices of those sites.  
-        We encourage you to review their policies before providing any personal data.
-      </p>
+      <div class="content-section">
+        <h3>3. Use of Cookies</h3>
+        <p>
+          Taisen Search does not use cookies for tracking or advertising.  
+          Minimal session cookies may be used only to maintain site functionality and are automatically deleted when you close your browser.
+        </p>
+      </div>
 
-      <h3>5. Data Security</h3>
-      <p>
-        We take strong technical and organizational measures to prevent unauthorized access, alteration, or disclosure of information.  
-        Taisen uses HTTPS encryption to protect your connection.
-      </p>
+      <div class="content-section">
+        <h3>4. Third-Party Services</h3>
+        <p>
+          Our search results may include links to external websites.  
+          Taisen Search is not responsible for the privacy practices of those sites.  
+          We encourage you to review their policies before providing any personal data.
+        </p>
+      </div>
 
-      <h3>6. Children’s Privacy</h3>
-      <p>
-        Taisen is not intended for use by individuals under the age of 13.  
-        We do not knowingly collect personal data from children.
-      </p>
+      <div class="content-section">
+        <h3>5. Data Security</h3>
+        <p>
+          We take strong technical and organizational measures to prevent unauthorized access, alteration, or disclosure of information.  
+          Taisen Search uses HTTPS encryption to protect your connection and follows industry best practices for data security.
+        </p>
+      </div>
 
-      <h3>7. Changes to This Policy</h3>
-      <p>
-        We may update this Privacy Policy from time to time. Updates will be reflected with a new "Last updated" date above.  
-        Continued use of Taisen after changes indicates acceptance of the revised policy.
-      </p>
+      <div class="content-section">
+        <h3>6. Children's Privacy</h3>
+        <p>
+          Taisen Search is not intended for use by individuals under the age of 13.  
+          We do not knowingly collect personal data from children.
+        </p>
+      </div>
 
-      <h3>8. Contact Us</h3>
-      <p>
-        If you have questions or concerns about this Privacy Policy, you may contact us at:  
-        <a href="contact.html">Contact Page</a>
-      </p>
-      <style>
-        main, section {
-  padding: 0 25px; /* applies left + right padding */
-}
+      <div class="content-section">
+        <h3>7. Changes to This Policy</h3>
+        <p>
+          We may update this Privacy Policy from time to time. Updates will be reflected with a new "Last updated" date above.  
+          Continued use of Taisen Search after changes indicates acceptance of the revised policy.
+        </p>
+      </div>
 
-      </style>
+      <div class="content-section">
+        <h3>8. Contact Us</h3>
+        <p>
+          If you have questions or concerns about this Privacy Policy, you may contact us at:  
+          <a href="contact.html">Contact Page</a> or email <a href="mailto:privacy@taisensearch.com">privacy@taisensearch.com</a>
+        </p>
+      </div>
     </div>
   </main>
 
   <!-- Footer -->
   <footer class="Footer">
     <div class="footer-section">
-      <nav class="">
-        <a href="about.html">About</a> ·
-        <a href="advertising.html">Advertising</a> ·
-        <a href="privacy.html">Privacy Policy</a> ·
-        <a href="help center.html">Help Center</a> ·
+      <nav class="footer-links">
+        <a href="about.html">About</a>
+        <a href="advertising.html">Advertising</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="help center.html">Help Center</a>
         <a href="labs.html">Labs</a>
+        <a href="TaisenSearch_Documentation.html">Documentation</a>
       </nav>
     </div>
   </footer>
