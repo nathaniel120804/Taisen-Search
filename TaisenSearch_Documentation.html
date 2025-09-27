@@ -50,6 +50,9 @@
     font-weight: 600;
     font-size: 14px;
   }
+  .version-badge.new {
+    background: linear-gradient(90deg, #10B981, #059669);
+  }
   ul { margin: 5px 0 5px 20px; }
   footer {
     margin-top: 60px;
@@ -61,16 +64,23 @@
     content: "📄";
     margin-right: 8px;
   }
+  .feature-highlight {
+    background-color: #ECFDF5;
+    border-left: 4px solid #10B981;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 0 8px 8px 0;
+  }
 </style>
 </head>
 <body>
 
 <h1>Taisen Search – Software Development Documentation</h1>
 
-<p><strong>Prepared by:</strong> Nathaniel Don Joseph I. De Guzman</p>
+<p><strong>Prepared by:</strong> The Taisen Team</p>
 <p><strong>Role:</strong> Project Lead</p>
-<p><strong>Date:</strong> September 25, 2025</p>
-<p><strong>Documentation Version:</strong> 1.9</p>
+<p><strong>Date:</strong> October 15, 2025</p>
+<p><strong>Documentation Version:</strong> 1.10</p>
 
 <h2 class="icon-section">Introduction</h2>
 <p><strong>Purpose:</strong> This document provides a detailed account of the development, improvements, and version history of Taisen Search. It serves as a reference for stakeholders, developers, and future maintainers.</p>
@@ -107,7 +117,7 @@
 <tr>
 <td><span class="version-badge">1.4</span></td>
 <td>TBD</td>
-<td>Advanced search features: full-text modals, card “Open in New Tab”, error handling.</td>
+<td>Advanced search features: full-text modals, card "Open in New Tab", error handling.</td>
 </tr>
 <tr>
 <td><span class="version-badge">1.5</span></td>
@@ -142,6 +152,20 @@ User-configurable Settings added:
 <li>Save Settings button: saves to localStorage and redirects to main page.</li>
 <li>Settings persist across page reloads.</li>
 <li>Mobile and desktop compatibility for settings UI.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><span class="version-badge new">1.10</span></td>
+<td>October 15, 2025</td>
+<td>
+<strong>NEW:</strong> Comprehensive Authentication System with Popup Modal:
+<ul>
+<li>Multi-provider authentication: Email/Password, Phone, Google, and Anonymous</li>
+<li>Popup modal interface with tabbed sign-in/sign-up forms</li>
+<li>User session persistence and account management</li>
+<li>Search logging tied to user accounts</li>
+<li>Enhanced security with Firebase Authentication</li>
 </ul>
 </td>
 </tr>
@@ -183,7 +207,7 @@ User-configurable Settings added:
 <h3>Version 1.4 – Advanced Search & UX Features</h3>
 <ul>
 <li>Combined internal Labs and external Google CSE results.</li>
-<li>Card “Open in New Tab” feature.</li>
+<li>Card "Open in New Tab" feature.</li>
 <li>Smooth card hover and modal animations.</li>
 <li>Empty results clearly indicated with a message.</li>
 </ul>
@@ -253,25 +277,73 @@ User-configurable Settings added:
 <li>Fully compatible with existing debug dashboard and captcha features.</li>
 </ul>
 
-<h2 class="icon-section">Features Summary (v1.9)</h2>
+<div class="feature-highlight">
+<h3>Version 1.10 – Comprehensive Authentication System</h3>
 <ul>
-<li><strong>UI & UX:</strong> Modern, responsive settings panel with mobile optimization.</li>
-<li><strong>Functional Settings:</strong> Theme, language, region, SafeSearch, privacy mode saved in localStorage and applied where applicable.</li>
-<li><strong>Navigation:</strong> Save Settings button redirects to main page.</li>
-<li><strong>Persistence:</strong> All settings restored on page load.</li>
-<li><strong>Debug & Testing:</strong> Works alongside debug dashboard (v1.8).</li>
+<li><strong>Multi-Provider Authentication:</strong>
+  <ul>
+    <li>Email/Password: Full sign-up and sign-in functionality</li>
+    <li>Phone Authentication: SMS verification with reCAPTCHA</li>
+    <li>Google OAuth: Single sign-on with Google accounts</li>
+    <li>Anonymous Login: Guest access without account creation</li>
+  </ul>
+</li>
+<li><strong>Popup Modal Interface:</strong>
+  <ul>
+    <li>Clean, modern modal design with tabbed interface</li>
+    <li>Seamless integration with existing UI</li>
+    <li>Responsive design for all device sizes</li>
+    <li>Error handling and user feedback</li>
+  </ul>
+</li>
+<li><strong>User Session Management:</strong>
+  <ul>
+    <li>Automatic session persistence across browser sessions</li>
+    <li>Real-time authentication state monitoring</li>
+    <li>Dynamic button updates (Sign In → User Name)</li>
+    <li>Account management page integration</li>
+  </ul>
+</li>
+<li><strong>Enhanced Security Features:</strong>
+  <ul>
+    <li>Firebase Authentication backend</li>
+    <li>Secure token-based authentication</li>
+    <li>Search logging tied to user accounts</li>
+    <li>Protected user data storage in Firestore</li>
+  </ul>
+</li>
+<li><strong>Technical Implementation:</strong>
+  <ul>
+    <li>Firebase SDK integration (Auth, Firestore)</li>
+    <li>Modular JavaScript architecture</li>
+    <li>Event-driven authentication flow</li>
+    <li>Error handling and recovery mechanisms</li>
+  </ul>
+</li>
+</ul>
+</div>
+
+<h2 class="icon-section">Features Summary (v1.10)</h2>
+<ul>
+<li><strong>Authentication System:</strong> Comprehensive multi-provider login with popup modal interface</li>
+<li><strong>User Experience:</strong> Seamless sign-in flow with persistent sessions</li>
+<li><strong>Security:</strong> Firebase-backed authentication with search logging</li>
+<li><strong>Integration:</strong> Fully compatible with existing settings and debug features</li>
+<li><strong>Mobile Support:</strong> Responsive authentication modal for all devices</li>
 </ul>
 
 <h2 class="icon-section">Future Roadmap</h2>
 <ul>
-<li>Apply SafeSearch and Privacy Mode settings actively in search results.</li>
-<li>Enhance multi-language support across UI and results.</li>
-<li>Integrate user preferences with internal Labs filtering.</li>
-<li>Analytics for user settings usage and behavior.</li>
+<li>Apply SafeSearch and Privacy Mode settings actively in search results</li>
+<li>Enhance multi-language support across UI and results</li>
+<li>Integrate user preferences with internal Labs filtering</li>
+<li>Analytics for user settings usage and behavior</li>
+<li>Advanced user profile management and search history</li>
+<li>Social features: sharing search results, collaborative search</li>
 </ul>
 
 <h2 class="icon-section">Conclusion</h2>
-<p>Taisen Search continues evolving into a modern, user-friendly platform with both functional search improvements and user-configurable settings. The addition of v1.9 makes the search experience more personalized and adaptable for both desktop and mobile users.</p>
+<p>Taisen Search continues evolving into a modern, user-friendly platform with both functional search improvements and user-configurable settings. Version 1.10 introduces a comprehensive authentication system that enables personalized experiences while maintaining security and ease of use across all devices.</p>
 
 <footer>
 © 2025 Taisen Search. All Rights Reserved.
@@ -279,4 +351,3 @@ User-configurable Settings added:
 
 </body>
 </html>
-
