@@ -196,7 +196,6 @@
 
       // Add event listeners for both click and enter key
       function setupSearchListeners() {
-        // Wait for CSE to load and then find the search elements
         const checkElements = setInterval(() => {
           const searchButton = document.querySelector('.gsc-search-button');
           const searchInput = document.querySelector('.gsc-input input');
@@ -204,17 +203,12 @@
           if (searchButton && searchInput) {
             clearInterval(checkElements);
             
-            // Click event for search button
             searchButton.addEventListener('click', function() {
-              if (searchInput.value.trim() === '') {
-                showRandomTrivia();
-              }
+              if (searchInput.value.trim() === '') showRandomTrivia();
             });
             
-            // Enter key event for search input
             searchInput.addEventListener('keypress', function(event) {
               if (event.key === 'Enter') {
-                // Small delay to ensure the input value is captured correctly
                 setTimeout(() => {
                   if (searchInput.value.trim() === '') {
                     event.preventDefault();
@@ -224,7 +218,6 @@
               }
             });
 
-            // Additional safety check on form submission
             const searchForm = document.querySelector('.gsc-search-box');
             if (searchForm) {
               searchForm.addEventListener('submit', function(event) {
@@ -238,15 +231,11 @@
         }, 100);
       }
 
-      // Alternative approach: Monitor the entire document for enter key presses
       function setupGlobalEnterKeyListener() {
         document.addEventListener('keypress', function(event) {
-          // Check if enter key is pressed and search input is focused and empty
           if (event.key === 'Enter') {
             const searchInput = document.querySelector('.gsc-input input');
             const activeElement = document.activeElement;
-            
-            // Check if the focused element is the search input and it's empty
             if (searchInput && activeElement === searchInput && searchInput.value.trim() === '') {
               event.preventDefault();
               event.stopPropagation();
@@ -258,7 +247,7 @@
 
       initCSE();
       setupSearchListeners();
-      setupGlobalEnterKeyListener(); // Added as backup
+      setupGlobalEnterKeyListener();
     };
   </script>
 
@@ -271,22 +260,21 @@
 const hamburger = document.getElementById('hamburger');
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('active');
-  window.location.href = 'settings.html'; // Opens settings page
+  window.location.href = 'settings.html';
 });
 
-// Apply saved theme on index page
 window.addEventListener('load', () => {
   const theme = localStorage.getItem('theme');
   if(theme === 'dark') document.body.classList.add('dark');
 });
 </script>
+
 <!-- Optional Login Integration -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
   import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyCMy4SNOU3eAl4iSfbmHWTxae9pVcnJFmc",
     authDomain: "taisen-search-ad9eb.firebaseapp.com",
@@ -300,7 +288,6 @@ window.addEventListener('load', () => {
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Create user/sign-in button
   const userButton = document.createElement("button");
   userButton.style.position = "fixed";
   userButton.style.top = "50px";
@@ -317,14 +304,12 @@ window.addEventListener('load', () => {
 
   function updateButton() {
     if (currentUser) {
-      // Show user name or default to "User"
       const name = currentUser.displayName || "User";
       userButton.textContent = name;
       userButton.onclick = () => {
         window.location.href = "https://taisenaccounts.pages.dev/account";
       };
     } else {
-      // Show Sign In button
       userButton.textContent = "Sign In";
       userButton.onclick = () => {
         window.location.href = "https://taisenaccounts.pages.dev/";
@@ -332,15 +317,13 @@ window.addEventListener('load', () => {
     }
   }
 
-  // Listen for auth state changes
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
     updateButton();
   });
 
-  // Function to log search for signed-in users only
   async function logSearch(query) {
-    if (!currentUser) return; // do nothing if not signed in
+    if (!currentUser) return;
     try {
       const userRef = doc(db, "users", currentUser.uid);
       await setDoc(userRef, { lastSearch: query, timestamp: new Date() }, { merge: true });
@@ -350,29 +333,18 @@ window.addEventListener('load', () => {
     }
   }
 
-  // Hook into your existing search functionality
-  const originalCSEExecute = window.onload && window.onload.toString().includes("searchBox.execute") 
-    ? window.onload : null;
-
-  // Override Google CSE execute function to log searches for signed-in users
   const interval = setInterval(() => {
     const searchBox = google?.search?.cse?.element?.getElement("gcse-searchbox-only");
     if (searchBox && searchBox.execute) {
       clearInterval(interval);
       const originalExecute = searchBox.execute.bind(searchBox);
       searchBox.execute = function(query) {
-        // Log for signed-in users
-        if (query && query.trim() !== "") {
-          logSearch(query);
-        }
-        // Proceed with normal search
+        if (query && query.trim() !== "") logSearch(query);
         originalExecute(query);
       };
     }
   }, 100);
 </script>
-
-
 
 </body>
 </html>
