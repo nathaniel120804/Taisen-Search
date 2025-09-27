@@ -286,7 +286,7 @@ window.addEventListener('load', () => {
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
   import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 
-  // Firebase config (replace with your own if different)
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyCMy4SNOU3eAl4iSfbmHWTxae9pVcnJFmc",
     authDomain: "taisen-search-ad9eb.firebaseapp.com",
@@ -296,43 +296,46 @@ window.addEventListener('load', () => {
     appId: "1:779736719927:web:07ccea945f7549ad56d5b2"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Add Sign In button
-  const signInButton = document.createElement("button");
-  signInButton.textContent = "Sign In";
-  signInButton.style.position = "fixed";
-  signInButton.style.top = "50px";
-  signInButton.style.right = "10px";
-  signInButton.style.padding = "8px 12px";
-  signInButton.style.background = "#0077ff";
-  signInButton.style.color = "#fff";
-  signInButton.style.border = "none";
-  signInButton.style.borderRadius = "4px";
-  signInButton.style.cursor = "pointer";
-  signInButton.addEventListener("click", () => {
-    window.location.href = "https://taisenaccounts.pages.dev/"; // Live login page
-  });
-  document.body.appendChild(signInButton);
+  // Create button element
+  const userButton = document.createElement("button");
+  userButton.style.position = "fixed";
+  userButton.style.top = "50px";
+  userButton.style.right = "20px";
+  userButton.style.padding = "8px 12px";
+  userButton.style.background = "#0077ff";
+  userButton.style.color = "#fff";
+  userButton.style.border = "none";
+  userButton.style.borderRadius = "12px";
+  userButton.style.cursor = "pointer";
+  document.body.appendChild(userButton);
 
-  // Track user login status
   let currentUser = null;
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      currentUser = user;
-      signInButton.style.display = "none"; // Hide button if logged in
-      console.log("User logged in:", user.email);
+
+  function updateButton() {
+    if (currentUser) {
+      const name = currentUser.displayName || currentUser.email || "Account";
+      userButton.textContent = name;
+      userButton.onclick = () => {
+        window.location.href = "https://taisenaccounts.pages.dev/account";
+      };
     } else {
-      currentUser = null;
-      signInButton.style.display = "block"; // Show button if guest
-      console.log("User not logged in");
+      userButton.textContent = "Sign In";
+      userButton.onclick = () => {
+        window.location.href = "https://taisenaccounts.pages.dev/";
+      };
     }
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    updateButton();
   });
 
-  // Optional function to log searches for logged-in users
+  // Optional: log searches for logged-in users
   async function logSearch(query) {
     if (!currentUser) return;
     try {
@@ -344,9 +347,10 @@ window.addEventListener('load', () => {
     }
   }
 
-  // Call this inside your existing search handler:
+  // Example: call logSearch inside your existing search handler
   // logSearch(query);
 </script>
+
 
 </body>
 </html>
