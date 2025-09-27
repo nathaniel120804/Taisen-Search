@@ -40,6 +40,214 @@
     .trivia-link:hover {
       text-decoration: underline;
     }
+
+    /* Auth Modal Styles */
+    .auth-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10001;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .auth-modal.active {
+      display: flex;
+    }
+
+    .auth-container {
+      background: white;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .auth-header {
+      padding: 20px;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .auth-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .auth-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .auth-content {
+      padding: 20px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .auth-tab.active {
+      border-bottom: 2px solid #0077ff;
+      color: #0077ff;
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    .auth-button {
+      width: 100%;
+      padding: 12px;
+      background: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      margin-top: 10px;
+      transition: background 0.2s;
+    }
+
+    .auth-button:hover {
+      background: #0056cc;
+    }
+
+    .auth-button.google {
+      background: #db4437;
+    }
+
+    .auth-button.google:hover {
+      background: #c23321;
+    }
+
+    .auth-button.phone {
+      background: #34a853;
+    }
+
+    .auth-button.phone:hover {
+      background: #2d9248;
+    }
+
+    .auth-button.anonymous {
+      background: #666;
+    }
+
+    .auth-button.anonymous:hover {
+      background: #555;
+    }
+
+    .auth-divider {
+      text-align: center;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .auth-divider::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #e0e0e0;
+    }
+
+    .auth-divider span {
+      background: white;
+      padding: 0 10px;
+      color: #666;
+    }
+
+    .auth-error {
+      color: #d93025;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .auth-error.active {
+      display: block;
+    }
+
+    .auth-success {
+      color: #34a853;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .auth-success.active {
+      display: block;
+    }
+
+    /* User Button Styles */
+    #userButton {
+      position: fixed;
+      top: 50px;
+      right: 20px;
+      padding: 8px 16px;
+      background: #0077ff;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      z-index: 10000;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0,119,255,0.3);
+      display: none;
+    }
+
+    #userButton:hover {
+      background: #0056cc;
+    }
   </style>
 </head>
 <body>
@@ -47,28 +255,15 @@
   <!-- Header -->
   <header>
     <!-- Hamburger Icon -->
-<div id="hamburger" class="hamburger">
-  <div></div>
-  <div></div>
-  <div></div>
-</div>
-<!-- Fixed Sign-In Button -->
-<button id="userButton" style="
-  position: fixed;
-  top: 50px;
-  right: 20px;
-  padding: 8px 16px;
-  background: #0077ff;
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  z-index: 10000;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: 0 2px 8px rgba(0,119,255,0.3);
-  display: none; /* Start hidden until auth state is determined */
-">Sign In</button>
+    <div id="hamburger" class="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    
+    <!-- User Button -->
+    <button id="userButton">Sign In</button>
+    
     <section class="header-section">
     </section>
   </header>
@@ -88,6 +283,58 @@
     <a href="#" class="trivia-link" id="triviaLink" target="_blank">Read more</a>
   </section>
 
+  <!-- Auth Modal -->
+  <div id="authModal" class="auth-modal">
+    <div class="auth-container">
+      <div class="auth-header">
+        <h2 class="auth-title">Sign In to Taisen</h2>
+        <button id="authClose" class="auth-close">&times;</button>
+      </div>
+      <div class="auth-content">
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="signin">Sign In</button>
+          <button class="auth-tab" data-tab="signup">Sign Up</button>
+        </div>
+        
+        <!-- Email/Password Form -->
+        <form id="emailForm" class="auth-form active">
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input type="email" id="email" class="form-input" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" id="password" class="form-input" placeholder="Your password">
+          </div>
+          <button type="submit" class="auth-button" id="emailSubmit">Sign In</button>
+          <div id="emailError" class="auth-error"></div>
+          <div id="emailSuccess" class="auth-success"></div>
+        </form>
+        
+        <!-- Phone Form -->
+        <form id="phoneForm" class="auth-form">
+          <div class="form-group">
+            <label class="form-label" for="phoneNumber">Phone Number</label>
+            <input type="tel" id="phoneNumber" class="form-input" placeholder="+1 234 567 8900">
+          </div>
+          <div class="form-group" id="verificationCodeGroup" style="display: none;">
+            <label class="form-label" for="verificationCode">Verification Code</label>
+            <input type="text" id="verificationCode" class="form-input" placeholder="Enter code">
+          </div>
+          <button type="submit" class="auth-button phone" id="phoneSubmit">Send Code</button>
+          <div id="phoneError" class="auth-error"></div>
+          <div id="phoneSuccess" class="auth-success"></div>
+        </form>
+        
+        <!-- Provider Buttons -->
+        <div class="auth-divider"><span>or continue with</span></div>
+        
+        <button class="auth-button google" id="googleSignIn">Sign in with Google</button>
+        <button class="auth-button anonymous" id="anonymousSignIn">Continue as Guest</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer>
     <section class="footer-section">
@@ -97,7 +344,7 @@
         <a href="privacy.html">Privacy Policy</a> ·
         <a href="help center.html">Help Center</a> ·
         <a href="labs.html">Labs</a> ·
-        <a href="TaisenSearch_Documentation.html">Docuementation</a>
+        <a href="TaisenSearch_Documentation.html">Documentation</a>
       </nav>
     </section>
   </footer>
@@ -284,102 +531,287 @@
       document.body.innerHTML = "<h1>Sorry, this website is not available on mobile devices.</h1>";
     }
   </script>
-<script>
-const hamburger = document.getElementById('hamburger');
-hamburger.addEventListener('click', () => {
-  hamburger.classList.toggle('active');
-  window.location.href = 'settings.html'; // Opens settings page
-});
+  
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      window.location.href = 'settings.html'; // Opens settings page
+    });
 
-// Apply saved theme on index page
-window.addEventListener('load', () => {
-  const theme = localStorage.getItem('theme');
-  if(theme === 'dark') document.body.classList.add('dark');
-});
-</script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+    // Apply saved theme on index page
+    window.addEventListener('load', () => {
+      const theme = localStorage.getItem('theme');
+      if(theme === 'dark') document.body.classList.add('dark');
+    });
+  </script>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCMy4SNOU3eAl4iSfbmHWTxae9pVcnJFmc",
-  authDomain: "taisen-search-ad9eb.firebaseapp.com",
-  projectId: "taisen-search-ad9eb",
-  storageBucket: "taisen-search-ad9eb.appspot.com",
-  messagingSenderId: "779736719927",
-  appId: "1:779736719927:web:07ccea945f7549ad56d5b2"
-};
+  <!-- Firebase Authentication with Modal -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged, 
+      GoogleAuthProvider, 
+      signInWithPopup, 
+      signOut,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signInAnonymously,
+      RecaptchaVerifier,
+      signInWithPhoneNumber
+    } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
-const userButton = document.getElementById("userButton");
-
-function updateButton(user) {
-  if (user) {
-    // User is signed in - show user's name or "User"
-    const name = user.displayName || "User";
-    userButton.textContent = name;
-    userButton.style.display = "block";
-    userButton.onclick = () => {
-      window.location.href = "https://taisenaccounts.pages.dev/account";
+    const firebaseConfig = {
+      apiKey: "AIzaSyCMy4SNOU3eAl4iSfbmHWTxae9pVcnJFmc",
+      authDomain: "taisen-search-ad9eb.firebaseapp.com",
+      projectId: "taisen-search-ad9eb",
+      storageBucket: "taisen-search-ad9eb.appspot.com",
+      messagingSenderId: "779736719927",
+      appId: "1:779736719927:web:07ccea945f7549ad56d5b2"
     };
-  } else {
-    // User is signed out - show "Sign In" button
-    userButton.textContent = "Sign In";
-    userButton.style.display = "block";
-    userButton.onclick = async () => {
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+    
+    // DOM Elements
+    const userButton = document.getElementById("userButton");
+    const authModal = document.getElementById("authModal");
+    const authClose = document.getElementById("authClose");
+    const authTabs = document.querySelectorAll(".auth-tab");
+    const emailForm = document.getElementById("emailForm");
+    const phoneForm = document.getElementById("phoneForm");
+    const emailSubmit = document.getElementById("emailSubmit");
+    const phoneSubmit = document.getElementById("phoneSubmit");
+    const googleSignIn = document.getElementById("googleSignIn");
+    const anonymousSignIn = document.getElementById("anonymousSignIn");
+    const emailError = document.getElementById("emailError");
+    const phoneError = document.getElementById("phoneError");
+    const emailSuccess = document.getElementById("emailSuccess");
+    const phoneSuccess = document.getElementById("phoneSuccess");
+    const verificationCodeGroup = document.getElementById("verificationCodeGroup");
+    
+    let confirmationResult = null;
+    let isSignUp = false;
+
+    // Modal Functions
+    function openAuthModal() {
+      authModal.classList.add("active");
+      resetForms();
+    }
+
+    function closeAuthModal() {
+      authModal.classList.remove("active");
+      resetForms();
+    }
+
+    function resetForms() {
+      // Reset all forms and errors
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("phoneNumber").value = "";
+      document.getElementById("verificationCode").value = "";
+      
+      emailError.textContent = "";
+      phoneError.textContent = "";
+      emailSuccess.textContent = "";
+      phoneSuccess.textContent = "";
+      
+      emailError.classList.remove("active");
+      phoneError.classList.remove("active");
+      emailSuccess.classList.remove("active");
+      phoneSuccess.classList.remove("active");
+      
+      verificationCodeGroup.style.display = "none";
+      phoneSubmit.textContent = "Send Code";
+      isSignUp = false;
+    }
+
+    function showError(element, message) {
+      element.textContent = message;
+      element.classList.add("active");
+    }
+
+    function showSuccess(element, message) {
+      element.textContent = message;
+      element.classList.add("active");
+    }
+
+    // Tab Switching
+    authTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        const targetTab = tab.getAttribute("data-tab");
+        
+        // Update active tab
+        authTabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        
+        // Update forms based on tab
+        if (targetTab === "signin") {
+          emailSubmit.textContent = "Sign In";
+          isSignUp = false;
+        } else {
+          emailSubmit.textContent = "Sign Up";
+          isSignUp = true;
+        }
+      });
+    });
+
+    // Email/Password Authentication
+    emailForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      
+      if (!email || !password) {
+        showError(emailError, "Please fill in all fields");
+        return;
+      }
+      
+      try {
+        if (isSignUp) {
+          // Sign up with email/password
+          await createUserWithEmailAndPassword(auth, email, password);
+          showSuccess(emailSuccess, "Account created successfully!");
+          setTimeout(closeAuthModal, 1500);
+        } else {
+          // Sign in with email/password
+          await signInWithEmailAndPassword(auth, email, password);
+          showSuccess(emailSuccess, "Signed in successfully!");
+          setTimeout(closeAuthModal, 1500);
+        }
+      } catch (error) {
+        console.error("Email auth error:", error);
+        showError(emailError, error.message);
+      }
+    });
+
+    // Phone Authentication
+    phoneForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const phoneNumber = document.getElementById("phoneNumber").value;
+      const verificationCode = document.getElementById("verificationCode").value;
+      
+      if (!phoneNumber) {
+        showError(phoneError, "Please enter a phone number");
+        return;
+      }
+      
+      try {
+        if (!confirmationResult) {
+          // First step: Send verification code
+          const appVerifier = new RecaptchaVerifier(auth, 'phoneSubmit', {
+            'size': 'invisible'
+          });
+          
+          confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+          verificationCodeGroup.style.display = "block";
+          phoneSubmit.textContent = "Verify Code";
+          showSuccess(phoneSuccess, "Verification code sent!");
+        } else {
+          // Second step: Verify code
+          await confirmationResult.confirm(verificationCode);
+          showSuccess(phoneSuccess, "Phone verified successfully!");
+          setTimeout(closeAuthModal, 1500);
+        }
+      } catch (error) {
+        console.error("Phone auth error:", error);
+        showError(phoneError, error.message);
+      }
+    });
+
+    // Google Authentication
+    googleSignIn.addEventListener("click", async () => {
       try {
         await signInWithPopup(auth, provider);
+        closeAuthModal();
       } catch (error) {
-        console.error("Sign in error:", error);
+        console.error("Google auth error:", error);
+        showError(emailError, error.message);
       }
-    };
-  }
-}
+    });
 
-// Initialize auth state listener
-onAuthStateChanged(auth, (user) => {
-  updateButton(user);
-});
+    // Anonymous Authentication
+    anonymousSignIn.addEventListener("click", async () => {
+      try {
+        await signInAnonymously(auth);
+        closeAuthModal();
+      } catch (error) {
+        console.error("Anonymous auth error:", error);
+        showError(emailError, error.message);
+      }
+    });
 
-// Log search function
-async function logSearch(query) {
-  const user = auth.currentUser;
-  if (!user) return;
-  try {
-    const userRef = doc(db, "users", user.uid);
-    await setDoc(userRef, { 
-      lastSearch: query, 
-      timestamp: new Date(),
-      email: user.email,
-      displayName: user.displayName 
-    }, { merge: true });
-    console.log("Search logged:", query);
-  } catch (err) {
-    console.error("Error logging search:", err);
-  }
-}
-
-// Override search execution to log searches
-const interval = setInterval(() => {
-  if (window.google && google.search && google.search.cse) {
-    const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
-    if (searchBox && searchBox.execute) {
-      clearInterval(interval);
-      const originalExecute = searchBox.execute.bind(searchBox);
-      searchBox.execute = function(query) {
-        if (query && query.trim() !== "") logSearch(query);
-        originalExecute(query);
-      };
+    // Update User Button
+    function updateButton(user) {
+      if (user) {
+        // User is signed in - show user's name or "User"
+        const name = user.displayName || "User";
+        userButton.textContent = name;
+        userButton.style.display = "block";
+        userButton.onclick = () => {
+          window.location.href = "https://taisenaccounts.pages.dev/account";
+        };
+      } else {
+        // User is signed out - show "Sign In" button
+        userButton.textContent = "Sign In";
+        userButton.style.display = "block";
+        userButton.onclick = openAuthModal;
+      }
     }
-  }
-}, 100);
-</script>
 
+    // Event Listeners
+    authClose.addEventListener("click", closeAuthModal);
+    
+    // Close modal when clicking outside
+    authModal.addEventListener("click", (e) => {
+      if (e.target === authModal) {
+        closeAuthModal();
+      }
+    });
 
+    // Initialize auth state listener
+    onAuthStateChanged(auth, (user) => {
+      updateButton(user);
+    });
 
+    // Log search function
+    async function logSearch(query) {
+      const user = auth.currentUser;
+      if (!user) return;
+      try {
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, { 
+          lastSearch: query, 
+          timestamp: new Date(),
+          email: user.email,
+          displayName: user.displayName 
+        }, { merge: true });
+        console.log("Search logged:", query);
+      } catch (err) {
+        console.error("Error logging search:", err);
+      }
+    }
+
+    // Override search execution to log searches
+    const interval = setInterval(() => {
+      if (window.google && google.search && google.search.cse) {
+        const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
+        if (searchBox && searchBox.execute) {
+          clearInterval(interval);
+          const originalExecute = searchBox.execute.bind(searchBox);
+          searchBox.execute = function(query) {
+            if (query && query.trim() !== "") logSearch(query);
+            originalExecute(query);
+          };
+        }
+      }
+    }, 100);
+  </script>
 </body>
 </html>
