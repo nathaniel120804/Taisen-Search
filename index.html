@@ -986,18 +986,6 @@
         });
       }
 
-      // Mobile device detection
-      function checkMobileDevice() {
-        if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-          document.body.innerHTML = document.getElementById('mobileRestriction').outerHTML;
-          document.body.style.display = 'block';
-          document.body.style.background = 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)';
-          document.body.style.justifyContent = 'center';
-          document.body.style.alignItems = 'center';
-          document.body.style.minHeight = '100vh';
-        }
-      }
-
       initCSE();
       setupSearchListeners();
       setupGlobalEnterKeyListener(); // Added as backup
