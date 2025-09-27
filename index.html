@@ -40,32 +40,37 @@
     .trivia-link:hover {
       text-decoration: underline;
     }
-
-    /* User sign-in button */
-    #userButton {
-      position: fixed;
-      top: 50px;
-      right: 20px;
-      padding: 8px 12px;
-      background: #0077ff;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      z-index: 1000;
-    }
   </style>
 </head>
 <body>
 
   <!-- Header -->
   <header>
-    <div id="hamburger" class="hamburger">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-    <section class="header-section"></section>
+    <!-- Hamburger Icon -->
+<div id="hamburger" class="hamburger">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+<!-- Fixed Sign-In Button -->
+<button id="userButton" style="
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  padding: 8px 16px;
+  background: #0077ff;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  z-index: 10000;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0,119,255,0.3);
+  display: none; /* Start hidden until auth state is determined */
+">Sign In</button>
+    <section class="header-section">
+    </section>
   </header>
 
   <!-- Search Section -->
@@ -100,10 +105,12 @@
   <!-- Google Custom Search Script -->
   <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
 
-  <!-- Trivia + Search Logging -->
+  <!-- Search Logging JS -->
   <script>
     const SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbye72BaC5itl9lQNV8k8OrO_E4VjdFbqm3quUX6RnS8s9tOE_UbvVd8WBPLDhpgUp6W/exec";
     const CSE_CX = "178f66b21f928448b";
+
+    // Predefined trivia search terms
     const TRIVIA_TOPICS = [
       "interesting science facts",
       "historical events today",
@@ -118,149 +125,261 @@
     ];
 
     window.onload = () => {
-      // Initialize CSE
       function initCSE() {
         if (typeof google === "undefined" || !google.search || !google.search.cse) {
           setTimeout(initCSE, 100);
           return;
         }
+
         const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
         if (!searchBox) return;
+
         const originalExecute = searchBox.execute;
+
         searchBox.execute = function(query) {
           console.log("User searched:", query);
+
+          // If query is empty, show trivia instead
           if (!query || query.trim() === "") {
             showRandomTrivia();
-            return;
+            return; // Don't proceed with normal search
           }
+
+          // Send search to Google Sheet
           fetch(SHEET_WEB_APP_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ query, timestamp: new Date() })
-          }).then(res => res.json()).then(data => console.log("Logged:", data))
-            .catch(err => console.error("Failed to log search:", err));
+          })
+          .then(res => res.json())
+          .then(data => console.log("Logged:", data))
+          .catch(err => console.error("Failed to log search:", err));
+
+          // Call original search function (redirect to results.html)
           originalExecute.call(searchBox, query);
         };
       }
 
+      // Function to show random trivia
       function showRandomTrivia() {
         const randomTopic = TRIVIA_TOPICS[Math.floor(Math.random() * TRIVIA_TOPICS.length)];
+        
+        // Use Google Custom Search API to get trivia
         fetch(`https://www.googleapis.com/customsearch/v1?key=AIzaSyCjAJ9y0oY7dI5qDZ_WbYqJ9Q8nQ9Q8nQ8&cx=${CSE_CX}&q=${encodeURIComponent(randomTopic)}&num=1`)
           .then(response => response.json())
           .then(data => {
             if (data.items && data.items.length > 0) {
-              displayTrivia(data.items[0].title, data.items[0].snippet, data.items[0].link);
+              const result = data.items[0];
+              displayTrivia(result.title, result.snippet, result.link);
             } else {
-              displayTrivia("Did you know?", "The world is full of interesting facts! Try searching for something specific to learn more.", "https://www.funtrivia.com/");
+              // Fallback if no results found
+              displayTrivia(
+                "Did you know?",
+                "The world is full of interesting facts! Try searching for something specific to learn more.",
+                "https://www.funtrivia.com/"
+              );
             }
-          }).catch(() => {
-            displayTrivia("Search Tip", "Enter a search term to explore the web.", "https://www.funtrivia.com/");
+          })
+          .catch(error => {
+            console.error("Error fetching trivia:", error);
+            displayTrivia(
+              "Search Tip",
+              "Enter a search term to explore the web. You can search for anything from science to history!",
+              "https://www.funtrivia.com/"
+            );
           });
       }
 
+      // Function to display trivia in the UI
       function displayTrivia(title, snippet, link) {
         const triviaSection = document.getElementById('triviaSection');
-        document.getElementById('triviaTitle').textContent = title;
-        document.getElementById('triviaSnippet').textContent = snippet;
+        const triviaTitle = document.getElementById('triviaTitle');
+        const triviaSnippet = document.getElementById('triviaSnippet');
         const triviaLink = document.getElementById('triviaLink');
+
+        triviaTitle.textContent = title;
+        triviaSnippet.textContent = snippet;
         triviaLink.href = link;
         triviaLink.textContent = "Learn more about this topic";
+
+        // Show the trivia section
         triviaSection.style.display = 'block';
-        setTimeout(() => triviaSection.style.display = 'none', 10000);
+
+        // Hide trivia after 10 seconds
+        setTimeout(() => {
+          triviaSection.style.display = 'none';
+        }, 10000);
       }
 
-      // Setup listeners
+      // Add event listeners for both click and enter key
       function setupSearchListeners() {
+        // Wait for CSE to load and then find the search elements
         const checkElements = setInterval(() => {
           const searchButton = document.querySelector('.gsc-search-button');
           const searchInput = document.querySelector('.gsc-input input');
+          
           if (searchButton && searchInput) {
             clearInterval(checkElements);
-            searchButton.addEventListener('click', () => { if(searchInput.value.trim() === '') showRandomTrivia(); });
-            searchInput.addEventListener('keypress', (event) => {
-              if(event.key === 'Enter') setTimeout(() => { if(searchInput.value.trim() === '') { event.preventDefault(); showRandomTrivia(); } }, 10);
+            
+            // Click event for search button
+            searchButton.addEventListener('click', function() {
+              if (searchInput.value.trim() === '') {
+                showRandomTrivia();
+              }
             });
+            
+            // Enter key event for search input
+            searchInput.addEventListener('keypress', function(event) {
+              if (event.key === 'Enter') {
+                // Small delay to ensure the input value is captured correctly
+                setTimeout(() => {
+                  if (searchInput.value.trim() === '') {
+                    event.preventDefault();
+                    showRandomTrivia();
+                  }
+                }, 10);
+              }
+            });
+
+            // Additional safety check on form submission
+            const searchForm = document.querySelector('.gsc-search-box');
+            if (searchForm) {
+              searchForm.addEventListener('submit', function(event) {
+                if (searchInput.value.trim() === '') {
+                  event.preventDefault();
+                  showRandomTrivia();
+                }
+              });
+            }
           }
         }, 100);
       }
 
+      // Alternative approach: Monitor the entire document for enter key presses
+      function setupGlobalEnterKeyListener() {
+        document.addEventListener('keypress', function(event) {
+          // Check if enter key is pressed and search input is focused and empty
+          if (event.key === 'Enter') {
+            const searchInput = document.querySelector('.gsc-input input');
+            const activeElement = document.activeElement;
+            
+            // Check if the focused element is the search input and it's empty
+            if (searchInput && activeElement === searchInput && searchInput.value.trim() === '') {
+              event.preventDefault();
+              event.stopPropagation();
+              showRandomTrivia();
+            }
+          }
+        });
+      }
+
       initCSE();
       setupSearchListeners();
+      setupGlobalEnterKeyListener(); // Added as backup
     };
   </script>
 
   <script>
-    // Mobile redirect
     if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
       document.body.innerHTML = "<h1>Sorry, this website is not available on mobile devices.</h1>";
     }
-
-    // Hamburger
-    const hamburger = document.getElementById('hamburger');
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      window.location.href = 'settings.html';
-    });
-
-    // Theme
-    window.addEventListener('load', () => {
-      if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
-    });
   </script>
+<script>
+const hamburger = document.getElementById('hamburger');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  window.location.href = 'settings.html'; // Opens settings page
+});
 
-  <!-- Firebase Auth + Search Logging -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+// Apply saved theme on index page
+window.addEventListener('load', () => {
+  const theme = localStorage.getItem('theme');
+  if(theme === 'dark') document.body.classList.add('dark');
+});
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCMy4SNOU3eAl4iSfbmHWTxae9pVcnJFmc",
-      authDomain: "taisen-search-ad9eb.firebaseapp.com",
-      projectId: "taisen-search-ad9eb",
-      storageBucket: "taisen-search-ad9eb.appspot.com",
-      messagingSenderId: "779736719927",
-      appId: "1:779736719927:web:07ccea945f7549ad56d5b2"
+const firebaseConfig = {
+  apiKey: "AIzaSyCMy4SNOU3eAl4iSfbmHWTxae9pVcnJFmc",
+  authDomain: "taisen-search-ad9eb.firebaseapp.com",
+  projectId: "taisen-search-ad9eb",
+  storageBucket: "taisen-search-ad9eb.appspot.com",
+  messagingSenderId: "779736719927",
+  appId: "1:779736719927:web:07ccea945f7549ad56d5b2"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+const userButton = document.getElementById("userButton");
+
+function updateButton(user) {
+  if (user) {
+    // User is signed in - show user's name or "User"
+    const name = user.displayName || "User";
+    userButton.textContent = name;
+    userButton.style.display = "block";
+    userButton.onclick = () => {
+      window.location.href = "https://taisenaccounts.pages.dev/account";
     };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
-
-    const userButton = document.getElementById("userButton");
-
-    function updateButton(user) {
-      if(user) {
-        const name = user.displayName || "User";
-        userButton.textContent = name + " (Sign Out)";
-        userButton.onclick = async () => { await signOut(auth); };
-      } else {
-        userButton.textContent = "Sign In";
-        userButton.onclick = async () => { await signInWithPopup(auth, provider); };
-      }
-    }
-
-    onAuthStateChanged(auth, updateButton);
-
-    async function logSearch(query) {
-      const user = auth.currentUser;
-      if(!user) return;
+  } else {
+    // User is signed out - show "Sign In" button
+    userButton.textContent = "Sign In";
+    userButton.style.display = "block";
+    userButton.onclick = async () => {
       try {
-        const userRef = doc(db, "users", user.uid);
-        await setDoc(userRef, { lastSearch: query, timestamp: new Date() }, { merge: true });
-      } catch(err) { console.error("Error logging search:", err); }
-    }
-
-    const interval = setInterval(() => {
-      const searchBox = google?.search?.cse?.element?.getElement("gcse-searchbox-only");
-      if(searchBox && searchBox.execute) {
-        clearInterval(interval);
-        const originalExecute = searchBox.execute.bind(searchBox);
-        searchBox.execute = function(query) { if(query && query.trim() !== "") logSearch(query); originalExecute(query); };
+        await signInWithPopup(auth, provider);
+      } catch (error) {
+        console.error("Sign in error:", error);
       }
-    }, 100);
-  </script>
+    };
+  }
+}
+
+// Initialize auth state listener
+onAuthStateChanged(auth, (user) => {
+  updateButton(user);
+});
+
+// Log search function
+async function logSearch(query) {
+  const user = auth.currentUser;
+  if (!user) return;
+  try {
+    const userRef = doc(db, "users", user.uid);
+    await setDoc(userRef, { 
+      lastSearch: query, 
+      timestamp: new Date(),
+      email: user.email,
+      displayName: user.displayName 
+    }, { merge: true });
+    console.log("Search logged:", query);
+  } catch (err) {
+    console.error("Error logging search:", err);
+  }
+}
+
+// Override search execution to log searches
+const interval = setInterval(() => {
+  if (window.google && google.search && google.search.cse) {
+    const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
+    if (searchBox && searchBox.execute) {
+      clearInterval(interval);
+      const originalExecute = searchBox.execute.bind(searchBox);
+      searchBox.execute = function(query) {
+        if (query && query.trim() !== "") logSearch(query);
+        originalExecute(query);
+      };
+    }
+  }
+}, 100);
+</script>
+
+
 
 </body>
 </html>
