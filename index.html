@@ -300,7 +300,7 @@ window.addEventListener('load', () => {
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Create button element
+  // Create user/sign-in button
   const userButton = document.createElement("button");
   userButton.style.position = "fixed";
   userButton.style.top = "50px";
@@ -317,12 +317,14 @@ window.addEventListener('load', () => {
 
   function updateButton() {
     if (currentUser) {
-      const name = currentUser.displayName || currentUser.email || "Account";
+      // Show user name or default to "User"
+      const name = currentUser.displayName || "User";
       userButton.textContent = name;
       userButton.onclick = () => {
         window.location.href = "https://taisenaccounts.pages.dev/account";
       };
     } else {
+      // Show Sign In button
       userButton.textContent = "Sign In";
       userButton.onclick = () => {
         window.location.href = "https://taisenaccounts.pages.dev/";
@@ -330,14 +332,15 @@ window.addEventListener('load', () => {
     }
   }
 
+  // Listen for auth state changes
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
     updateButton();
   });
 
-  // Optional: log searches for logged-in users
+  // Function to log search for signed-in users only
   async function logSearch(query) {
-    if (!currentUser) return;
+    if (!currentUser) return; // do nothing if not signed in
     try {
       const userRef = doc(db, "users", currentUser.uid);
       await setDoc(userRef, { lastSearch: query, timestamp: new Date() }, { merge: true });
@@ -347,9 +350,28 @@ window.addEventListener('load', () => {
     }
   }
 
-  // Example: call logSearch inside your existing search handler
-  // logSearch(query);
+  // Hook into your existing search functionality
+  const originalCSEExecute = window.onload && window.onload.toString().includes("searchBox.execute") 
+    ? window.onload : null;
+
+  // Override Google CSE execute function to log searches for signed-in users
+  const interval = setInterval(() => {
+    const searchBox = google?.search?.cse?.element?.getElement("gcse-searchbox-only");
+    if (searchBox && searchBox.execute) {
+      clearInterval(interval);
+      const originalExecute = searchBox.execute.bind(searchBox);
+      searchBox.execute = function(query) {
+        // Log for signed-in users
+        if (query && query.trim() !== "") {
+          logSearch(query);
+        }
+        // Proceed with normal search
+        originalExecute(query);
+      };
+    }
+  }, 100);
 </script>
+
 
 
 </body>
