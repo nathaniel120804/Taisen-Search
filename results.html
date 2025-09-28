@@ -3,42 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Search Results - Taisen</title>
+<title>Search Results</title>
 <link rel="icon" type="image/png" href="original.png">
 <link rel="stylesheet" href="style.css?v=20250901">
 <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
 
 <style>
-/* Modernized base styles from index.html */
 :root {
-  --primary: #0077ff;
-  --primary-dark: #0056cc;
-  --secondary: #6c757d;
-  --success: #34a853;
-  --danger: #d93025;
-  --warning: #ffc107;
-  --info: #17a2b8;
-  --light: #f8f9fa;
-  --dark: #343a40;
-  --white: #ffffff;
-  --gray-100: #f8f9fa;
-  --gray-200: #e9ecef;
-  --gray-300: #dee2e6;
-  --gray-400: #ced4da;
-  --gray-500: #adb5bd;
-  --gray-600: #6c757d;
-  --gray-700: #495057;
-  --gray-800: #343a40;
-  --gray-900: #212529;
-  --gradient-primary: linear-gradient(135deg, #0077ff 0%, #0056cc 100%);
-  --gradient-secondary: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
-  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-  --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
+  --primary: #3B82F6;
+  --primary-dark: #2563EB;
+  --secondary: #6B7280;
+  --light: #1a1a1a;
+  --dark: #f8f9fa;
+  --white: #2d2d2d;
+  --gray-100: #1a1a1a;
+  --gray-200: #2d2d2d;
+  --gray-300: #404040;
+  --gray-400: #595959;
+  --gray-500: #737373;
+  --gray-600: #8c8c8c;
+  --gray-700: #a6a6a6;
+  --gray-800: #bfbfbf;
+  --gray-900: #d9d9d9;
   --border-radius: 8px;
   --border-radius-lg: 12px;
-  --transition: all 0.3s ease;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+  --transition: all 0.2s ease;
 }
 
 * {
@@ -50,80 +42,44 @@
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.5;
   color: var(--gray-800);
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
-/* Header - Applied index.html header styling */
-header {
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.95);
+/* Header Styles */
+.results-header {
+  background: rgba(45, 45, 45, 0.95);
+  box-shadow: var(--shadow-md);
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
   backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-sm);
-  position: relative;
-  z-index: 1000;
 }
 
-.hamburger {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 24px;
-  height: 18px;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.hamburger div {
-  height: 2px;
-  background: var(--gray-700);
-  border-radius: 2px;
-  transition: var(--transition);
-}
-
-.hamburger:hover div {
-  background: var(--primary);
-}
-
-.hamburger.active div:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.active div:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.active div:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -6px);
-}
-
-/* Results-specific styling - KEEPING ALL ORIGINAL FUNCTIONALITY */
 .results-header-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 20px;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  width: 100%;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .logo-link {
-  display: flex;
-  align-items: center;
+  text-decoration: none;
+  color: inherit;
 }
 
 .results-name {
-  font-size: 1.75rem;
+  font-size: 2rem;
   font-weight: 700;
-  background: var(--gradient-primary);
+  margin: 0;
+  background: linear-gradient(135deg, #4dabf7 0%, #339af0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -131,99 +87,48 @@ header {
 
 .searchbar-container {
   flex: 1;
+  min-width: 300px;
   max-width: 600px;
 }
 
-.gsc-control-cse {
-  padding: 0 !important;
-  border: none !important;
-  background: transparent !important;
-}
-
-.gsc-search-box {
-  margin-bottom: 0 !important;
-}
-
-.gsc-input-box {
-  border: 1px solid var(--gray-300) !important;
-  border-radius: 24px !important;
-  height: 44px !important;
-  padding: 0 12px !important;
-  background-color: var(--white) !important;
-  transition: var(--transition);
-}
-
-.gsc-input-box:hover, .gsc-input-box:focus-within {
-  border-color: var(--primary) !important;
-  box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1) !important;
-}
-
-.gsc-input {
-  padding: 0 !important;
-  font-size: 16px !important;
-  color: var(--gray-800) !important;
-  background-color: transparent !important;
-}
-
-.gsc-search-button {
-  background-color: var(--primary) !important;
-  border-color: var(--primary) !important;
-  border-radius: 20px !important;
-  padding: 8px 16px !important;
-}
-
-/* Main Content - KEEPING ORIGINAL STRUCTURE */
+/* Main Content */
 .results-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1.5rem 1rem;
-  flex: 1;
-  display: flex;
-  gap: 2rem;
+  padding: 30px 20px;
 }
 
-/* Controls Panel - Applied modern styling */
-.controls-panel {
-  flex: 0 0 250px;
-  background: var(--white);
+/* Controls Section */
+.controls-section {
+  background: var(--gray-200);
   border-radius: var(--border-radius-lg);
-  padding: 1.5rem;
-  height: fit-content;
+  padding: 20px;
+  margin-bottom: 25px;
   box-shadow: var(--shadow-md);
-  transition: var(--transition);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
 }
 
 .control-group {
-  margin-bottom: 1.5rem;
-}
-
-.control-group h3 {
-  font-size: 1.1rem;
-  margin-bottom: 0.75rem;
-  color: var(--gray-700);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 10px;
 }
 
-/* Toggle Styles - Modernized */
-.toggle-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+.control-label {
+  font-weight: 600;
+  color: var(--gray-800);
+  white-space: nowrap;
 }
 
-.toggle-label {
-  font-weight: 500;
-  color: var(--gray-700);
-}
-
+/* Toggle Switch */
 .switch {
   position: relative;
   display: inline-block;
-  width: 44px;
-  height: 24px;
+  width: 50px;
+  height: 28px;
 }
 
 .switch input { 
@@ -239,21 +144,22 @@ header {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 24px;
+  background-color: var(--gray-400);
+  transition: var(--transition);
+  border-radius: 28px;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
+  height: 22px;
+  width: 22px;
   left: 3px;
   bottom: 3px;
-  background-color: white;
-  transition: .4s;
+  background-color: var(--white);
+  transition: var(--transition);
   border-radius: 50%;
+  box-shadow: var(--shadow-sm);
 }
 
 input:checked + .slider {
@@ -261,306 +167,207 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(20px);
+  transform: translateX(22px);
 }
 
-/* Filter Styles - Modernized */
-.filter-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.filter-label {
-  font-weight: 500;
-  color: var(--gray-700);
-}
-
-select {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--gray-300);
+/* Filter Dropdown */
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid var(--gray-400);
   border-radius: var(--border-radius);
-  background-color: var(--white);
-  font-size: 0.9rem;
+  background-color: var(--gray-200);
   color: var(--gray-800);
+  font-size: 14px;
   cursor: pointer;
   transition: var(--transition);
 }
 
-select:focus {
+.filter-select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
-/* Results Section - Modernized */
-.results-section {
-  flex: 1;
-}
-
-.results-header-info {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--gray-300);
-}
-
-.results-count {
-  font-size: 0.9rem;
-  color: var(--gray-600);
-}
-
-.query-term {
-  font-weight: 600;
-  color: var(--primary);
-}
-
-/* Internal Results - Modernized */
-.internal-results {
-  margin-bottom: 2rem;
-}
-
-.section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--gray-700);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+/* Internal Results */
+#results-internal {
+  margin-bottom: 30px;
 }
 
 .result-card {
-  background: var(--white);
-  border-radius: var(--border-radius);
-  padding: 1.25rem;
-  margin-bottom: 1rem;
-  box-shadow: var(--shadow-sm);
-  border-left: 4px solid var(--primary);
+  background: var(--gray-200);
+  border-radius: var(--border-radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-md);
   transition: var(--transition);
+  border-left: 4px solid var(--primary);
 }
 
 .result-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
 }
 
 .result-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
   color: var(--primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
 }
 
 .result-snippet {
   color: var(--gray-700);
-  margin-bottom: 0.75rem;
+  margin-bottom: 12px;
   line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .result-meta {
   display: flex;
-  gap: 1rem;
-  font-size: 0.85rem;
+  gap: 15px;
+  margin-bottom: 12px;
+  font-size: 0.875rem;
   color: var(--gray-600);
+}
+
+.result-type, .result-source {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .result-link {
   display: inline-block;
-  margin-top: 0.5rem;
-  font-weight: 500;
   color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--primary);
+  border-radius: var(--border-radius);
   transition: var(--transition);
 }
 
 .result-link:hover {
-  color: var(--primary-dark);
-  transform: translateX(3px);
+  background-color: var(--primary);
+  color: var(--white);
 }
 
 .no-results {
   text-align: center;
-  padding: 2rem;
+  padding: 40px 20px;
   color: var(--gray-600);
-  background: var(--gray-100);
-  border-radius: var(--border-radius);
+  font-style: italic;
 }
 
-/* Google CSE Results - Modernized */
-.gcse-searchresults-only {
-  margin-top: 2rem;
+/* Google CSE Results */
+.gsc-control-cse {
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
 }
 
-.gsc-results {
-  width: 100% !important;
-}
-
-.gsc-webResult .gs-title {
-  font-size: 1.1rem !important;
-  line-height: 1.4 !important;
-  color: var(--primary) !important;
-}
-
-.gsc-webResult .gs-snippet {
-  font-size: 0.95rem !important;
-  line-height: 1.5 !important;
-  color: var(--gray-700) !important;
-}
-
-.gsc-result {
-  background-color: var(--white) !important;
-  border-color: var(--gray-300) !important;
-}
-
-.gsc-table-result {
+.gsc-webResult .gsc-result {
+  padding: 20px !important;
+  margin-bottom: 20px !important;
+  background: var(--gray-200) !important;
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: var(--shadow-md) !important;
+  border: none !important;
   color: var(--gray-800) !important;
 }
 
-/* User Button from index.html */
-#userButton {
-  padding: 10px 20px;
-  background: var(--gradient-primary);
-  color: var(--white);
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  box-shadow: var(--shadow-md);
-  transition: var(--transition);
+.gs-result .gs-title, 
+.gs-result .gs-title * {
+  color: var(--primary) !important;
+  text-decoration: none !important;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
 }
 
-#userButton:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+.gs-result .gs-snippet {
+  color: var(--gray-700) !important;
+  line-height: 1.5 !important;
 }
 
-/* Footer from index.html */
-footer {
-  padding: 20px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.8);
-  margin-top: auto;
+.gsc-table-result, 
+.gsc-thumbnail-inside, 
+.gsc-url-top {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
-.footer-links a {
-  color: var(--gray-700);
-  text-decoration: none;
-  margin: 0 8px;
-  transition: var(--transition);
+/* Search box styling */
+.gsc-input-box {
+  border: 1px solid var(--gray-400) !important;
+  border-radius: 30px !important;
+  background: var(--gray-200) !important;
 }
 
-.footer-links a:hover {
-  color: var(--primary);
+.gsc-input {
+  background: transparent !important;
+  color: var(--gray-800) !important;
 }
 
-/* Auth Modal Styles from index.html */
-.auth-modal, .account-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10001;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(5px);
-}
-
-.auth-modal.active, .account-modal.active {
-  display: flex;
-  animation: modalFadeIn 0.3s ease;
-}
-
-@keyframes modalFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.auth-container, .account-container {
-  background: var(--white);
-  border-radius: var(--border-radius-lg);
-  width: 90%;
-  max-width: 400px;
-  box-shadow: var(--shadow-xl);
-  overflow: hidden;
-  transform: scale(0.9);
-  animation: modalScaleIn 0.3s ease forwards;
-}
-
-@keyframes modalScaleIn {
-  to { transform: scale(1); }
+.gsc-search-button {
+  background: var(--primary) !important;
+  border-radius: 30px !important;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .results-container {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .controls-panel {
-    flex: none;
-  }
-  
   .results-header-inner {
     flex-direction: column;
-    gap: 1rem;
+    align-items: stretch;
+    gap: 15px;
   }
   
   .searchbar-container {
-    width: 100%;
+    min-width: 100%;
   }
   
-  header {
+  .controls-section {
     flex-direction: column;
-    gap: 1rem;
-    padding: 10px;
+    align-items: flex-start;
+  }
+  
+  .control-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .results-container {
+    padding: 20px 15px;
+  }
+  
+  .result-meta {
+    flex-direction: column;
+    gap: 8px;
   }
 }
 
-/* Dark mode support from index.html */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --light: #1a1a1a;
-    --dark: #f8f9fa;
-    --white: #2d2d2d;
-    --gray-100: #1a1a1a;
-    --gray-200: #2d2d2d;
-    --gray-300: #404040;
-    --gray-400: #595959;
-    --gray-500: #737373;
-    --gray-600: #8c8c8c;
-    --gray-700: #a6a6a6;
-    --gray-800: #bfbfbf;
-    --gray-900: #d9d9d9;
-  }
-
-  body {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    color: var(--gray-800);
-  }
-
-  header, footer {
-    background: rgba(45, 45, 45, 0.95);
-  }
-
+@media (max-width: 480px) {
   .results-name {
-    background: linear-gradient(135deg, #4dabf7 0%, #339af0 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 1.75rem;
+  }
+  
+  .result-card {
+    padding: 15px;
+  }
+  
+  .result-title {
+    font-size: 1.1rem;
   }
 }
 </style>
 </head>
 <body>
 
-<!-- Header with index.html design -->
-<header>
-  
-  <!-- Results header content maintained -->
+<header class="results-header">
   <div class="results-header-inner">
     <a href="index.html" class="logo-link">
       <h1 class="results-name">Taisen</h1>
@@ -569,189 +376,43 @@ footer {
       <div class="gcse-searchbox-only" data-resultsUrl="results.html" data-newWindow="false"></div>
     </div>
   </div>
-  
-  <!-- User Button -->
-  <button id="userButton">Sign In</button>
 </header>
 
-<!-- Main content UNCHANGED -->
 <main class="results-container">
-  <!-- Controls Panel -->
-  <aside class="controls-panel">
+
+  <!-- Controls Section -->
+  <section class="controls-section">
+    <!-- Labs toggle -->
     <div class="control-group">
-      <h3>Search Controls</h3>
-      
-      <!-- Labs toggle -->
-      <div class="toggle-container">
-        <span class="toggle-label">Show Labs</span>
-        <label class="switch">
-          <input type="checkbox" id="labsToggle" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <!-- Filter dropdown -->
-      <div class="filter-container">
-        <label for="filter" class="filter-label">Filter by Category</label>
-        <select id="filter">
-          <option value="all">All Categories</option>
-          <option value="STEM">STEM</option>
-          <option value="Psychology">Psychology</option>
-          <option value="Experiments / Labs">Experiments / Labs</option>
-        </select>
-      </div>
+      <span class="control-label">Show Labs:</span>
+      <label class="switch">
+        <input type="checkbox" id="labsToggle" checked>
+        <span class="slider round"></span>
+      </label>
     </div>
-    
+
+    <!-- Filter dropdown -->
     <div class="control-group">
-      <h3>Search Tips</h3>
-      <p style="font-size: 0.9rem; color: var(--gray-600);">
-        Use specific keywords for better results. Try filtering by category to narrow down your search.
-      </p>
+      <label for="filter" class="control-label">Filter:</label>
+      <select id="filter" class="filter-select">
+        <option value="all">All</option>
+        <option value="STEM">STEM</option>
+        <option value="Psychology">Psychology</option>
+        <option value="Experiments / Labs">Experiments / Labs</option>
+      </select>
     </div>
-  </aside>
-
-  <!-- Results Section -->
-  <section class="results-section">
-    <div class="results-header-info">
-      <p class="results-count">Search results for: <span class="query-term" id="queryTerm">Loading...</span></p>
-    </div>
-
-    <!-- Internal results -->
-    <div class="internal-results">
-      <h2 class="section-title">Taisen Labs Results</h2>
-      <div id="results-internal"></div>
-    </div>
-
-    <!-- Google CSE Results -->
-    <div class="gcse-searchresults-only"></div>
   </section>
+
+  <!-- Internal results -->
+  <div id="results-internal"></div>
+
+  <!-- Google CSE Results -->
+  <div class="gcse-searchresults-only"></div>
+
 </main>
 
-<!-- Footer from index.html -->
-<footer>
-  <section class="footer-section">
-    <nav class="footer-links">
-      <a href="about.html">About</a> ·
-      <a href="advertising.html">Advertising</a> ·
-      <a href="privacy.html">Privacy Policy</a> ·
-      <a href="help center.html">Help Center</a> ·
-      <a href="labs.html">Labs</a> ·
-      <a href="TaisenSearch_Documentation.html">Documentation</a>
-    </nav>
-  </section>
-</footer>
-
-<!-- Auth Modal from index.html -->
-<div id="authModal" class="auth-modal">
-  <div class="auth-container">
-    <div class="auth-header">
-      <h2 class="auth-title">Sign In to Taisen</h2>
-      <button id="authClose" class="auth-close">&times;</button>
-    </div>
-    <div class="auth-content">
-      <div class="auth-tabs">
-        <button class="auth-tab active" data-tab="signin">Sign In</button>
-        <button class="auth-tab" data-tab="signup">Sign Up</button>
-      </div>
-      
-      <!-- Email/Password Form -->
-      <form id="emailForm" class="auth-form active">
-        <div class="form-group">
-          <label class="form-label" for="email">Email</label>
-          <input type="email" id="email" class="form-input" placeholder="your@email.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="password">Password</label>
-          <input type="password" id="password" class="form-input" placeholder="Your password">
-        </div>
-        <button type="submit" class="auth-button" id="emailSubmit">Sign In</button>
-        <div id="emailError" class="auth-error"></div>
-        <div id="emailSuccess" class="auth-success"></div>
-      </form>
-      
-      <!-- Phone Form -->
-      <form id="phoneForm" class="auth-form">
-        <div class="form-group">
-          <label class="form-label" for="phoneNumber">Phone Number</label>
-          <input type="tel" id="phoneNumber" class="form-input" placeholder="+1 234 567 8900">
-        </div>
-        <div class="form-group" id="verificationCodeGroup" style="display: none;">
-          <label class="form-label" for="verificationCode">Verification Code</label>
-          <input type="text" id="verificationCode" class="form-input" placeholder="Enter code">
-        </div>
-        <button type="submit" class="auth-button phone" id="phoneSubmit">Send Code</button>
-        <div id="phoneError" class="auth-error"></div>
-        <div id="phoneSuccess" class="auth-success"></div>
-      </form>
-      
-      <!-- Provider Buttons -->
-      <div class="auth-divider"><span>or continue with</span></div>
-      
-      <button class="auth-button google" id="googleSignIn">Sign in with Google</button>
-      <button class="auth-button anonymous" id="anonymousSignIn">Continue as Guest</button>
-    </div>
-  </div>
-</div>
-
-<!-- Account Modal from index.html -->
-<div id="accountModal" class="account-modal">
-  <div class="account-container">
-    <div class="account-header">
-      <h2 class="account-title">Taisen Account</h2>
-      <button id="accountClose" class="account-close">&times;</button>
-    </div>
-    <div class="account-content">
-      <div class="account-info">
-        <div class="account-info-item">
-          <span class="account-info-label">Display Name:</span>
-          <span id="accountDisplayName">Loading...</span>
-        </div>
-        <div class="account-info-item">
-          <span class="account-info-label">Email:</span>
-          <span id="accountEmail">Loading...</span>
-        </div>
-        <div class="account-info-item">
-          <span class="account-info-label">User ID:</span>
-          <span id="accountUserId">Loading...</span>
-        </div>
-        <div class="account-info-item">
-          <span class="account-info-label">Account Type:</span>
-          <span id="accountType">Loading...</span>
-        </div>
-      </div>
-      <div class="account-actions">
-        <button class="account-button manage" id="manageAccount">Manage Account</button>
-        <button class="account-button signout" id="signOutButton">Sign Out</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ORIGINAL RESULTS PAGE JAVASCRIPT - COMPLETELY UNCHANGED -->
 <script>
-// Enhanced theme detection and application
-function applyTheme() {
-  const savedTheme = localStorage.getItem('theme');
-  const body = document.body;
-  
-  // Remove any existing theme classes
-  body.classList.remove('light', 'dark', 'auto-theme');
-  
-  if (savedTheme === 'light' || savedTheme === 'dark') {
-    // Use saved preference
-    body.classList.add(savedTheme);
-  } else {
-    // Auto-detect based on device preference
-    body.classList.add('auto-theme');
-    
-    // Also check if we need to set a default for first-time visitors
-    if (!localStorage.getItem('theme')) {
-      localStorage.setItem('theme', 'auto');
-    }
-  }
-}
-
-// CAPTCHA Verification Function
+// CAPTCHA Verification Function - ADDED THIS FUNCTION
 function verifyCaptcha() {
   const params = new URLSearchParams(window.location.search);
   const query = params.get('q') || '';
@@ -783,39 +444,24 @@ function redirectToCaptcha(query) {
   window.location.href = `captcha.html?q=${encodeURIComponent(query)}`;
 }
 
-// Listen for system theme changes
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'auto' || !savedTheme) {
-    applyTheme();
-  }
-});
-
-// Original code below - with UI integration
+// Original code below - UNCHANGED
 let data = [];
 
 // Helpers
 function getQuery() {
-  const query = new URLSearchParams(window.location.search).get('q') || '';
-  document.getElementById('queryTerm').textContent = query;
-  return query;
+  return new URLSearchParams(window.location.search).get('q') || '';
 }
-
 function getLabsPreference() {
   const saved = localStorage.getItem('showLabs');
   return saved === null ? true : saved === 'true';
 }
-
 function saveLabsPreference(value) {
   localStorage.setItem('showLabs', value);
 }
 
 // Load internal JSON data
 async function loadData() {
-  // Apply theme first
-  applyTheme();
-  
-  // CAPTCHA Verification Check
+  // CAPTCHA Verification Check - ADDED THIS CHECK
   if (!verifyCaptcha()) {
     return; // Redirect will happen automatically
   }
@@ -835,16 +481,12 @@ async function loadData() {
     const query = getQuery();
 
     let resultsDiv = document.getElementById('results-internal');
-    const sectionTitle = document.querySelector('.section-title');
 
     if (!showLabs) {
       // If toggle OFF, hide internal results completely
       resultsDiv.innerHTML = '';
-      sectionTitle.style.display = 'none';
       return;
     }
-    
-    sectionTitle.style.display = 'flex';
 
     // Filter results based on query & label
     const filtered = data.filter(item => {
@@ -857,12 +499,7 @@ async function loadData() {
     // Display
     resultsDiv.innerHTML = '';
     if (!filtered.length) {
-      resultsDiv.innerHTML = `
-        <div class="no-results">
-          <p>No internal results found for your search.</p>
-          <p>Try adjusting your search terms or changing the category filter.</p>
-        </div>
-      `;
+      resultsDiv.innerHTML = '<div class="no-results">No internal results found.</div>';
       return;
     }
     
@@ -873,10 +510,10 @@ async function loadData() {
         <h3 class="result-title">${item.title}</h3>
         <p class="result-snippet">${item.snippet}</p>
         <div class="result-meta">
-          <span><strong>Type:</strong> ${item.type}</span>
-          <span><strong>Source:</strong> ${item.source}</span>
+          <span class="result-type"><strong>Type:</strong> ${item.type}</span>
+          <span class="result-source"><strong>Source:</strong> ${item.source}</span>
         </div>
-        <a href="${item.link}" target="_blank" class="result-link">Visit Resource →</a>
+        <a href="${item.link}" target="_blank" class="result-link">Visit Resource</a>
       `;
       resultsDiv.appendChild(card);
     });
@@ -887,7 +524,6 @@ async function loadData() {
     saveLabsPreference(labsToggle.checked);
     updateResults();
   });
-  
   filterEl.addEventListener('change', updateResults);
 
   // Initial display
@@ -896,337 +532,25 @@ async function loadData() {
 
 window.addEventListener('load', loadData);
 </script>
-
-<!-- AUTHENTICATION SCRIPT FROM INDEX.HTML -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-  import { 
-    getAuth, 
-    onAuthStateChanged, 
-    GoogleAuthProvider, 
-    signInWithPopup, 
-    signOut,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signInAnonymously,
-    RecaptchaVerifier,
-    signInWithPhoneNumber
-  } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCMy4SNOU3eAl4iSfbmHWTxae9pVcnJFmc",
-    authDomain: "taisen-search-ad9eb.firebaseapp.com",
-    projectId: "taisen-search-ad9eb",
-    storageBucket: "taisen-search-ad9eb.appspot.com",
-    messagingSenderId: "779736719927",
-    appId: "1:779736719927:web:07ccea945f7549ad56d5b2"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const provider = new GoogleAuthProvider();
-  
-  // DOM Elements
-  const userButton = document.getElementById("userButton");
-  const authModal = document.getElementById("authModal");
-  const accountModal = document.getElementById("accountModal");
-  const authClose = document.getElementById("authClose");
-  const accountClose = document.getElementById("accountClose");
-  const authTabs = document.querySelectorAll(".auth-tab");
-  const emailForm = document.getElementById("emailForm");
-  const phoneForm = document.getElementById("phoneForm");
-  const emailSubmit = document.getElementById("emailSubmit");
-  const phoneSubmit = document.getElementById("phoneSubmit");
-  const googleSignIn = document.getElementById("googleSignIn");
-  const anonymousSignIn = document.getElementById("anonymousSignIn");
-  const emailError = document.getElementById("emailError");
-  const phoneError = document.getElementById("phoneError");
-  const emailSuccess = document.getElementById("emailSuccess");
-  const phoneSuccess = document.getElementById("phoneSuccess");
-  const verificationCodeGroup = document.getElementById("verificationCodeGroup");
-  const signOutButton = document.getElementById("signOutButton");
-  const manageAccount = document.getElementById("manageAccount");
-  
-  // Account modal elements
-  const accountDisplayName = document.getElementById("accountDisplayName");
-  const accountEmail = document.getElementById("accountEmail");
-  const accountUserId = document.getElementById("accountUserId");
-  const accountType = document.getElementById("accountType");
-  
-  let confirmationResult = null;
-  let isSignUp = false;
-
-  // Modal Functions
-  function openAuthModal() {
-    authModal.classList.add("active");
-    resetForms();
-  }
-
-  function closeAuthModal() {
-    authModal.classList.remove("active");
-    resetForms();
-  }
-
-  function openAccountModal() {
-    accountModal.classList.add("active");
-    updateAccountInfo();
-  }
-
-  function closeAccountModal() {
-    accountModal.classList.remove("active");
-  }
-
-  function resetForms() {
-    // Reset all forms and errors
-    document.getElementById("email").value = "";
-    document.getElementById("password").value = "";
-    document.getElementById("phoneNumber").value = "";
-    document.getElementById("verificationCode").value = "";
-    
-    emailError.textContent = "";
-    phoneError.textContent = "";
-    emailSuccess.textContent = "";
-    phoneSuccess.textContent = "";
-    
-    emailError.classList.remove("active");
-    phoneError.classList.remove("active");
-    emailSuccess.classList.remove("active");
-    phoneSuccess.classList.remove("active");
-    
-    verificationCodeGroup.style.display = "none";
-    phoneSubmit.textContent = "Send Code";
-    isSignUp = false;
-  }
-
-  function showError(element, message) {
-    element.textContent = message;
-    element.classList.add("active");
-  }
-
-  function showSuccess(element, message) {
-    element.textContent = message;
-    element.classList.add("active");
-  }
-
-  function updateAccountInfo() {
-    const user = auth.currentUser;
-    if (user) {
-      accountDisplayName.textContent = user.displayName || "Not set";
-      accountEmail.textContent = user.email || "No email";
-      accountUserId.textContent = user.uid.substring(0, 8) + "...";
-      accountType.textContent = user.isAnonymous ? "Guest Account" : "Full Account";
-    }
-  }
-
-  // Tab Switching
-  authTabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      const targetTab = tab.getAttribute("data-tab");
-      
-      // Update active tab
-      authTabs.forEach(t => t.classList.remove("active"));
-      tab.classList.add("active");
-      
-      // Update forms based on tab
-      if (targetTab === "signin") {
-        emailSubmit.textContent = "Sign In";
-        isSignUp = false;
-      } else {
-        emailSubmit.textContent = "Sign Up";
-        isSignUp = true;
-      }
-    });
-  });
-
-  // Email/Password Authentication
-  emailForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    
-    if (!email || !password) {
-      showError(emailError, "Please fill in all fields");
-      return;
-    }
-    
-    try {
-      if (isSignUp) {
-        // Sign up with email/password
-        await createUserWithEmailAndPassword(auth, email, password);
-        showSuccess(emailSuccess, "Account created successfully!");
-        setTimeout(closeAuthModal, 1500);
-      } else {
-        // Sign in with email/password
-        await signInWithEmailAndPassword(auth, email, password);
-        showSuccess(emailSuccess, "Signed in successfully!");
-        setTimeout(closeAuthModal, 1500);
-      }
-    } catch (error) {
-      console.error("Email auth error:", error);
-      showError(emailError, error.message);
-    }
-  });
-
-  // Phone Authentication
-  phoneForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    
-    const phoneNumber = document.getElementById("phoneNumber").value;
-    const verificationCode = document.getElementById("verificationCode").value;
-    
-    if (!phoneNumber) {
-      showError(phoneError, "Please enter a phone number");
-      return;
-    }
-    
-    try {
-      if (!confirmationResult) {
-        // First step: Send verification code
-        const appVerifier = new RecaptchaVerifier(auth, 'phoneSubmit', {
-          'size': 'invisible'
-        });
-        
-        confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-        verificationCodeGroup.style.display = "block";
-        phoneSubmit.textContent = "Verify Code";
-        showSuccess(phoneSuccess, "Verification code sent!");
-      } else {
-        // Second step: Verify code
-        await confirmationResult.confirm(verificationCode);
-        showSuccess(phoneSuccess, "Phone verified successfully!");
-        setTimeout(closeAuthModal, 1500);
-      }
-    } catch (error) {
-      console.error("Phone auth error:", error);
-      showError(phoneError, error.message);
-    }
-  });
-
-  // Google Authentication
-  googleSignIn.addEventListener("click", async () => {
-    try {
-      await signInWithPopup(auth, provider);
-      closeAuthModal();
-    } catch (error) {
-      console.error("Google auth error:", error);
-      showError(emailError, error.message);
-    }
-  });
-
-  // Anonymous Authentication
-  anonymousSignIn.addEventListener("click", async () => {
-    try {
-      await signInAnonymously(auth);
-      closeAuthModal();
-    } catch (error) {
-      console.error("Anonymous auth error:", error);
-      showError(emailError, error.message);
-    }
-  });
-
-  // Sign Out
-  signOutButton.addEventListener("click", async () => {
-    try {
-      await signOut(auth);
-      closeAccountModal();
-    } catch (error) {
-      console.error("Sign out error:", error);
-    }
-  });
-
-  // Manage Account (external link)
-  manageAccount.addEventListener("click", () => {
-    window.open("https://taisenaccounts.pages.dev/account", "_blank");
-  });
-
-  // Update User Button
-  function updateButton(user) {
-    if (user) {
-      // User is signed in - show user's name or "User"
-      const name = user.displayName || "User";
-      userButton.textContent = name;
-      userButton.style.display = "block";
-      userButton.onclick = openAccountModal;
-    } else {
-      // User is signed out - show "Sign In" button
-      userButton.textContent = "Sign In";
-      userButton.style.display = "block";
-      userButton.onclick = openAuthModal;
-    }
-  }
-
-  // Event Listeners
-  authClose.addEventListener("click", closeAuthModal);
-  accountClose.addEventListener("click", closeAccountModal);
-  
-  // Close modals when clicking outside
-  authModal.addEventListener("click", (e) => {
-    if (e.target === authModal) {
-      closeAuthModal();
-    }
-  });
-
-  accountModal.addEventListener("click", (e) => {
-    if (e.target === accountModal) {
-      closeAccountModal();
-    }
-  });
-
-  // Initialize auth state listener
-  onAuthStateChanged(auth, (user) => {
-    updateButton(user);
-  });
-
-  // Log search function
-  async function logSearch(query) {
-    const user = auth.currentUser;
-    if (!user) return;
-    try {
-      const userRef = doc(db, "users", user.uid);
-      await setDoc(userRef, { 
-        lastSearch: query, 
-        timestamp: new Date(),
-        email: user.email,
-        displayName: user.displayName 
-      }, { merge: true });
-      console.log("Search logged:", query);
-    } catch (err) {
-      console.error("Error logging search:", err);
-    }
-  }
-
-  // Override search execution to log searches
-  const interval = setInterval(() => {
-    if (window.google && google.search && google.search.cse) {
-      const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
-      if (searchBox && searchBox.execute) {
-        clearInterval(interval);
-        const originalExecute = searchBox.execute.bind(searchBox);
-        searchBox.execute = function(query) {
-          if (query && query.trim() !== "") logSearch(query);
-          originalExecute(query);
-        };
-      }
-    }
-  }, 100);
-</script>
-
-<!-- Hamburger functionality from index.html -->
-<script>
-  const hamburger = document.getElementById('hamburger');
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    window.location.href = 'settings.html'; // Opens settings page
-  });
-</script>
-
-<!-- Anti-bypass protection -->
 <script type="module">
   import { protectPage } from './antiBypass.js';
   protectPage(); // will redirect if bypass attempt is detected
+</script>
+<script>
+// Apply saved theme
+window.addEventListener('load', () => {
+  const theme = localStorage.getItem('theme');
+  if(theme === 'dark') document.body.classList.add('dark');
+
+  // You can also access language, region, SafeSearch, privacyMode
+  const lang = localStorage.getItem('language');
+  const region = localStorage.getItem('region');
+  const safe = localStorage.getItem('safeSearch') === 'true';
+  const privacy = localStorage.getItem('privacyMode') === 'true';
+  
+  // Hook these into your CSE queries if needed
+  // Example: append &safe=active for SafeSearch
+});
 </script>
 
 </body>
