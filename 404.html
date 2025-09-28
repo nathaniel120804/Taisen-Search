@@ -6,6 +6,253 @@
   <title>Page Not Found - Taisen</title>
   <link rel="icon" type="image/png" href="original.png">
   <link rel="stylesheet" href="style.css?v=20250901">
+  <style>
+    :root {
+      --primary-color: #3B82F6;
+      --primary-dark: #2563EB;
+      --text-color: #1F2937;
+      --text-light: #6B7280;
+      --bg-color: #FFFFFF;
+      --bg-light: #F9FAFB;
+      --border-color: #E5E7EB;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Dark theme support */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-color: #E5E7EB;
+        --text-light: #9CA3AF;
+        --bg-color: #111827;
+        --bg-light: #1F2937;
+        --border-color: #374151;
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--primary-color);
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--primary-dark);
+    }
+
+    /* Header Styles */
+    .results-header {
+      background-color: var(--bg-color);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 0;
+      box-shadow: var(--shadow);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .results-header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+    }
+
+    .results-name {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    /* Main Content */
+    .results-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Error Page Styles */
+    .error-page {
+      text-align: center;
+      max-width: 600px;
+      padding: 3rem 2rem;
+      background-color: var(--bg-light);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      transition: background-color 0.3s ease;
+    }
+
+    .error-illustration {
+      font-size: 8rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+    }
+
+    .error-title {
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      line-height: 1;
+    }
+
+    .error-message {
+      font-size: 1.25rem;
+      color: var(--text-color);
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .error-submessage {
+      font-size: 1rem;
+      color: var(--text-light);
+      margin-bottom: 2.5rem;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .error-link {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .error-link:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      color: white;
+    }
+
+    .error-link.secondary {
+      background-color: transparent;
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+    }
+
+    .error-link.secondary:hover {
+      background-color: var(--bg-color);
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    /* Quick Links */
+    .quick-links {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .quick-links h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+    }
+
+    .quick-links-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .quick-links-list a {
+      padding: 0.5rem 1rem;
+      background-color: var(--bg-color);
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+    }
+
+    .quick-links-list a:hover {
+      background-color: rgba(59, 130, 246, 0.1);
+    }
+
+    /* Footer */
+    .results-footer {
+      background-color: var(--bg-light);
+      text-align: center;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: auto;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .results-footer p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .error-title {
+        font-size: 3rem;
+      }
+      
+      .error-illustration {
+        font-size: 6rem;
+      }
+      
+      .error-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .error-link {
+        width: 100%;
+        max-width: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .error-page {
+        padding: 2rem 1rem;
+      }
+      
+      .error-title {
+        font-size: 2.5rem;
+      }
+      
+      .error-illustration {
+        font-size: 5rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -21,16 +268,59 @@
   <!-- Main Content -->
   <main class="results-container">
     <div class="error-page">
+      <div class="error-illustration">🔍</div>
       <h2 class="error-title">404</h2>
-      <p class="error-message">Sorry, the page you’re looking for doesn’t exist.</p>
-      <a href="index.html" class="error-link">Go back to Home</a>
+      <p class="error-message">Sorry, the page you're looking for doesn't exist.</p>
+      <p class="error-submessage">The page may have been moved, deleted, or you may have entered an incorrect URL.</p>
+      
+      <div class="error-actions">
+        <a href="index.html" class="error-link">Go back to Home</a>
+        <a href="javascript:history.back()" class="error-link secondary">Go Back</a>
+      </div>
+      
+      <div class="quick-links">
+        <h3>Quick Links</h3>
+        <div class="quick-links-list">
+          <a href="about.html">About</a>
+          <a href="help.html">Help Center</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="labs.html">Labs</a>
+        </div>
+      </div>
     </div>
   </main>
 
-  <!-- Footer (optional if you have one in style.css) -->
+  <!-- Footer -->
   <footer class="results-footer">
     <p>&copy; 2025 Taisen Search</p>
   </footer>
+
+  <script>
+    // Apply theme based on system preference or saved setting
+    function applyTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.style.setProperty('--text-color', '#E5E7EB');
+        document.documentElement.style.setProperty('--text-light', '#9CA3AF');
+        document.documentElement.style.setProperty('--bg-color', '#111827');
+        document.documentElement.style.setProperty('--bg-light', '#1F2937');
+        document.documentElement.style.setProperty('--border-color', '#374151');
+      }
+    }
+    
+    // Apply theme on page load
+    window.addEventListener('DOMContentLoaded', applyTheme);
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      const savedTheme = localStorage.getItem('theme');
+      if (!savedTheme) {
+        applyTheme();
+      }
+    });
+  </script>
 
 </body>
 </html>
