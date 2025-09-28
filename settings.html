@@ -6,108 +6,368 @@
 <title>Taisen Settings</title>
 <link rel="stylesheet" href="style.css?v=20250901">
 <style>
-/* Settings Panel */
-.settings-container {
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 30px;
-  background: var(--bg-light);
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+:root {
+  --brand-color: #3B82F6;
+  --accent-color: #2563EB;
+  --text-dark: #111827;
+  --text-light: #6B7280;
+  --bg-light: #FFFFFF;
+  --bg-muted: #F9FAFB;
+  --border-color: #E5E7EB;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --radius: 12px;
+  --transition: all 0.3s ease;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-dark: #F9FAFB;
+    --text-light: #D1D5DB;
+    --bg-light: #1F2937;
+    --bg-muted: #111827;
+    --border-color: #374151;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: var(--bg-muted);
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
   transition: var(--transition);
 }
 
-.settings-container h2 {
-  margin-bottom: 20px;
-  color: var(--brand-color);
+/* Settings Panel */
+.settings-container {
+  width: 100%;
+  max-width: 600px;
+  background: var(--bg-light);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.settings-header {
+  background: linear-gradient(135deg, var(--brand-color), var(--accent-color));
+  color: white;
+  padding: 2rem;
   text-align: center;
 }
 
-.settings-container label {
-  display: block;
-  margin-bottom: 15px;
-  font-weight: 500;
-  color: var(--text-dark);
+.settings-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
 }
 
-.settings-container select,
-.settings-container input[type="checkbox"] {
-  margin-top: 5px;
+.settings-header p {
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+.settings-content {
+  padding: 2rem;
+}
+
+.settings-group {
+  margin-bottom: 2rem;
+}
+
+.settings-group:last-child {
+  margin-bottom: 0;
+}
+
+.settings-group h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.settings-group h3::before {
+  content: "⚙️";
+  font-size: 1rem;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
   transition: var(--transition);
 }
 
-button#saveSettings {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  background: var(--brand-color);
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-item:hover {
+  background: rgba(59, 130, 246, 0.03);
+  border-radius: 6px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.setting-label {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.setting-label span {
+  font-weight: 500;
+  color: var(--text-dark);
+  margin-bottom: 0.25rem;
+}
+
+.setting-label small {
+  font-size: 0.85rem;
   color: var(--text-light);
+}
+
+/* Select Styles */
+select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+  min-width: 150px;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--brand-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Toggle Switch */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: var(--transition);
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: var(--transition);
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: var(--brand-color);
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(24px);
+}
+
+/* Buttons */
+.buttons-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 1rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
 }
 
-button#saveSettings:hover {
+.btn-primary {
+  background: var(--brand-color);
+  color: white;
+  box-shadow: 0 2px 5px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--accent-color);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
 }
 
-/* Dark Mode */
-body.dark .settings-container {
-  background: var(--bg-dark);
-  color: var(--text-light);
+.btn-secondary {
+  background: transparent;
+  color: var(--text-dark);
+  border: 1px solid var(--border-color);
 }
 
-body.dark .settings-container label {
-  color: var(--text-light);
+.btn-secondary:hover {
+  background: var(--bg-muted);
+  border-color: var(--brand-color);
+  color: var(--brand-color);
 }
 
-body.dark select,
-body.dark input[type="checkbox"] {
-  background: #2a2a2a;
-  color: var(--text-light);
-  border: 1px solid #555;
+/* Responsive Design */
+@media (max-width: 600px) {
+  .settings-container {
+    margin: 0;
+  }
+  
+  .settings-content {
+    padding: 1.5rem;
+  }
+  
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .buttons-container {
+    flex-direction: column;
+  }
 }
 </style>
 </head>
 <body>
 
 <div class="settings-container">
-  <h2>Settings</h2>
-
-  <label for="themeSelect">Theme:
-    <select id="themeSelect">
-      <option value="light">Light</option>
-      <option value="dark">Dark</option>
-    </select>
-  </label>
-
-  <label for="langSelect">Language:
-    <select id="langSelect">
-      <option value="en">English</option>
-      <option value="fil">Filipino</option>
-    </select>
-  </label>
-
-  <label for="regionSelect">Region:
-    <select id="regionSelect">
-      <option value="">Global</option>
-      <option value="ph">Philippines</option>
-    </select>
-  </label>
-
-  <label>
-    <input type="checkbox" id="safeSearch"> SafeSearch
-  </label>
-
-  <label>
-    <input type="checkbox" id="privacyMode"> Privacy Mode (mask IP, no logging)
-  </label>
-
-  <button id="saveSettings">Save Settings</button>
+  <div class="settings-header">
+    <h2>Search Settings</h2>
+    <p>Customize your Taisen search experience</p>
+  </div>
+  
+  <div class="settings-content">
+    <!-- Appearance Settings -->
+    <div class="settings-group">
+      <h3>Appearance</h3>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>Theme</span>
+          <small>Choose your preferred theme</small>
+        </div>
+        <select id="themeSelect">
+          <option value="auto">Auto (System)</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Search Settings -->
+    <div class="settings-group">
+      <h3>Search Preferences</h3>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>Language</span>
+          <small>Preferred search language</small>
+        </div>
+        <select id="langSelect">
+          <option value="en">English</option>
+          <option value="fil">Filipino</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+        </select>
+      </div>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>Region</span>
+          <small>Search results from specific region</small>
+        </div>
+        <select id="regionSelect">
+          <option value="">Global</option>
+          <option value="us">United States</option>
+          <option value="ph">Philippines</option>
+          <option value="uk">United Kingdom</option>
+          <option value="ca">Canada</option>
+          <option value="au">Australia</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Privacy & Safety -->
+    <div class="settings-group">
+      <h3>Privacy & Safety</h3>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>SafeSearch</span>
+          <small>Filter explicit content from results</small>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="safeSearch">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>Privacy Mode</span>
+          <small>Mask IP address and disable logging</small>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="privacyMode">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="buttons-container">
+      <a href="index.html" class="btn btn-secondary">Cancel</a>
+      <button id="saveSettings" class="btn btn-primary">Save Settings</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -122,13 +382,18 @@ function saveSettings() {
   // Apply theme immediately
   applyTheme();
   
-  // Redirect to main page
-  window.location.href = 'index.html';
+  // Show confirmation
+  showConfirmation();
+  
+  // Redirect to main page after a brief delay
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 1500);
 }
 
 // Load saved settings
 function loadSettings() {
-  const theme = localStorage.getItem('theme') || 'light';
+  const theme = localStorage.getItem('theme') || 'auto';
   const lang = localStorage.getItem('language') || 'en';
   const region = localStorage.getItem('region') || '';
   const safeSearch = localStorage.getItem('safeSearch') === 'true';
@@ -146,13 +411,48 @@ function loadSettings() {
 // Apply theme class
 function applyTheme() {
   const theme = document.getElementById('themeSelect').value;
-  if(theme === 'dark') {
+  
+  // Remove existing theme classes
+  document.body.classList.remove('light', 'dark');
+  
+  if (theme === 'dark') {
     document.body.classList.add('dark');
+  } else if (theme === 'light') {
+    document.body.classList.add('light');
   } else {
-    document.body.classList.remove('dark');
+    // Auto theme - follow system preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (prefersDark) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.add('light');
+    }
   }
 }
 
+// Show confirmation message
+function showConfirmation() {
+  const btn = document.getElementById('saveSettings');
+  const originalText = btn.textContent;
+  
+  btn.textContent = 'Settings Saved!';
+  btn.style.background = '#10B981';
+  
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.style.background = '';
+  }, 1500);
+}
+
+// Listen for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  const theme = document.getElementById('themeSelect').value;
+  if (theme === 'auto') {
+    applyTheme();
+  }
+});
+
+// Event listeners
 document.getElementById('saveSettings').addEventListener('click', saveSettings);
 window.addEventListener('load', loadSettings);
 </script>
