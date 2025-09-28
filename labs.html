@@ -8,56 +8,453 @@
 <style>
 :root {
   --brand-color: #3B82F6;
+  --accent-color: #2563EB;
   --text-dark: #0f1724;
+  --text-light: #6B7280;
   --bg-light: #ffffff;
   --bg-muted: #f9fafb;
-  --radius: 8px;
+  --bg-card: #ffffff;
+  --border-color: #E5E7EB;
+  --radius: 12px;
   --shadow: 0 2px 8px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+  --transition: all 0.3s ease;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
-a { text-decoration: none; color: inherit; }
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-dark: #F9FAFB;
+    --text-light: #D1D5DB;
+    --bg-light: #111827;
+    --bg-muted: #1F2937;
+    --bg-card: #1F2937;
+    --border-color: #374151;
+  }
+}
 
-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; background: var(--bg-light); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; }
-.logo { font-weight: 600; font-size: 1.5rem; color: var(--brand-color); }
-nav ul { display: flex; gap: 2rem; list-style: none; }
-nav ul li a { font-weight: 500; transition: 0.3s; }
-nav ul li a:hover { color: var(--brand-color); }
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+  font-family: 'Inter', sans-serif; 
+}
 
-.search-bar { display: flex; justify-content: center; padding: 2rem 5%; background: var(--bg-muted); }
-.search-bar input[type="text"] { flex: 1; max-width: 600px; padding: 0.65rem 1rem; border-radius: var(--radius) 0 0 var(--radius); border: 1px solid #d1d5db; font-size: 1rem; outline: none; }
-.search-bar button { padding: 0.65rem 1rem; border-radius: 0 var(--radius) var(--radius) 0; border: none; background: var(--brand-color); color: var(--bg-light); font-weight: 600; cursor: pointer; transition: 0.3s; }
-.search-bar button:hover { background: #2563eb; }
+body { 
+  background-color: var(--bg-light); 
+  color: var(--text-dark); 
+  line-height: 1.6; 
+  transition: var(--transition);
+}
 
-section { padding: 4rem 5%; }
-section h2 { font-size: 2rem; margin-bottom: 2rem; font-weight: 600; text-align: center; }
+a { 
+  text-decoration: none; 
+  color: inherit; 
+}
 
-.cards, .project-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
-.card, .project-card { background: var(--bg-light); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); transition: 0.2s; cursor: pointer; display: flex; flex-direction: column; }
-.card:hover, .project-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-.card h3, .project-card h4 { color: var(--brand-color); margin-bottom: 0.75rem; font-weight: 600; }
-.card p, .project-card p { font-size: 0.95rem; color: #475569; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
+/* Header Styles */
+header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 1rem 5%; 
+  background: var(--bg-light); 
+  box-shadow: var(--shadow); 
+  position: sticky; 
+  top: 0; 
+  z-index: 1000; 
+  transition: var(--transition);
+}
 
-.join form { display: flex; flex-direction: column; gap: 1rem; max-width: 450px; margin: 0 auto; }
-.join input, .join textarea { padding: 0.65rem; border-radius: var(--radius); border: 1px solid #d1d5db; font-size: 0.95rem; }
-.join button { padding: 0.65rem; border-radius: var(--radius); border: none; background: var(--brand-color); color: var(--bg-light); font-weight: 600; cursor: pointer; transition: 0.3s; }
-.join button:hover { background: #2563eb; }
+.logo { 
+  font-weight: 700; 
+  font-size: 1.5rem; 
+  color: var(--brand-color); 
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
-footer { background: var(--bg-light); color: #475569; padding: 2rem 5%; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; font-size: 0.875rem; }
-footer a { color: #475569; transition: 0.3s; }
-footer a:hover { color: var(--brand-color); }
+.logo::before {
+  content: "🔬";
+  font-size: 1.25rem;
+}
 
-.modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.5); }
-.modal-content { background-color: var(--bg-light); margin: 10% auto; padding: 2rem; border-radius: var(--radius); width: 90%; max-width: 600px; position: relative; }
-.close { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; font-weight: bold; color: #475569; cursor: pointer; }
-.close:hover { color: var(--brand-color); }
+nav ul { 
+  display: flex; 
+  gap: 2rem; 
+  list-style: none; 
+}
+
+nav ul li a { 
+  font-weight: 500; 
+  transition: var(--transition); 
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+}
+
+nav ul li a:hover { 
+  color: var(--brand-color); 
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, var(--brand-color), var(--accent-color));
+  color: white;
+  padding: 4rem 5%;
+  text-align: center;
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  margin-bottom: 2rem;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0.9;
+}
+
+/* Search Bar */
+.search-bar { 
+  display: flex; 
+  justify-content: center; 
+  padding: 2rem 5%; 
+  background: var(--bg-muted); 
+  border-radius: var(--radius);
+  margin: 0 5% 2rem;
+  transition: var(--transition);
+}
+
+.search-bar input[type="text"] { 
+  flex: 1; 
+  max-width: 600px; 
+  padding: 0.75rem 1rem; 
+  border-radius: var(--radius) 0 0 var(--radius); 
+  border: 1px solid var(--border-color); 
+  font-size: 1rem; 
+  outline: none;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  transition: var(--transition);
+}
+
+.search-bar input[type="text"]:focus {
+  border-color: var(--brand-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-bar button { 
+  padding: 0 1.5rem; 
+  border-radius: 0 var(--radius) var(--radius) 0; 
+  border: none; 
+  background: var(--brand-color); 
+  color: var(--bg-light); 
+  font-weight: 600; 
+  cursor: pointer; 
+  transition: var(--transition); 
+}
+
+.search-bar button:hover { 
+  background: var(--accent-color); 
+}
+
+/* Section Styles */
+section { 
+  padding: 3rem 5%; 
+}
+
+section h2 { 
+  font-size: 2rem; 
+  margin-bottom: 2rem; 
+  font-weight: 600; 
+  text-align: center; 
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+section h2::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--brand-color);
+  border-radius: 3px;
+}
+
+/* Cards Layout */
+.cards, .project-cards { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  gap: 1.5rem; 
+}
+
+.card, .project-card { 
+  background: var(--bg-card); 
+  padding: 1.75rem; 
+  border-radius: var(--radius); 
+  box-shadow: var(--shadow); 
+  transition: var(--transition); 
+  cursor: pointer; 
+  display: flex; 
+  flex-direction: column; 
+  border: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before, .project-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--brand-color);
+}
+
+.card:hover, .project-card:hover { 
+  transform: translateY(-5px); 
+  box-shadow: var(--shadow-lg); 
+}
+
+.card h3, .project-card h4 { 
+  color: var(--brand-color); 
+  margin-bottom: 0.75rem; 
+  font-weight: 600; 
+  font-size: 1.2rem;
+}
+
+.card p, .project-card p { 
+  font-size: 0.95rem; 
+  color: var(--text-light); 
+  flex: 1; 
+  display: -webkit-box; 
+  -webkit-line-clamp: 3; 
+  -webkit-box-orient: vertical; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  margin-bottom: 1rem;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.tag {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--brand-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Join Section */
+.join { 
+  background: var(--bg-muted);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.join h2 {
+  margin-bottom: 1.5rem;
+}
+
+.join form { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1rem; 
+  max-width: 450px; 
+  margin: 0 auto; 
+}
+
+.join input, .join textarea { 
+  padding: 0.75rem; 
+  border-radius: var(--radius); 
+  border: 1px solid var(--border-color); 
+  font-size: 0.95rem; 
+  background: var(--bg-light);
+  color: var(--text-dark);
+  transition: var(--transition);
+}
+
+.join input:focus, .join textarea:focus {
+  outline: none;
+  border-color: var(--brand-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.join button { 
+  padding: 0.75rem; 
+  border-radius: var(--radius); 
+  border: none; 
+  background: var(--brand-color); 
+  color: var(--bg-light); 
+  font-weight: 600; 
+  cursor: pointer; 
+  transition: var(--transition); 
+  margin-top: 0.5rem;
+}
+
+.join button:hover { 
+  background: var(--accent-color); 
+  transform: translateY(-2px);
+}
+
+/* Footer */
+footer { 
+  background: var(--bg-light); 
+  color: var(--text-light); 
+  padding: 2rem 5%; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 1rem; 
+  text-align: center; 
+  font-size: 0.875rem; 
+  border-top: 1px solid var(--border-color);
+  margin-top: 2rem;
+  transition: var(--transition);
+}
+
+footer a { 
+  color: var(--text-light); 
+  transition: var(--transition); 
+}
+
+footer a:hover { 
+  color: var(--brand-color); 
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Modal */
+.modal { 
+  display: none; 
+  position: fixed; 
+  z-index: 2000; 
+  left: 0; 
+  top: 0; 
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background: rgba(0,0,0,0.5); 
+  backdrop-filter: blur(5px);
+}
+
+.modal-content { 
+  background-color: var(--bg-card); 
+  margin: 5% auto; 
+  padding: 2.5rem; 
+  border-radius: var(--radius); 
+  width: 90%; 
+  max-width: 700px; 
+  position: relative; 
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.close { 
+  position: absolute; 
+  top: 1rem; 
+  right: 1.5rem; 
+  font-size: 1.75rem; 
+  font-weight: bold; 
+  color: var(--text-light); 
+  cursor: pointer; 
+  transition: var(--transition);
+}
+
+.close:hover { 
+  color: var(--brand-color); 
+}
+
+#modalTitle {
+  color: var(--brand-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+#modalBody {
+  line-height: 1.7;
+}
+
+#modalBody ul, #modalBody ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+#modalBody li {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  nav ul {
+    gap: 1rem;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+  }
+  
+  section {
+    padding: 2rem 1rem;
+  }
+  
+  .search-bar {
+    margin: 0 1rem 2rem;
+    padding: 1.5rem;
+  }
+  
+  .cards, .project-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-content {
+    padding: 1.5rem;
+    margin: 10% auto;
+  }
+}
 </style>
 </head>
 <body>
 
 <header>
-  <a href="labs.html"><div class="logo">Taisen Labs</div></a>
+  <a href="labs.html" class="logo">Taisen Labs</a>
   <nav>
     <ul>
       <li><a href="#focus">Focus Areas</a></li>
@@ -67,8 +464,13 @@ footer a:hover { color: var(--brand-color); }
   </nav>
 </header>
 
+<div class="hero">
+  <h1>Taisen Research Labs</h1>
+  <p>Exploring the future of search through innovative experiments and research initiatives</p>
+</div>
+
 <section class="search-bar">
-  <input type="text" id="searchInput" placeholder="Search research focus or experiments..." onkeyup="filterCards()">
+  <input type="text" id="searchInput" placeholder="Search research focus or experiments...">
   <button onclick="filterCards()">Search</button>
 </section>
 
@@ -80,9 +482,67 @@ footer a:hover { color: var(--brand-color); }
          onclick="openModal(this)" 
          data-title="Taisen Search Core Improvement" 
          data-full="<p>Experiment with card layout, truncation, and modal display for better readability and user interaction.</p>
-<p>Focus on UX, performance, and mobile responsiveness.</p>">
+<p>Focus on UX, performance, and mobile responsiveness.</p>
+<h4>Key Objectives:</h4>
+<ul>
+<li>Improve card layout and information hierarchy</li>
+<li>Implement effective text truncation with modal expansion</li>
+<li>Enhance mobile responsiveness across devices</li>
+<li>Optimize performance and loading times</li>
+</ul>
+<h4>Current Status:</h4>
+<p>Initial implementation complete. Testing user engagement metrics and performance impact.</p>">
       <h3>Taisen Search Core Improvement</h3>
-      <p>Improve card layout, truncation, and modal display for better readability...</p>
+      <p>Improve card layout, truncation, and modal display for better readability and user interaction across devices.</p>
+      <div class="card-tags">
+        <span class="tag">UX Design</span>
+        <span class="tag">Performance</span>
+        <span class="tag">Mobile</span>
+      </div>
+    </div>
+    
+    <div class="card" 
+         onclick="openModal(this)" 
+         data-title="AI-Powered Search Relevance" 
+         data-full="<p>Developing machine learning models to improve search result relevance and personalization.</p>
+<h4>Key Objectives:</h4>
+<ul>
+<li>Implement ML algorithms for query understanding</li>
+<li>Develop personalized ranking based on user behavior</li>
+<li>Create A/B testing framework for model evaluation</li>
+<li>Ensure privacy-preserving personalization</li>
+</ul>
+<h4>Current Status:</h4>
+<p>Research phase. Evaluating different ML approaches and data requirements.</p>">
+      <h3>AI-Powered Search Relevance</h3>
+      <p>Developing machine learning models to improve search result relevance and personalization while preserving privacy.</p>
+      <div class="card-tags">
+        <span class="tag">Machine Learning</span>
+        <span class="tag">AI</span>
+        <span class="tag">Privacy</span>
+      </div>
+    </div>
+    
+    <div class="card" 
+         onclick="openModal(this)" 
+         data-title="Voice Search Integration" 
+         data-full="<p>Exploring voice-based search interfaces and natural language processing for hands-free search experiences.</p>
+<h4>Key Objectives:</h4>
+<ul>
+<li>Develop voice-to-text conversion for search queries</li>
+<li>Implement natural language understanding</li>
+<li>Create voice response system for search results</li>
+<li>Optimize for mobile and smart devices</li>
+</ul>
+<h4>Current Status:</h4>
+<p>Prototype development. Testing accuracy of voice recognition and query interpretation.</p>">
+      <h3>Voice Search Integration</h3>
+      <p>Exploring voice-based search interfaces and natural language processing for hands-free search experiences.</p>
+      <div class="card-tags">
+        <span class="tag">Voice</span>
+        <span class="tag">NLP</span>
+        <span class="tag">Mobile</span>
+      </div>
     </div>
   </div>
 </section>
@@ -115,24 +575,81 @@ footer a:hover { color: var(--brand-color); }
 <p>Next Steps / Iterations: Adjust mobile card width and font size. Optimize modal scroll behavior.</p>
 <p>Screenshots / Attachments: Add screenshots or code snippets here to document changes.</p>">
       <h4>Taisen Search UI & Modal Improvement</h4>
-      <p>Improve result cards and modal display for readability and user interaction.</p>
+      <p>Improve result cards and modal display for readability and user interaction across all devices.</p>
+      <div class="card-tags">
+        <span class="tag">UI/UX</span>
+        <span class="tag">Frontend</span>
+        <span class="tag">Testing</span>
+      </div>
+    </div>
+    
+    <div class="project-card" 
+         onclick="openModal(this)" 
+         data-title="Dark Mode Implementation Study" 
+         data-full="<p>Objective: Implement and test dark mode across Taisen Search interfaces.</p>
+<p>Hypothesis: Dark mode will reduce eye strain and improve user experience, especially in low-light environments.</p>
+<p>Features / Issues Being Tested:</p>
+<ul>
+<li>CSS variable implementation for theming</li>
+<li>Automatic detection of system preferences</li>
+<li>Performance impact of theme switching</li>
+<li>User preference persistence</li>
+</ul>
+<p>Current Status: Implementation complete. Monitoring user adoption and feedback.</p>">
+      <h4>Dark Mode Implementation Study</h4>
+      <p>Implement and test dark mode across Taisen Search interfaces to reduce eye strain and improve UX.</p>
+      <div class="card-tags">
+        <span class="tag">UI/UX</span>
+        <span class="tag">CSS</span>
+        <span class="tag">Accessibility</span>
+      </div>
+    </div>
+    
+    <div class="project-card" 
+         onclick="openModal(this)" 
+         data-title="Search Performance Optimization" 
+         data-full="<p>Objective: Reduce search latency and improve overall performance.</p>
+<p>Hypothesis: Optimizing search algorithms and implementing caching will significantly reduce response times.</p>
+<p>Features / Issues Being Tested:</p>
+<ul>
+<li>Query preprocessing optimization</li>
+<li>Result caching strategies</li>
+<li>Database query optimization</li>
+<li>CDN implementation for static assets</li>
+</ul>
+<p>Current Status: Testing various caching strategies. Initial results show 40% improvement in search response times.</p>">
+      <h4>Search Performance Optimization</h4>
+      <p>Reduce search latency and improve overall performance through algorithm optimization and caching strategies.</p>
+      <div class="card-tags">
+        <span class="tag">Performance</span>
+        <span class="tag">Backend</span>
+        <span class="tag">Caching</span>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- Join Section -->
+<section id="join" class="join">
+  <h2>Join Our Research Community</h2>
+  <p style="text-align: center; margin-bottom: 2rem;">Contribute to cutting-edge search technology research and development.</p>
+  <form>
+    <input type="text" placeholder="Full Name" required>
+    <input type="email" placeholder="Email Address" required>
+    <textarea placeholder="Tell us about your research interests or how you'd like to contribute..." rows="4"></textarea>
+    <button type="submit">Submit Application</button>
+  </form>
+</section>
+
 <footer>
-  <p>
-    <a href="#focus">Focus Areas</a> | 
-    <a href="#experiments">Experiments</a> | 
-    <a href="#join">Sign Up</a>
-  </p>
-  <p>
-    <a href="about.html">About</a> ·
-    <a href="advertising.html">Advertising</a> ·
-    <a href="privacy.html">Privacy Policy</a> ·
-    <a href="help center.html">Help Center</a> ·
+  <div class="footer-links">
+    <a href="about.html">About</a>
+    <a href="advertising.html">Advertising</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="help.html">Help Center</a>
     <a href="labs.html">Labs</a>
-  </p>
+  </div>
+  <p>&copy; 2025 Taisen Search. All rights reserved.</p>
 </footer>
 
 <div id="modal" class="modal">
@@ -160,6 +677,13 @@ function filterCards() {
   });
 }
 
+// Add event listener for Enter key in search
+document.getElementById('searchInput').addEventListener('keyup', function(event) {
+  if (event.key === 'Enter') {
+    filterCards();
+  }
+});
+
 function openModal(card) {
   document.getElementById('modalTitle').textContent = card.getAttribute('data-title');
   document.getElementById('modalBody').innerHTML = card.getAttribute('data-full');
@@ -174,6 +698,27 @@ window.onclick = function(event) {
   const modal = document.getElementById('modal');
   if (event.target == modal) modal.style.display = 'none';
 }
+
+// Apply theme based on system preference
+function applyTheme() {
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (prefersDark) {
+    document.documentElement.style.setProperty('--text-dark', '#F9FAFB');
+    document.documentElement.style.setProperty('--text-light', '#D1D5DB');
+    document.documentElement.style.setProperty('--bg-light', '#111827');
+    document.documentElement.style.setProperty('--bg-muted', '#1F2937');
+    document.documentElement.style.setProperty('--bg-card', '#1F2937');
+    document.documentElement.style.setProperty('--border-color', '#374151');
+  }
+}
+
+// Apply theme on page load
+window.addEventListener('DOMContentLoaded', applyTheme);
+
+// Listen for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  applyTheme();
+});
 </script>
 
 </body>
