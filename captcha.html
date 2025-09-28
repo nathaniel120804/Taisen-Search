@@ -6,16 +6,22 @@
   <title>Human Verification - Taisen</title>
   <style>
     :root {
-      --primary: #0077ff;
-      --primary-dark: #005fcc;
-      --success: #28a745;
-      --danger: #dc3545;
-      --warning: #ffc107;
-      --light: #f8f9fa;
-      --dark: #343a40;
-      --gray: #6c757d;
-      --border-radius: 8px;
-      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --primary: #3B82F6;
+      --primary-dark: #2563EB;
+      --primary-light: #EFF6FF;
+      --success: #10B981;
+      --success-light: #ECFDF5;
+      --danger: #EF4444;
+      --danger-light: #FEF2F2;
+      --warning: #F59E0B;
+      --warning-light: #FFFBEB;
+      --light: #F9FAFB;
+      --dark: #111827;
+      --gray: #6B7280;
+      --gray-light: #E5E7EB;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       --transition: all 0.3s ease;
     }
     
@@ -26,8 +32,8 @@
     }
     
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -35,11 +41,12 @@
       justify-content: center;
       padding: 20px;
       color: var(--dark);
+      line-height: 1.6;
     }
     
     .container {
       width: 100%;
-      max-width: 500px;
+      max-width: 480px;
       margin: 0 auto;
     }
     
@@ -50,25 +57,33 @@
     
     .header h1 {
       font-size: 2.5rem;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       color: var(--primary);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
     }
     
     .header p {
       font-size: 1.1rem;
       color: var(--gray);
+      max-width: 400px;
+      margin: 0 auto;
     }
     
     .card {
       background: white;
       border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
-      padding: 30px;
-      margin-bottom: 20px;
+      box-shadow: var(--box-shadow-lg);
+      padding: 32px;
+      margin-bottom: 24px;
+      transition: var(--transition);
+      border: 1px solid var(--gray-light);
+    }
+    
+    .card:hover {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
     
     .captcha-box {
@@ -76,13 +91,14 @@
     }
     
     .captcha-header {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
     
     .captcha-header h2 {
       font-size: 1.5rem;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
       color: var(--dark);
+      font-weight: 600;
     }
     
     .captcha-header p {
@@ -90,44 +106,55 @@
     }
     
     .captcha-display {
-      background: var(--light);
-      padding: 20px;
+      background: var(--primary-light);
+      padding: 24px;
       border-radius: var(--border-radius);
-      margin-bottom: 20px;
-      border: 1px solid #e9ecef;
+      margin-bottom: 24px;
+      border: 1px solid rgba(59, 130, 246, 0.2);
     }
     
     .captcha-question {
-      font-size: 2rem;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: var(--dark);
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
     }
     
     .captcha-input-container {
       display: flex;
       justify-content: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     
     .captcha-input {
-      width: 120px;
-      padding: 12px;
-      font-size: 1.2rem;
+      width: 140px;
+      padding: 14px 16px;
+      font-size: 1.25rem;
       text-align: center;
-      border: 2px solid #e9ecef;
+      border: 2px solid var(--gray-light);
       border-radius: var(--border-radius);
       transition: var(--transition);
+      font-weight: 600;
+      background: white;
     }
     
     .captcha-input:focus {
       border-color: var(--primary);
       outline: none;
-      box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    .captcha-input::placeholder {
+      color: var(--gray-light);
+      font-weight: normal;
     }
     
     .btn {
-      padding: 12px 24px;
+      padding: 14px 24px;
       font-size: 1rem;
       font-weight: 600;
       border: none;
@@ -143,27 +170,35 @@
     .btn-primary {
       background: var(--primary);
       color: white;
+      box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
     }
     
     .btn-primary:hover {
       background: var(--primary-dark);
       transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
     }
     
     .btn-secondary {
-      background: var(--light);
+      background: white;
       color: var(--dark);
-      border: 1px solid #dee2e6;
+      border: 1px solid var(--gray-light);
     }
     
     .btn-secondary:hover {
-      background: #e9ecef;
+      background: var(--light);
+      border-color: var(--primary);
+      color: var(--primary);
     }
     
     .attempts-counter {
-      margin-top: 15px;
+      margin-top: 16px;
       font-size: 0.9rem;
       color: var(--gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
     
     .footer {
@@ -174,53 +209,79 @@
     }
     
     .status-message {
-      padding: 10px;
+      padding: 14px 16px;
       border-radius: var(--border-radius);
-      margin-top: 15px;
+      margin-top: 20px;
       display: none;
+      font-weight: 500;
+      text-align: center;
     }
     
     .status-success {
-      background: rgba(40, 167, 69, 0.1);
+      background: var(--success-light);
       color: var(--success);
-      border: 1px solid rgba(40, 167, 69, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.2);
     }
     
     .status-error {
-      background: rgba(220, 53, 69, 0.1);
+      background: var(--danger-light);
       color: var(--danger);
-      border: 1px solid rgba(220, 53, 69, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.2);
     }
     
     .loading {
       display: none;
       text-align: center;
-      margin: 10px 0;
+      margin: 16px 0;
     }
     
     .spinner {
-      border: 4px solid rgba(0, 0, 0, 0.1);
+      border: 4px solid rgba(59, 130, 246, 0.1);
       border-left-color: var(--primary);
       border-radius: 50%;
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       animation: spin 1s linear infinite;
-      margin: 0 auto;
+      margin: 0 auto 12px;
     }
     
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
     
-    .debug-link {
+    .buttons-container {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
       margin-top: 20px;
-      text-align: center;
+    }
+    
+    .security-info {
+      background: var(--light);
+      border-radius: var(--border-radius);
+      padding: 16px;
+      margin-top: 24px;
+      border-left: 4px solid var(--primary);
+    }
+    
+    .security-info h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .security-info p {
+      font-size: 0.9rem;
+      color: var(--gray);
     }
     
     /* Responsive adjustments */
     @media (max-width: 576px) {
       .card {
-        padding: 20px;
+        padding: 24px;
       }
       
       .header h1 {
@@ -230,6 +291,24 @@
       .captcha-question {
         font-size: 1.8rem;
       }
+      
+      .buttons-container {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+    
+    /* Animation for status messages */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .status-message {
+      animation: fadeIn 0.3s ease;
     }
   </style>
 </head>
@@ -237,22 +316,25 @@
   <div class="container">
     <div class="header">
       <h1>🔒 Human Verification</h1>
-      <p>Please verify you're human to continue</p>
+      <p>Please verify you're human to continue to search results</p>
     </div>
     
     <div class="card">
       <div class="captcha-box">
         <div class="captcha-header">
-          <h2>CAPTCHA Challenge</h2>
-          <p>Solve the simple math problem below</p>
+          <h2>Security Check</h2>
+          <p>Solve the simple math problem to continue</p>
         </div>
         
         <div class="captcha-display">
           <div class="captcha-question" id="captchaQuestion">Loading...</div>
           <div class="captcha-input-container">
-            <input type="text" id="captchaAnswer" class="captcha-input" placeholder="?" required autocomplete="off">
+            <input type="text" id="captchaAnswer" class="captcha-input" placeholder="Enter answer" required autocomplete="off" maxlength="3">
           </div>
-          <div class="attempts-counter" id="attemptsCounter">Attempts: 0/3</div>
+          <div class="attempts-counter" id="attemptsCounter">
+            <span>🔐</span>
+            <span>Attempts: 0/3</span>
+          </div>
         </div>
         
         <div class="loading" id="loadingIndicator">
@@ -262,13 +344,20 @@
         
         <div class="status-message" id="statusMessage"></div>
         
-        <button id="verifyBtn" class="btn btn-primary">
-          <span>Verify</span>
-        </button>
+        <div class="buttons-container">
+          <button id="verifyBtn" class="btn btn-primary">
+            <span>Verify & Continue</span>
+          </button>
+          
+          <button id="refreshBtn" class="btn btn-secondary">
+            <span>New Question</span>
+          </button>
+        </div>
         
-        <button id="refreshBtn" class="btn btn-secondary" style="margin-left: 10px;">
-          <span>Refresh Question</span>
-        </button>
+        <div class="security-info">
+          <h3>🛡️ Why we need verification</h3>
+          <p>This helps protect Taisen Search from automated requests and ensures a better experience for real users.</p>
+        </div>
       </div>
     </div>
     
@@ -345,6 +434,9 @@
       captchaAnswerEl.addEventListener('input', (e) => {
         e.target.value = e.target.value.replace(/[^0-9]/g, '');
       });
+      
+      // Auto-focus on input
+      captchaAnswerEl.focus();
     }
 
     function generateCaptcha() {
@@ -352,7 +444,7 @@
       num2 = Math.floor(Math.random() * 10) + 1;
       correctAnswer = num1 + num2;
       
-      captchaQuestionEl.textContent = `What is ${num1} + ${num2}?`;
+      captchaQuestionEl.textContent = `${num1} + ${num2} = ?`;
       captchaAnswerEl.value = "";
       captchaAnswerEl.focus();
       
@@ -434,12 +526,12 @@
       }
 
       attempts++;
-      attemptsCounterEl.textContent = `Attempts: ${attempts}/${maxAttempts}`;
+      attemptsCounterEl.innerHTML = `<span>🔐</span><span>Attempts: ${attempts}/${maxAttempts}</span>`;
       
       showLoading();
       
       // Simulate network delay for better UX
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 800));
       
       if (userAnswer === correctAnswer) {
         // Correct answer
