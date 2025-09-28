@@ -103,6 +103,7 @@
       transform: rotate(-45deg) translate(7px, -6px);
     }
     .gsc-input-box:hover, .gsc-input-box:focus-within {
+      border-width: 1px;
   border-color: var(--primary) !important;
   box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1) !important;
 }
@@ -182,12 +183,12 @@
     footer {
       padding: 20px;
       text-align: center;
-      background: rgba(255, 255, 255, 0.8);
+      background: blur 100px;
       margin-top: auto;
     }
 
     .footer-links a {
-      color: white;
+      color: var(--gray-500);
       text-decoration: none;
       margin: 0 8px;
       transition: var(--transition);
