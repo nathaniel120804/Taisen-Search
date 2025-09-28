@@ -3,132 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Search Results</title>
+<title>Search Results - Taisen</title>
 <link rel="icon" type="image/png" href="original.png">
 <link rel="stylesheet" href="style.css?v=20250901">
 <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
 
 <style>
 :root {
-  --primary: #3B82F6;
+  --primary-color: #3B82F6;
   --primary-dark: #2563EB;
-  --secondary: #6B7280;
-  --light: #1a1a1a;
-  --dark: #f8f9fa;
-  --white: #2d2d2d;
-  --gray-100: #1a1a1a;
-  --gray-200: #2d2d2d;
-  --gray-300: #404040;
-  --gray-400: #595959;
-  --gray-500: #737373;
-  --gray-600: #8c8c8c;
-  --gray-700: #a6a6a6;
-  --gray-800: #bfbfbf;
-  --gray-900: #d9d9d9;
-  --border-radius: 8px;
-  --border-radius-lg: 12px;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
-  --transition: all 0.2s ease;
+  --text-color: #1F2937;
+  --text-light: #6B7280;
+  --bg-color: #FFFFFF;
+  --bg-light: #F9FAFB;
+  --border-color: #E5E7EB;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--gray-800);
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--bg-color);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-dark);
 }
 
 /* Header Styles */
 .results-header {
-  background: rgba(45, 45, 45, 0.95);
-  box-shadow: var(--shadow-md);
-  padding: 15px 0;
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 0;
+  box-shadow: var(--shadow);
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(10px);
 }
 
 .results-header-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 20px;
+  gap: 1.5rem;
 }
 
 .logo-link {
-  text-decoration: none;
-  color: inherit;
+  display: flex;
+  align-items: center;
 }
 
 .results-name {
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  margin: 0;
-  background: linear-gradient(135deg, #4dabf7 0%, #339af0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--primary-color);
 }
 
 .searchbar-container {
   flex: 1;
-  min-width: 300px;
   max-width: 600px;
+}
+
+.gsc-control-cse {
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.gsc-search-box {
+  margin-bottom: 0 !important;
+}
+
+.gsc-input-box {
+  border: 1px solid var(--border-color) !important;
+  border-radius: 24px !important;
+  height: 44px !important;
+  padding: 0 12px !important;
+}
+
+.gsc-input-box:hover, .gsc-input-box:focus-within {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.gsc-input {
+  padding: 0 !important;
+  font-size: 16px !important;
+}
+
+.gsc-search-button {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  border-radius: 20px !important;
+  padding: 8px 16px !important;
 }
 
 /* Main Content */
 .results-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 30px 20px;
+  padding: 1.5rem 1rem;
+  flex: 1;
+  display: flex;
+  gap: 2rem;
 }
 
 /* Controls Section */
-.controls-section {
-  background: var(--gray-200);
-  border-radius: var(--border-radius-lg);
-  padding: 20px;
-  margin-bottom: 25px;
-  box-shadow: var(--shadow-md);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
+.controls-panel {
+  flex: 0 0 250px;
+  background-color: var(--bg-light);
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: fit-content;
+  box-shadow: var(--shadow);
 }
 
 .control-group {
+  margin-bottom: 1.5rem;
+}
+
+.control-group h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
 }
 
-.control-label {
-  font-weight: 600;
-  color: var(--gray-800);
-  white-space: nowrap;
+.control-group h3::before {
+  content: "⚙️";
+  font-size: 1rem;
 }
 
-/* Toggle Switch */
+/* Toggle Styles */
+.toggle-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.toggle-label {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
 .switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 28px;
+  width: 44px;
+  height: 24px;
 }
 
 .switch input { 
@@ -144,63 +188,108 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--gray-400);
-  transition: var(--transition);
-  border-radius: 28px;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 22px;
-  width: 22px;
+  height: 18px;
+  width: 18px;
   left: 3px;
   bottom: 3px;
-  background-color: var(--white);
-  transition: var(--transition);
+  background-color: white;
+  transition: .4s;
   border-radius: 50%;
-  box-shadow: var(--shadow-sm);
 }
 
 input:checked + .slider {
-  background-color: var(--primary);
+  background-color: var(--primary-color);
 }
 
 input:checked + .slider:before {
-  transform: translateX(22px);
+  transform: translateX(20px);
 }
 
-/* Filter Dropdown */
-.filter-select {
-  padding: 8px 12px;
-  border: 1px solid var(--gray-400);
-  border-radius: var(--border-radius);
-  background-color: var(--gray-200);
-  color: var(--gray-800);
-  font-size: 14px;
+/* Filter Styles */
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filter-label {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: white;
+  font-size: 0.9rem;
+  color: var(--text-color);
   cursor: pointer;
-  transition: var(--transition);
 }
 
-.filter-select:focus {
+select:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Results Section */
+.results-section {
+  flex: 1;
+}
+
+.results-header-info {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.results-count {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.query-term {
+  font-weight: 600;
+  color: var(--primary-color);
 }
 
 /* Internal Results */
-#results-internal {
-  margin-bottom: 30px;
+.internal-results {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title::before {
+  content: "🔬";
+  font-size: 1rem;
 }
 
 .result-card {
-  background: var(--gray-200);
-  border-radius: var(--border-radius-lg);
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow-md);
-  transition: var(--transition);
-  border-left: 4px solid var(--primary);
+  background: white;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--primary-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .result-card:hover {
@@ -209,159 +298,99 @@ input:checked + .slider:before {
 }
 
 .result-title {
-  color: var(--primary);
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin: 0 0 10px 0;
-  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
 }
 
 .result-snippet {
-  color: var(--gray-700);
-  margin-bottom: 12px;
+  color: var(--text-color);
+  margin-bottom: 0.75rem;
   line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .result-meta {
   display: flex;
-  gap: 15px;
-  margin-bottom: 12px;
-  font-size: 0.875rem;
-  color: var(--gray-600);
-}
-
-.result-type, .result-source {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-light);
 }
 
 .result-link {
   display: inline-block;
-  color: var(--primary);
-  font-weight: 600;
-  text-decoration: none;
-  padding: 6px 12px;
-  border: 1px solid var(--primary);
-  border-radius: var(--border-radius);
-  transition: var(--transition);
-}
-
-.result-link:hover {
-  background-color: var(--primary);
-  color: var(--white);
+  margin-top: 0.5rem;
+  font-weight: 500;
 }
 
 .no-results {
   text-align: center;
-  padding: 40px 20px;
-  color: var(--gray-600);
-  font-style: italic;
+  padding: 2rem;
+  color: var(--text-light);
+  background: var(--bg-light);
+  border-radius: 8px;
 }
 
 /* Google CSE Results */
-.gsc-control-cse {
-  padding: 0 !important;
-  border: none !important;
-  background: transparent !important;
+.gcse-searchresults-only {
+  margin-top: 2rem;
 }
 
-.gsc-webResult .gsc-result {
-  padding: 20px !important;
-  margin-bottom: 20px !important;
-  background: rgb(226, 221, 221) !important;
-  border-radius: var(--border-radius-lg) !important;
-  box-shadow: var(--shadow-md) !important;
-  border: none !important;
-  color: var(--gray-800) !important;
+.gsc-results {
+  width: 100% !important;
 }
 
-.gs-result .gs-title, 
-.gs-result .gs-title * {
-  color: var(--primary) !important;
-  text-decoration: none !important;
-  font-size: 1.25rem !important;
-  font-weight: 600 !important;
-  line-height: 1.3 !important;
+.gsc-webResult .gs-title {
+  font-size: 1.1rem !important;
+  line-height: 1.4 !important;
+  color: var(--primary-color) !important;
 }
 
-.gs-result .gs-snippet {
-  color: var(--gray-700) !important;
+.gsc-webResult .gs-snippet {
+  font-size: 0.95rem !important;
   line-height: 1.5 !important;
-}
-
-.gsc-table-result, 
-.gsc-thumbnail-inside, 
-.gsc-url-top {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-
-/* Search box styling */
-.gsc-input-box {
-  border: 1px solid var(--gray-400) !important;
-  border-radius: 30px !important;
-  background: white !important;
-}
-
-.gsc-input {
-  background: transparent !important;
-  color: var(--gray-800) !important;
-}
-
-.gsc-search-button {
-  background: var(--primary) !important;
-  border-radius: 30px !important;
+  color: var(--text-color) !important;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .results-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .controls-panel {
+    flex: none;
+  }
+  
   .results-header-inner {
     flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
+    gap: 1rem;
   }
   
   .searchbar-container {
-    min-width: 100%;
-  }
-  
-  .controls-section {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .control-group {
     width: 100%;
-    justify-content: space-between;
-  }
-  
-  .results-container {
-    padding: 20px 15px;
-  }
-  
-  .result-meta {
-    flex-direction: column;
-    gap: 8px;
   }
 }
 
-@media (max-width: 480px) {
-  .results-name {
-    font-size: 1.75rem;
-  }
-  
-  .result-card {
-    padding: 15px;
-  }
-  
-  .result-title {
-    font-size: 1.1rem;
-  }
+/* Dark Mode Support */
+body.dark {
+  --text-color: #E5E7EB;
+  --text-light: #9CA3AF;
+  --bg-color: #111827;
+  --bg-light: #1F2937;
+  --border-color: #374151;
+}
+
+body.dark .result-card,
+body.dark .controls-panel {
+  background-color: #1F2937;
+}
+
+body.dark select {
+  background-color: #374151;
+  color: #E5E7EB;
+  border-color: #4B5563;
 }
 </style>
 </head>
@@ -379,40 +408,59 @@ input:checked + .slider:before {
 </header>
 
 <main class="results-container">
-
-  <!-- Controls Section -->
-  <section class="controls-section">
-    <!-- Labs toggle -->
+  <!-- Controls Panel -->
+  <aside class="controls-panel">
     <div class="control-group">
-      <span class="control-label">Show Labs:</span>
-      <label class="switch">
-        <input type="checkbox" id="labsToggle" checked>
-        <span class="slider round"></span>
-      </label>
+      <h3>Search Controls</h3>
+      
+      <!-- Labs toggle -->
+      <div class="toggle-container">
+        <span class="toggle-label">Show Labs</span>
+        <label class="switch">
+          <input type="checkbox" id="labsToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Filter dropdown -->
+      <div class="filter-container">
+        <label for="filter" class="filter-label">Filter by Category</label>
+        <select id="filter">
+          <option value="all">All Categories</option>
+          <option value="STEM">STEM</option>
+          <option value="Psychology">Psychology</option>
+          <option value="Experiments / Labs">Experiments / Labs</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <h3>Search Tips</h3>
+      <p style="font-size: 0.9rem; color: var(--text-light);">
+        Use specific keywords for better results. Try filtering by category to narrow down your search.
+      </p>
+    </div>
+  </aside>
+
+  <!-- Results Section -->
+  <section class="results-section">
+    <div class="results-header-info">
+      <p class="results-count">Search results for: <span class="query-term" id="queryTerm">Loading...</span></p>
     </div>
 
-    <!-- Filter dropdown -->
-    <div class="control-group">
-      <label for="filter" class="control-label">Filter:</label>
-      <select id="filter" class="filter-select">
-        <option value="all">All</option>
-        <option value="STEM">STEM</option>
-        <option value="Psychology">Psychology</option>
-        <option value="Experiments / Labs">Experiments / Labs</option>
-      </select>
+    <!-- Internal results -->
+    <div class="internal-results">
+      <h2 class="section-title">Taisen Labs Results</h2>
+      <div id="results-internal"></div>
     </div>
+
+    <!-- Google CSE Results -->
+    <div class="gcse-searchresults-only"></div>
   </section>
-
-  <!-- Internal results -->
-  <div id="results-internal"></div>
-
-  <!-- Google CSE Results -->
-  <div class="gcse-searchresults-only"></div>
-
 </main>
 
 <script>
-// CAPTCHA Verification Function - ADDED THIS FUNCTION
+// CAPTCHA Verification Function
 function verifyCaptcha() {
   const params = new URLSearchParams(window.location.search);
   const query = params.get('q') || '';
@@ -444,24 +492,28 @@ function redirectToCaptcha(query) {
   window.location.href = `captcha.html?q=${encodeURIComponent(query)}`;
 }
 
-// Original code below - UNCHANGED
+// Original code below - with UI integration
 let data = [];
 
 // Helpers
 function getQuery() {
-  return new URLSearchParams(window.location.search).get('q') || '';
+  const query = new URLSearchParams(window.location.search).get('q') || '';
+  document.getElementById('queryTerm').textContent = query;
+  return query;
 }
+
 function getLabsPreference() {
   const saved = localStorage.getItem('showLabs');
   return saved === null ? true : saved === 'true';
 }
+
 function saveLabsPreference(value) {
   localStorage.setItem('showLabs', value);
 }
 
 // Load internal JSON data
 async function loadData() {
-  // CAPTCHA Verification Check - ADDED THIS CHECK
+  // CAPTCHA Verification Check
   if (!verifyCaptcha()) {
     return; // Redirect will happen automatically
   }
@@ -481,12 +533,16 @@ async function loadData() {
     const query = getQuery();
 
     let resultsDiv = document.getElementById('results-internal');
+    const sectionTitle = document.querySelector('.section-title');
 
     if (!showLabs) {
       // If toggle OFF, hide internal results completely
       resultsDiv.innerHTML = '';
+      sectionTitle.style.display = 'none';
       return;
     }
+    
+    sectionTitle.style.display = 'flex';
 
     // Filter results based on query & label
     const filtered = data.filter(item => {
@@ -499,7 +555,12 @@ async function loadData() {
     // Display
     resultsDiv.innerHTML = '';
     if (!filtered.length) {
-      resultsDiv.innerHTML = '<div class="no-results">No internal results found.</div>';
+      resultsDiv.innerHTML = `
+        <div class="no-results">
+          <p>No internal results found for your search.</p>
+          <p>Try adjusting your search terms or changing the category filter.</p>
+        </div>
+      `;
       return;
     }
     
@@ -510,10 +571,10 @@ async function loadData() {
         <h3 class="result-title">${item.title}</h3>
         <p class="result-snippet">${item.snippet}</p>
         <div class="result-meta">
-          <span class="result-type"><strong>Type:</strong> ${item.type}</span>
-          <span class="result-source"><strong>Source:</strong> ${item.source}</span>
+          <span><strong>Type:</strong> ${item.type}</span>
+          <span><strong>Source:</strong> ${item.source}</span>
         </div>
-        <a href="${item.link}" target="_blank" class="result-link">Visit Resource</a>
+        <a href="${item.link}" target="_blank" class="result-link">Visit Resource →</a>
       `;
       resultsDiv.appendChild(card);
     });
@@ -524,6 +585,7 @@ async function loadData() {
     saveLabsPreference(labsToggle.checked);
     updateResults();
   });
+  
   filterEl.addEventListener('change', updateResults);
 
   // Initial display
