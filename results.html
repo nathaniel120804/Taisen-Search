@@ -1570,6 +1570,276 @@ window.addEventListener('load', loadData);
   import { protectPage } from './antiBypass.js';
   protectPage(); // will redirect if bypass attempt is detected
 </script>
+<script>
+// AI GPT Search Integration for Results Page
+class TAISEN_AIResults {
+    constructor() {
+        this.API_KEY = '4344c369928a4a26997e233f39cce26d';
+        this.API_URL = 'https://api.aimlapi.com/v1/chat/completions';
+        this.MODEL = 'google/gemma-3n-e4b-it';
+        this.aiResultsContainer = null;
+        this.isProcessing = false;
+    }
 
+    init() {
+        this.createAIContainer();
+        this.processCurrentSearch();
+        this.overrideResultsSearch();
+    }
+
+    createAIContainer() {
+        this.aiResultsContainer = document.createElement('div');
+        this.aiResultsContainer.id = 'taisen-ai-results';
+        this.aiResultsContainer.style.cssText = `
+            margin-bottom: 30px;
+        `;
+        
+        // Insert before the internal results section
+        const internalResults = document.querySelector('.internal-results');
+        if (internalResults) {
+            internalResults.parentNode.insertBefore(this.aiResultsContainer, internalResults);
+        }
+    }
+
+    processCurrentSearch() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
+        if (query && query.trim() !== "") {
+            setTimeout(() => {
+                this.showAIResults(query);
+            }, 1000);
+        }
+    }
+
+    overrideResultsSearch() {
+        const interval = setInterval(() => {
+            if (window.google && google.search && google.search.cse) {
+                const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
+                if (searchBox && searchBox.execute) {
+                    clearInterval(interval);
+                    
+                    const originalExecute = searchBox.execute.bind(searchBox);
+                    searchBox.execute = (query) => {
+                        if (query && query.trim() !== "") {
+                            setTimeout(() => {
+                                this.showAIResults(query);
+                            }, 1000);
+                        }
+                        originalExecute(query);
+                    };
+                }
+            }
+        }, 100);
+    }
+
+    async showAIResults(query) {
+        if (this.isProcessing) return;
+        
+        this.isProcessing = true;
+        this.showLoadingState(query);
+
+        try {
+            const aiResponse = await this.fetchAIResponse(query);
+            this.displayAIResults(query, aiResponse);
+        } catch (error) {
+            console.error('AI Search Error:', error);
+            this.hideAIResults();
+        } finally {
+            this.isProcessing = false;
+        }
+    }
+
+    showLoadingState(query) {
+        this.aiResultsContainer.innerHTML = `
+            <div class="ai-result-card" style="
+                background: var(--white);
+                border-radius: var(--border-radius-lg);
+                padding: 25px;
+                box-shadow: var(--shadow-md);
+                border-left: 4px solid var(--primary);
+                margin-bottom: 20px;
+            ">
+                <div class="ai-header" style="
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    margin-bottom: 15px;
+                    color: var(--primary);
+                    font-weight: 600;
+                    font-size: 18px;
+                ">
+                    <span>🤖 TAISEN AI</span>
+                    <div class="typing-indicator" style="
+                        display: flex;
+                        gap: 4px;
+                    ">
+                        <div class="dot" style="
+                            width: 8px;
+                            height: 8px;
+                            background: var(--primary);
+                            border-radius: 50%;
+                            animation: bounce 1.4s infinite ease-in-out;
+                        "></div>
+                        <div class="dot" style="
+                            width: 8px;
+                            height: 8px;
+                            background: var(--primary);
+                            border-radius: 50%;
+                            animation: bounce 1.4s infinite ease-in-out;
+                            animation-delay: 0.2s;
+                        "></div>
+                        <div class="dot" style="
+                            width: 8px;
+                            height: 8px;
+                            background: var(--primary);
+                            border-radius: 50%;
+                            animation: bounce 1.4s infinite ease-in-out;
+                            animation-delay: 0.4s;
+                        "></div>
+                    </div>
+                </div>
+                <div class="ai-query" style="
+                    color: var(--gray-800);
+                    margin-bottom: 10px;
+                    font-weight: 500;
+                ">Generating AI overview for: "${query}"</div>
+            </div>
+        `;
+        
+        this.aiResultsContainer.style.display = 'block';
+    }
+
+    async fetchAIResponse(query) {
+        const requestBody = {
+            model: this.MODEL,
+            messages: [
+                {
+                    role: "user",
+                    content: `Provide a comprehensive, well-structured answer about: ${query}. Use clear paragraphs, bullet points with emojis, and keep it informative yet concise (under 400 words). Focus on key facts and insights.`
+                }
+            ],
+            temperature: 0.7,
+            max_tokens: 600
+        };
+
+        const response = await fetch(this.API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.API_KEY}`
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.choices[0].message.content;
+    }
+
+    displayAIResults(query, aiResponse) {
+        this.aiResultsContainer.innerHTML = `
+            <div class="ai-result-card" style="
+                background: var(--white);
+                border-radius: var(--border-radius-lg);
+                padding: 25px;
+                box-shadow: var(--shadow-md);
+                border-left: 4px solid var(--primary);
+                margin-bottom: 30px;
+            ">
+                <div class="ai-header" style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    margin-bottom: 20px;
+                    color: var(--primary);
+                    font-weight: 600;
+                    font-size: 18px;
+                ">
+                    <span>🤖</span>
+                    <span>TAISEN AI Overview</span>
+                </div>
+                
+                <div class="ai-query" style="
+                    color: var(--gray-800);
+                    margin-bottom: 15px;
+                    font-weight: 500;
+                    font-size: 16px;
+                    padding: 10px;
+                    background: var(--gray-100);
+                    border-radius: var(--border-radius);
+                ">${query}</div>
+                
+                <div class="ai-response" style="
+                    color: var(--gray-700);
+                    line-height: 1.6;
+                    font-size: 15px;
+                    margin-bottom: 15px;
+                ">${aiResponse}</div>
+                
+                <div class="ai-footer" style="
+                    margin-top: 20px;
+                    padding-top: 15px;
+                    border-top: 1px solid var(--gray-300);
+                    color: var(--gray-600);
+                    font-size: 13px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                ">
+                    <span>🤖 AI-powered search • May include inaccuracies</span>
+                    <div>
+                        <button class="feedback-btn" style="
+                            background: none;
+                            border: 1px solid var(--gray-400);
+                            padding: 6px 12px;
+                            border-radius: var(--border-radius);
+                            cursor: pointer;
+                            font-size: 12px;
+                            color: var(--gray-600);
+                            margin-left: 10px;
+                            transition: var(--transition);
+                        " onmouseover="this.style.background='var(--gray-100)'" 
+                        onmouseout="this.style.background='transparent'">Feedback</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Add feedback button functionality
+        const feedbackBtn = this.aiResultsContainer.querySelector('.feedback-btn');
+        feedbackBtn.addEventListener('click', () => {
+            alert('Thank you for your feedback on TAISEN AI results!');
+        });
+
+        this.aiResultsContainer.style.display = 'block';
+    }
+
+    hideAIResults() {
+        this.aiResultsContainer.style.display = 'none';
+    }
+}
+
+// Initialize AI Results when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    const aiResults = new TAISEN_AIResults();
+    aiResults.init();
+});
+</script>
+
+<style>
+@keyframes bounce {
+    0%, 80%, 100% { 
+        transform: scale(0.8); 
+        opacity: 0.5; 
+    }
+    40% { 
+        transform: scale(1); 
+        opacity: 1; 
+    }
+}
+</style>
 </body>
 </html>
