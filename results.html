@@ -1576,7 +1576,7 @@ class TAISEN_AIResults {
     constructor() {
         this.API_KEY = '4344c369928a4a26997e233f39cce26d';
         this.API_URL = 'https://api.aimlapi.com/v1/chat/completions';
-        this.MODEL = 'google/gemma-3n-e4b-it';
+        this.MODEL = 'google/gemma-3-12b-it';
         this.aiResultsContainer = null;
         this.isProcessing = false;
     }
@@ -1718,8 +1718,11 @@ class TAISEN_AIResults {
                     content: `Provide a comprehensive, well-structured answer about: ${query}. Use clear paragraphs, bullet points with emojis, and keep it informative yet concise (under 400 words). Focus on key facts and insights.`
                 }
             ],
-            temperature: 0.7,
-            max_tokens: 600
+            temperature: 0.2,
+            top_p: 0.7,
+            frequency_penalty: 1,
+            max_tokens: 1536,
+            top_k: 50
         };
 
         const response = await fetch(this.API_URL, {
@@ -1791,7 +1794,7 @@ class TAISEN_AIResults {
                     justify-content: space-between;
                     align-items: center;
                 ">
-                    <span>🤖 AI-powered search • May include inaccuracies</span>
+                    <span>🤖 AI-powered search (Gemma-3-12b) • May include inaccuracies</span>
                     <div>
                         <button class="feedback-btn" style="
                             background: none;
