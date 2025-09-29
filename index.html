@@ -678,6 +678,39 @@
         border-right: 3px solid var(--primary);
       }
     }
+    /* AI Mode Button Styles */
+#aiModeButton {
+  position: fixed;
+  top: 80px;
+  right: 120px; /* Positioned to the left of the Sign In button */
+  padding: 10px 20px;
+  background: var(--gradient-primary);
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  z-index: 10000;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  display: block;
+  text-decoration: none;
+  text-align: center;
+}
+
+#aiModeButton:hover {
+  transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+}
+
+/* Adjust the existing Sign In button position */
+#userButton {
+  position: fixed;
+  top: 80px;
+  right: 20px; /* Keep original position */
+  /* ... rest of your existing styles ... */
+}
   </style>
 </head>
 <body>
@@ -693,7 +726,8 @@
     
     <!-- User Button -->
     <button id="userButton">Sign In</button>
-    
+    <!-- AI Mode Button -->
+<button id="aiModeButton" a href="https://taisenai.pages.dev" target="_blank" >AI Mode</a></button>
     <section class="header-section">
     </section>
   </header>
