@@ -53,6 +53,9 @@
   .version-badge.new {
     background: linear-gradient(90deg, #10B981, #059669);
   }
+  .version-badge.latest {
+    background: linear-gradient(90deg, #8B5CF6, #7C3AED);
+  }
   ul { margin: 5px 0 5px 20px; }
   footer {
     margin-top: 60px;
@@ -71,6 +74,10 @@
     margin: 15px 0;
     border-radius: 0 8px 8px 0;
   }
+  .feature-highlight.latest {
+    background-color: #F3E8FF;
+    border-left: 4px solid #8B5CF6;
+  }
 </style>
 </head>
 <body>
@@ -80,7 +87,7 @@
 <p><strong>Prepared by:</strong> The Taisen Team</p>
 <p><strong>Role:</strong> Project Lead</p>
 <p><strong>Date:</strong> October 15, 2025</p>
-<p><strong>Documentation Version:</strong> 1.10</p>
+<p><strong>Documentation Version:</strong> 1.11</p>
 
 <h2 class="icon-section">Introduction</h2>
 <p><strong>Purpose:</strong> This document provides a detailed account of the development, improvements, and version history of Taisen Search. It serves as a reference for stakeholders, developers, and future maintainers.</p>
@@ -166,6 +173,21 @@ User-configurable Settings added:
 <li>User session persistence and account management</li>
 <li>Search logging tied to user accounts</li>
 <li>Enhanced security with Firebase Authentication</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><span class="version-badge latest">1.11</span></td>
+<td>October 25, 2025</td>
+<td>
+<strong>NEW:</strong> AI Mode and AI Integration in Search:
+<ul>
+<li>AI Mode toggle in search interface for enhanced AI-powered results</li>
+<li>AI-enhanced search results with summarization and contextual insights</li>
+<li>AI-powered query suggestions and auto-completion</li>
+<li>Natural language processing for improved search understanding</li>
+<li>AI-generated summaries for complex search queries</li>
+<li>Integration with existing authentication and settings systems</li>
 </ul>
 </td>
 </tr>
@@ -323,13 +345,62 @@ User-configurable Settings added:
 </ul>
 </div>
 
-<h2 class="icon-section">Features Summary (v1.10)</h2>
+<div class="feature-highlight latest">
+<h3>Version 1.11 – AI Mode and AI Integration in Search</h3>
 <ul>
+<li><strong>AI Mode Toggle:</strong>
+  <ul>
+    <li>Prominent AI Mode toggle in search interface</li>
+    <li>Visual indicator when AI Mode is active</li>
+    <li>User preference stored in localStorage</li>
+    <li>Seamless integration with existing UI components</li>
+  </ul>
+</li>
+<li><strong>AI-Enhanced Search Results:</strong>
+  <ul>
+    <li>AI-powered summarization of search results</li>
+    <li>Contextual insights based on user query intent</li>
+    <li>Smart categorization of search results</li>
+    <li>Highlighted key information from search results</li>
+  </ul>
+</li>
+<li><strong>AI Query Processing:</strong>
+  <ul>
+    <li>Natural language processing for improved query understanding</li>
+    <li>AI-generated query suggestions and auto-completion</li>
+    <li>Semantic search capabilities beyond keyword matching</li>
+    <li>Query refinement based on user behavior patterns</li>
+  </ul>
+</li>
+<li><strong>AI-Powered Features:</strong>
+  <ul>
+    <li>AI-generated summaries for complex search queries</li>
+    <li>Smart filtering and ranking of search results</li>
+    <li>Cross-referencing between internal and external sources</li>
+    <li>Personalized result prioritization based on user history</li>
+  </ul>
+</li>
+<li><strong>Technical Implementation:</strong>
+  <ul>
+    <li>Integration with AI/ML APIs for natural language processing</li>
+    <li>Optimized performance with minimal latency impact</li>
+    <li>Fallback to traditional search when AI services are unavailable</li>
+    <li>Compatibility with existing authentication and settings systems</li>
+  </ul>
+</li>
+</ul>
+</div>
+
+<h2 class="icon-section">Features Summary (v1.11)</h2>
+<ul>
+<li><strong>AI Mode:</strong> Toggle for AI-powered search enhancements</li>
+<li><strong>AI Integration:</strong> Enhanced search results with summarization and insights</li>
+<li><strong>Natural Language Processing:</strong> Improved query understanding and suggestions</li>
 <li><strong>Authentication System:</strong> Comprehensive multi-provider login with popup modal interface</li>
 <li><strong>User Experience:</strong> Seamless sign-in flow with persistent sessions</li>
 <li><strong>Security:</strong> Firebase-backed authentication with search logging</li>
 <li><strong>Integration:</strong> Fully compatible with existing settings and debug features</li>
-<li><strong>Mobile Support:</strong> Responsive authentication modal for all devices</li>
+<li><strong>Mobile Support:</strong> Responsive design for all devices</li>
 </ul>
 
 <h2 class="icon-section">Future Roadmap</h2>
@@ -340,10 +411,12 @@ User-configurable Settings added:
 <li>Analytics for user settings usage and behavior</li>
 <li>Advanced user profile management and search history</li>
 <li>Social features: sharing search results, collaborative search</li>
+<li>Expand AI capabilities with conversational search interface</li>
+<li>Implement AI-powered image and voice search</li>
 </ul>
 
 <h2 class="icon-section">Conclusion</h2>
-<p>Taisen Search continues evolving into a modern, user-friendly platform with both functional search improvements and user-configurable settings. Version 1.10 introduces a comprehensive authentication system that enables personalized experiences while maintaining security and ease of use across all devices.</p>
+<p>Taisen Search continues evolving into a modern, user-friendly platform with both functional search improvements and user-configurable settings. Version 1.11 introduces AI Mode and AI integration in search, providing enhanced search capabilities with intelligent result processing and natural language understanding while maintaining security and ease of use across all devices.</p>
 
 <footer>
 © 2025 Taisen Search. All Rights Reserved.
