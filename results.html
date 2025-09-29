@@ -895,6 +895,53 @@ footer {
     background-clip: text;
   }
 }
+
+/* NEW STYLES FOR AI RESPONSE TRUNCATION */
+.ai-response {
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-response.truncated {
+  max-height: 200px;
+}
+
+.ai-response.truncated::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, var(--white));
+  pointer-events: none;
+}
+
+.read-more-btn {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: var(--transition);
+  padding: 8px 0;
+}
+
+.read-more-btn:hover {
+  color: var(--primary-dark);
+}
+
+.read-more-btn i {
+  transition: var(--transition);
+}
+
+.read-more-btn.expanded i {
+  transform: rotate(180deg);
+}
 </style>
 </head>
 <body>
@@ -1579,6 +1626,7 @@ class TAISEN_AIResults {
         this.MODEL = 'google/gemma-3-12b-it';
         this.aiResultsContainer = null;
         this.isProcessing = false;
+        this.MAX_VISIBLE_LENGTH = 800; // Characters to show before truncation
     }
 
     init() {
@@ -1743,6 +1791,12 @@ class TAISEN_AIResults {
     }
 
     displayAIResults(query, aiResponse) {
+        // Check if response needs truncation
+        const needsTruncation = aiResponse.length > this.MAX_VISIBLE_LENGTH;
+        const truncatedResponse = needsTruncation ? 
+            aiResponse.substring(0, this.MAX_VISIBLE_LENGTH) + '...' : 
+            aiResponse;
+        
         this.aiResultsContainer.innerHTML = `
             <div class="ai-result-card" style="
                 background: var(--white);
@@ -1775,14 +1829,21 @@ class TAISEN_AIResults {
                     border-radius: var(--border-radius);
                 ">${query}</div>
                 
-                <div class="ai-response" style="
+                <div class="ai-response ${needsTruncation ? 'truncated' : ''}" style="
                     color: var(--gray-700);
                     line-height: 1.6;
                     font-size: 15px;
                     margin-bottom: 15px;
                     white-space: pre-wrap;
                     word-wrap: break-word;
-                ">${aiResponse}</div>
+                ">${needsTruncation ? truncatedResponse : aiResponse}</div>
+                
+                ${needsTruncation ? `
+                <button class="read-more-btn" data-full-response="${aiResponse.replace(/"/g, '&quot;')}">
+                    <span>Read more</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                ` : ''}
                 
                 <div class="ai-footer" style="
                     margin-top: 20px;
@@ -1813,6 +1874,12 @@ class TAISEN_AIResults {
             </div>
         `;
 
+        // Add event listener for read more button if it exists
+        if (needsTruncation) {
+            const readMoreBtn = this.aiResultsContainer.querySelector('.read-more-btn');
+            readMoreBtn.addEventListener('click', this.toggleReadMore.bind(this));
+        }
+
         // Add feedback button functionality
         const feedbackBtn = this.aiResultsContainer.querySelector('.feedback-btn');
         feedbackBtn.addEventListener('click', () => {
@@ -1820,6 +1887,28 @@ class TAISEN_AIResults {
         });
 
         this.aiResultsContainer.style.display = 'block';
+    }
+
+    toggleReadMore(event) {
+        const button = event.target.closest('.read-more-btn');
+        const aiResponseElement = button.previousElementSibling;
+        const isExpanded = button.classList.contains('expanded');
+        
+        if (isExpanded) {
+            // Collapse the response
+            const truncatedResponse = button.getAttribute('data-full-response').substring(0, this.MAX_VISIBLE_LENGTH) + '...';
+            aiResponseElement.textContent = truncatedResponse;
+            aiResponseElement.classList.add('truncated');
+            button.innerHTML = '<span>Read more</span><i class="fas fa-chevron-down"></i>';
+            button.classList.remove('expanded');
+        } else {
+            // Expand the response
+            const fullResponse = button.getAttribute('data-full-response');
+            aiResponseElement.textContent = fullResponse;
+            aiResponseElement.classList.remove('truncated');
+            button.innerHTML = '<span>Read less</span><i class="fas fa-chevron-up"></i>';
+            button.classList.add('expanded');
+        }
     }
 
     hideAIResults() {
