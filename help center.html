@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taisen Search Help Center</title>
+  <title>Taisen Help Center</title>
   <style>
     /* Taisen Design System Variables */
     :root {
@@ -96,7 +96,7 @@
       font-size: 18px;
       font-weight: 600;
       margin-bottom: calc(var(--spacing-unit) * 3);
-      color: white;
+      color: var(--text-dark);
       border-bottom: 2px solid var(--brand-color);
       padding-bottom: calc(var(--spacing-unit) * 1);
     }
@@ -369,7 +369,7 @@
 <body>
   <header>
     <section class="header-section">
-      <h1 class="site-title2">Taisen Search Help Center</h1>
+      <h1 class="site-title2">Taisen Help Center</h1>
       <a href="index.html" class="back-link">← Back to Taisen</a>
     </section>
   </header>
@@ -379,6 +379,9 @@
     <nav class="help-sidebar">
       <h3>Categories</h3>
       <ul>
+        <li><a href="#taisen-account">Taisen Account</a></li>
+        <li><a href="#taisen-search">Taisen Search</a></li>
+        <li><a href="#taisen-ai">Taisen AI</a></li>
         <li><a href="#getting-started">Getting Started</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#faq">FAQ</a></li>
@@ -390,17 +393,57 @@
     <section class="help-content">
       <input type="text" id="searchInput" placeholder="Search for help...">
 
-      <div id="getting-started" class="help-section">
-        <h2>🔎 Getting Started</h2>
+      <div id="taisen-account" class="help-section">
+        <h2>👤 Taisen Account</h2>
+        <p>Manage your Taisen account settings, preferences, and privacy options.</p>
+        <ul>
+          <li><b>Creating an Account</b> - Sign up for a Taisen account to access personalized features.</li>
+          <li><b>Account Settings</b> - Customize your profile, notification preferences, and privacy settings.</li>
+          <li><b>Password & Security</b> - Update your password and enable two-factor authentication.</li>
+          <li><b>Data & Privacy</b> - Control how your data is collected and used across Taisen services.</li>
+        </ul>
+      </div>
+
+      <div id="taisen-search" class="help-section">
+        <h2>🔍 Taisen Search</h2>
         <p>Taisen Search helps you find information quickly and privately. Just type your query and press <b>Enter</b>.</p>
+        <ul>
+          <li><b>Anonymous Search Mode</b> – browse without being tracked.</li>
+          <li><b>Smart Filters</b> – filter results by type (web, images, news).</li>
+          <li><b>Privacy First</b> – no personal data stored.</li>
+          <li><b>Advanced Search Operators</b> – use special commands to refine your searches.</li>
+        </ul>
+      </div>
+
+      <div id="taisen-ai" class="help-section">
+        <h2>🤖 Taisen AI</h2>
+        <p>Explore the capabilities of Taisen AI, our intelligent assistant and content generation tool.</p>
+        <ul>
+          <li><b>AI Assistant</b> - Get help with tasks, research, and creative projects.</li>
+          <li><b>Content Generation</b> - Create text, images, and code with AI assistance.</li>
+          <li><b>Integration</b> - Use Taisen AI across Taisen products and services.</li>
+          <li><b>Customization</b> - Train the AI to better understand your preferences and style.</li>
+        </ul>
+      </div>
+
+      <div id="getting-started" class="help-section">
+        <h2>🚀 Getting Started</h2>
+        <p>Welcome to Taisen! Here's how to make the most of our services:</p>
+        <ul>
+          <li>Create a Taisen account to sync preferences across devices</li>
+          <li>Set Taisen Search as your default search engine</li>
+          <li>Explore Taisen AI features for enhanced productivity</li>
+          <li>Customize your privacy settings to match your comfort level</li>
+        </ul>
       </div>
 
       <div id="features" class="help-section">
         <h2>⚙️ Features</h2>
         <ul>
-          <li><b>Anonymous Search Mode</b> – browse without being tracked.</li>
-          <li><b>Smart Filters</b> – filter results by type (web, images, news).</li>
-          <li><b>Privacy First</b> – no personal data stored.</li>
+          <li><b>Cross-Platform Sync</b> – Access your preferences and data across all your devices.</li>
+          <li><b>Privacy Controls</b> – Granular control over what data is collected and how it's used.</li>
+          <li><b>Custom Search Experience</b> – Personalize how search results are displayed and organized.</li>
+          <li><b>AI-Powered Assistance</b> – Get intelligent help with tasks, research, and content creation.</li>
         </ul>
       </div>
 
@@ -408,42 +451,55 @@
         <h2>❓ Frequently Asked Questions</h2>
 
         <div class="faq-item">
-          <button class="faq-question">What is Taisen Search?</button>
+          <button class="faq-question">What is Taisen?</button>
           <div class="faq-answer">
-            <p>Taisen Search is a privacy-focused search engine designed to give you fast, accurate results without tracking you.</p>
+            <p>Taisen is a privacy-focused technology company offering search, AI, and account services designed to give you powerful tools without compromising your privacy.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question">How do I enable Anonymous Search Mode?</button>
+          <button class="faq-question">How do I create a Taisen account?</button>
+          <div class="faq-answer">
+            <p>You can create a Taisen account by visiting the account creation page and providing your email address and a secure password.</p>
+          </div>
+        </div>
+
+        <div class="faq-question">How do I enable Anonymous Search Mode?</button>
           <div class="faq-answer">
             <p>You can toggle Anonymous Search Mode from the extension settings. It hides your search history and anonymizes your queries.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question">Does Taisen Search use ads?</button>
+          <button class="faq-question">What can Taisen AI do?</button>
           <div class="faq-answer">
-            <p>No, Taisen Search does not track or sell your data. Our goal is to keep your browsing private and ad-free.</p>
+            <p>Taisen AI can help with research, content creation, coding, problem-solving, and more. It's designed to be a versatile assistant across various tasks.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question">How is Taisen Search different from Google or Bing?</button>
+          <button class="faq-question">Does Taisen use ads?</button>
           <div class="faq-answer">
-            <p>Unlike mainstream search engines, Taisen Search does not log your queries, build profiles, or sell your information to advertisers.</p>
+            <p>No, Taisen does not track or sell your data. Our goal is to keep your browsing private and ad-free.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question">Can I use Taisen Search on mobile?</button>
+          <button class="faq-question">How is Taisen different from Google or Bing?</button>
           <div class="faq-answer">
-            <p>Yes. Taisen Search is fully compatible with mobile browsers and can be set as your default search provider.</p>
+            <p>Unlike mainstream search engines, Taisen does not log your queries, build profiles, or sell your information to advertisers.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question">Does Taisen Search save my search history?</button>
+          <button class="faq-question">Can I use Taisen on mobile?</button>
+          <div class="faq-answer">
+            <p>Yes. Taisen services are fully compatible with mobile browsers and can be set as your default search provider.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">Does Taisen save my search history?</button>
           <div class="faq-answer">
             <p>No. Taisen Search does not store your search history. All queries are processed anonymously.</p>
           </div>
@@ -478,14 +534,14 @@
         </div>
 
         <div class="faq-item">
-          <button class="faq-question">Is Taisen Search free to use?</button>
+          <button class="faq-question">Is Taisen free to use?</button>
           <div class="faq-answer">
-            <p>Yes. Taisen Search is completely free to use with no hidden charges or premium tiers.</p>
+            <p>Yes. Taisen services are completely free to use with no hidden charges or premium tiers.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question">Does Taisen Search filter inappropriate content?</button>
+          <button class="faq-question">Does Taisen filter inappropriate content?</button>
           <div class="faq-answer">
             <p>Yes. We apply safe search filters to minimize explicit content, which can be adjusted in settings.</p>
           </div>
@@ -515,7 +571,7 @@
 
       <div id="support" class="help-section">
         <h2>📩 Contact Support</h2>
-        <p>If you need more help, email us at <a href="mailto:support@taisensearch.com">support@taisensearch.com</a>.</p>
+        <p>If you need more help, email us at <a href="mailto:support@taisen.com">support@taisen.com</a>.</p>
       </div>
     </section>
   </main>
@@ -530,7 +586,7 @@
         <a href="terms.html">Terms of Service</a>
         <a href="help center.html">Help Center</a>
         <a href="labs.html">Labs</a>
-        <a href="TaisenSearch_Documentation.html">Documentation</a>
+        <a href="Taisen_Documentation.html">Documentation</a>
       </nav>
     </div>
   </footer>
