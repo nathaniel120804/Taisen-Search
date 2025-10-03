@@ -101,6 +101,13 @@
       border-left: 4px solid var(--brand-color);
     }
 
+    h4 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--brand-color);
+      margin: calc(var(--spacing-unit) * 3) 0 calc(var(--spacing-unit) * 2) 0;
+    }
+
     p {
       margin-bottom: calc(var(--spacing-unit) * 3);
       color: var(--text-dark);
@@ -234,6 +241,35 @@
       color: var(--text-dark);
     }
 
+    /* Subprocessors Table */
+    .subprocessors-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: calc(var(--spacing-unit) * 3) 0;
+      font-size: 14px;
+    }
+
+    .subprocessors-table th {
+      background-color: var(--brand-color);
+      color: white;
+      text-align: left;
+      padding: calc(var(--spacing-unit) * 2);
+      font-weight: 600;
+    }
+
+    .subprocessors-table td {
+      padding: calc(var(--spacing-unit) * 2);
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .subprocessors-table tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    .subprocessors-table tr:hover {
+      background-color: #f0f7ff;
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .header-section {
@@ -268,6 +304,15 @@
         flex-direction: column;
         gap: calc(var(--spacing-unit) * 2);
       }
+
+      .subprocessors-table {
+        font-size: 12px;
+      }
+
+      .subprocessors-table th,
+      .subprocessors-table td {
+        padding: calc(var(--spacing-unit) * 1);
+      }
     }
 
     /* Dark Theme Support */
@@ -283,7 +328,7 @@
         background: #1f1f1f;
       }
 
-      h2, h3, p, li {
+      h2, h3, h4, p, li {
         color: var(--text-light);
       }
 
@@ -297,6 +342,22 @@
 
       .content-section {
         box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      }
+
+      .subprocessors-table th {
+        background-color: #2563eb;
+      }
+
+      .subprocessors-table td {
+        border-bottom: 1px solid #333;
+      }
+
+      .subprocessors-table tr:nth-child(even) {
+        background-color: #2a2a2a;
+      }
+
+      .subprocessors-table tr:hover {
+        background-color: #333;
       }
     }
   </style>
@@ -315,18 +376,22 @@
   <main class="main-content">
     <div class="page-content">
       <div class="update-banner">
-        Effective July 1, 2025 | <a href="#" style="color: white; text-decoration: underline;">Download PDF</a>
+        Effective Date: October 3, 2025 | <a href="#" style="color: white; text-decoration: underline;">Download PDF</a>
       </div>
 
       <div class="content-section">
         <p>
-          When you use <strong>Taisen</strong>, you're trusting us with your information. We understand this responsibility 
-          and are committed to protecting your data and putting you in control.
+          When you use <strong>Taisen</strong>, you trust us with your information. We take this responsibility seriously and are committed to protecting your privacy while giving you control over your data.
         </p>
         <p>
-          This Privacy Policy explains what information we collect, why we collect it, and how you can manage, 
-          update, or delete your information.
+          This Privacy Policy explains:
         </p>
+        <ul>
+          <li>What information we collect</li>
+          <li>Why we collect it</li>
+          <li>How we use it</li>
+          <li>Your rights and choices</li>
+        </ul>
 
         <div class="privacy-highlights">
           <div class="highlight-card">
@@ -346,83 +411,139 @@
 
       <div class="content-section">
         <h3>Services Covered</h3>
-        <p>
-          Taisen provides a search engine platform and related services that allow users to search, explore, 
-          and interact with information. Our services include:
-        </p>
+        <p>This policy applies to all Taisen services, including:</p>
         <ul>
           <li>The Taisen search engine</li>
           <li>User accounts for personalization and saved preferences</li>
-          <li>Analytics tools that help improve search results and platform reliability</li>
+          <li>Analytics tools that help us improve performance and reliability</li>
         </ul>
       </div>
 
       <div class="content-section">
-        <h3>Information Taisen Collects</h3>
-        <p>We only collect limited data necessary to provide and improve our services.</p>
+        <h3>Information We Collect</h3>
+        <p>We collect only the data necessary to operate and improve our services.</p>
         
-        <h4 style="color: var(--brand-color); margin-top: calc(var(--spacing-unit) * 3);">1. Information you provide to us</h4>
+        <h4>1. Information You Provide</h4>
         <ul>
-          <li>When you create a Taisen Account, we may collect your email address and a password for login and security</li>
-          <li>Optional profile settings you choose to provide (such as a display name)</li>
+          <li>Account details: When you create a Taisen account, we collect your email address and password for login and security.</li>
+          <li>Optional profile settings: You may provide additional information such as a display name.</li>
         </ul>
 
-        <h4 style="color: var(--brand-color); margin-top: calc(var(--spacing-unit) * 3);">2. Information we collect automatically</h4>
+        <h4>2. Information Collected Automatically</h4>
         <ul>
-          <li>Search logs: We log search terms and related technical data to improve search performance and detect misuse</li>
-          <li>Device and usage information: Browser type, device type, operating system, and interaction with our services</li>
-          <li>IP address: Used for security, fraud prevention, and service improvement</li>
+          <li>Search logs: Search terms and technical data (e.g., timestamps) to improve performance and prevent misuse.</li>
+          <li>Device & usage data: Browser type, device type, operating system, and interactions with our services.</li>
+          <li>IP address: Used for fraud prevention, security, and service optimization.</li>
         </ul>
       </div>
 
       <div class="content-section">
-        <h3>What we do not collect</h3>
+        <h3>What We Do Not Collect</h3>
         <ul>
-          <li>We do not collect sensitive personal information such as race, religion, political views, financial details, or health data</li>
-          <li>We do not collect your identity unless you voluntarily create an account</li>
+          <li>Sensitive personal information such as race, religion, political views, financial details, or health data.</li>
+          <li>Your identity, unless you voluntarily create an account.</li>
         </ul>
       </div>
 
       <div class="content-section">
-        <h3>Why Taisen Collects Data</h3>
-        <p>We use data for the following purposes:</p>
+        <h3>How We Use Data</h3>
+        <p>We use your data only for the following purposes:</p>
         <ul>
-          <li>Provide our services: To process search queries and deliver relevant results</li>
-          <li>Maintain & improve services: Detect outages, troubleshoot issues, and enhance performance</li>
-          <li>Develop new features: Analyze usage trends to create new functionalities</li>
-          <li>Protect against misuse: Detect spam, security risks, or abuse</li>
+          <li>Provide services: Process search queries and deliver relevant results.</li>
+          <li>Maintain & improve services: Detect outages, troubleshoot, and enhance reliability.</li>
+          <li>Develop new features: Analyze trends to build new functionalities.</li>
+          <li>Protect against misuse: Detect spam, abuse, or security threats.</li>
         </ul>
-        <p><strong>We do not use your search data for advertising, and we do not sell your information to third parties.</strong></p>
+        <p><strong>🚫 We do not sell your data to third parties.</strong></p>
+        <p><strong>🚫 We do not use your search data for advertising.</strong></p>
       </div>
 
       <div class="content-section">
         <h3>Your Privacy Controls</h3>
-        <p>You have full control over your data:</p>
+        <p>You remain in control of your information:</p>
         <ul>
-          <li>Account settings: Review and update your account information</li>
-          <li>Search activity management: View or delete your past searches from your account dashboard</li>
-          <li>Export your data: You can request a copy of your Taisen account data</li>
-          <li>Delete your account: You may delete your account anytime, which permanently removes your personal information from our systems</li>
+          <li>Account settings: Update your personal details anytime.</li>
+          <li>Search history management: View or delete your searches in your account dashboard.</li>
+          <li>Data export: Request a copy of your Taisen account data.</li>
+          <li>Account deletion: Delete your account anytime; all associated data will be permanently removed.</li>
         </ul>
       </div>
 
       <div class="content-section">
         <h3>Sharing of Information</h3>
-        <p>Taisen does not share your personal data with third parties, except in these cases:</p>
+        <p>Taisen does not share your personal data with third parties, except:</p>
         <ul>
-          <li>With your consent: If you connect your account with third-party services</li>
-          <li>For legal reasons: If required by applicable law, regulation, or legal process</li>
-          <li>For security reasons: To detect, prevent, or address fraud, abuse, or technical issues</li>
+          <li>With your consent: If you choose to link your account with third-party services.</li>
+          <li>For legal compliance: When required by law or legal process.</li>
+          <li>For security: To detect, prevent, or address fraud, abuse, or technical issues.</li>
         </ul>
-        <p>Non-identifiable, aggregated search data may be shared publicly for research and analytics purposes.</p>
+        <p>We may share non-identifiable, aggregated data (e.g., general search trends) for research and analytics purposes.</p>
+      </div>
+
+      <div class="content-section">
+        <h3>Subprocessors</h3>
+        <p>
+          To operate Taisen, we use trusted third-party service providers ("subprocessors") that process data on our behalf. These providers support hosting, storage, authentication, analytics, and security. We ensure all subprocessors comply with the Philippine Data Privacy Act and the GDPR.
+        </p>
+        
+        <table class="subprocessors-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Subprocessor</th>
+              <th>Purpose of Processing</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hosting & Security</td>
+              <td>Cloudflare, Inc.</td>
+              <td>Content delivery, DDoS protection, performance optimization</td>
+              <td>Global</td>
+            </tr>
+            <tr>
+              <td>Hosting & Deployment</td>
+              <td>Netlify, Inc.</td>
+              <td>Website hosting and deployment</td>
+              <td>Global</td>
+            </tr>
+            <tr>
+              <td>Database & Auth</td>
+              <td>Google Firebase</td>
+              <td>Database storage, user account management, authentication</td>
+              <td>Global</td>
+            </tr>
+            <tr>
+              <td>Data Storage & Tools</td>
+              <td>Google Sheets (Google LLC)</td>
+              <td>Data storage and processing of non-sensitive records</td>
+              <td>Global</td>
+            </tr>
+            <tr>
+              <td>Analytics</td>
+              <td>Google Analytics (Google LLC)</td>
+              <td>Usage statistics and service improvement</td>
+              <td>Global</td>
+            </tr>
+            <tr>
+              <td>APIs & Integrations</td>
+              <td>Various third-party APIs</td>
+              <td>Provide additional app functionalities and integrations</td>
+              <td>Global</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <p>This list may be updated as we expand our services. Updates will always be reflected in this Privacy Policy.</p>
       </div>
 
       <div class="content-section">
         <h3>Data Retention</h3>
         <ul>
-          <li>Search logs are retained in anonymized form for service improvement</li>
-          <li>Account data is retained until you delete your Taisen account</li>
-          <li>Some security-related logs may be kept longer if required by law</li>
+          <li>Search logs: Retained in anonymized form for service improvement.</li>
+          <li>Account data: Kept until you delete your account.</li>
+          <li>Security-related logs: May be retained longer if required by law.</li>
         </ul>
       </div>
 
@@ -431,18 +552,18 @@
         <p>We use strong security measures to protect your data, including:</p>
         <ul>
           <li>Encryption during data transmission</li>
-          <li>Secure servers located in compliance with Philippine law and GDPR</li>
-          <li>Strict access controls for authorized personnel only</li>
+          <li>Secure servers hosted in compliance with Philippine law and GDPR</li>
+          <li>Restricted access to authorized personnel only</li>
         </ul>
       </div>
 
       <div class="content-section">
         <h3>International Data Protection Compliance</h3>
         <p>
-          As a Philippine-based service, Taisen complies with the Philippine Data Privacy Act (RA 10173).
+          Taisen is based in the Philippines and complies with the Philippine Data Privacy Act (RA 10173).
         </p>
         <p>
-          As we may have users from the EU, we also comply with the General Data Protection Regulation (GDPR).
+          As we may have users from the European Union, we also comply with the General Data Protection Regulation (GDPR).
         </p>
         <p>
           If your data is transferred outside your country, we apply the same protections described in this policy.
@@ -452,21 +573,19 @@
       <div class="content-section">
         <h3>Changes to This Policy</h3>
         <p>
-          We may update this Privacy Policy from time to time. If significant changes are made, 
-          we will provide notice (for example, via email or a prominent site notice).
+          We may update this Privacy Policy from time to time. If major changes are made, we will notify you (for example, via email or a prominent site notice).
         </p>
       </div>
 
       <div class="content-section">
         <h3>Contact Us</h3>
         <p>
-          If you have any questions, requests, or complaints about this Privacy Policy, you may contact us at:
+          If you have questions, requests, or complaints about this Privacy Policy, contact us at:
         </p>
         <ul>
-          <li>📧 <a href="mailto:privacy@taisen.com">privacy@taisen.com</a></li>
-          <li>📍 Taisen Data Protection Office, Metro Manila, Philippines</li>
+          <li>📧 <a href="mailto:info.taisenservices@gmail.com">info.taisenservices@gmail.com</a></li>
         </ul>
-        <p><em>This Privacy Policy is drafted to comply with Philippine Data Privacy Act of 2012 (RA 10173) and General Data Protection Regulation (GDPR - EU Regulation 2016/679)</em></p>
+        <p><em>This Privacy Policy complies with Philippine Data Privacy Act of 2012 (RA 10173) and General Data Protection Regulation (GDPR – EU Regulation 2016/679)</em></p>
       </div>
     </div>
   </main>
@@ -478,6 +597,7 @@
         <a href="about.html">About</a>
         <a href="advertising.html">Advertising</a>
         <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
         <a href="help center.html">Help Center</a>
         <a href="labs.html">Labs</a>
         <a href="TaisenSearch_Documentation.html">Documentation</a>
