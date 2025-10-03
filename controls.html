@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Controls - Taisen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reuse CSS from main page with additions */
+        :root {
+            --primary-color: #25036b;
+            --primary-dark: #10ded8;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --bg-light: #ffffff;
+            --success-color: #10b981;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--bg-light);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--white);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .hero {
+            padding: 60px 0;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #4c1d95 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 16px;
+        }
+        
+        .content-section {
+            padding: 60px 0;
+        }
+        
+        .controls-container {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .control-category {
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .control-category:last-child {
+            border-bottom: none;
+        }
+        
+        .category-header {
+            padding: 25px 30px;
+            background: var(--bg-light);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        
+        .category-header:hover {
+            background: #f1f5f9;
+        }
+        
+        .category-header h3 {
+            font-size: 20px;
+            color: #1e293b;
+            margin: 0;
+        }
+        
+        .category-header i {
+            transition: transform 0.3s;
+        }
+        
+        .category-header.active i {
+            transform: rotate(90deg);
+        }
+        
+        .control-items {
+            padding: 0 30px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .control-items.active {
+            padding: 25px 30px;
+            max-height: 1000px;
+        }
+        
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .control-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-light);
+            border-radius: 6px;
+        }
+        
+        .control-item i {
+            color: var(--success-color);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        
+        .control-status {
+            display: inline-block;
+            padding: 2px 8px;
+            background: var(--success-color);
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        
+        footer {
+            background-color: #1e293b;
+            color: var(--white);
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--white);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="security.html" class="logo">Taisen</a>
+                <div class="nav-links">
+                    <a href="overview.html">Overview</a>
+                    <a href="resources.html">Resources</a>
+                    <a href="controls.html" class="active">Controls</a>
+                    <a href="subprocessors.html">Subprocessors</a>
+                    <a href="updates.html">Updates</a>
+                    <a href="compliance.html">Compliance</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Security Controls</h1>
+            <p>Comprehensive security measures protecting the Taisen platform</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="controls-container">
+                <div class="control-category">
+                    <div class="category-header active">
+                        <h3>Infrastructure Security</h3>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="control-items active">
+                        <div class="control-grid">
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Secure hosting through Cloudflare & Netlify</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Unique account authentication enforced</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Regular security updates applied</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>DDoS protection enabled</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Firewall configuration maintained</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Secure network segmentation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-category">
+                    <div class="category-header">
+                        <h3>Data Security</h3>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="control-items">
+                        <div class="control-grid">
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Data encryption utilized</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Data transmission encrypted</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Secure database access controls</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Data backup procedures established</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Data retention policies enforced</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-category">
+                    <div class="category-header">
+                        <h3>Application Security</h3>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="control-items">
+                        <div class="control-grid">
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Secure authentication via Firebase</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Input validation and sanitization</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Regular dependency updates</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Security headers implemented</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>API security measures enforced</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-category">
+                    <div class="category-header">
+                        <h3>Privacy Controls</h3>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="control-items">
+                        <div class="control-grid">
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Data retention procedures established</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Customer data access controls</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Privacy policy maintained</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Data minimization practices</span>
+                            </div>
+                            <div class="control-item">
+                                <i class="fas fa-circle-check"></i>
+                                <span>User consent management</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Taisen</div>
+                <div class="footer-links">
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="taisen-security.html">Security</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryHeaders = document.querySelectorAll('.category-header');
+            
+            categoryHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const items = header.nextElementSibling;
+                    const isActive = header.classList.contains('active');
+                    
+                    // Close all categories
+                    categoryHeaders.forEach(h => {
+                        h.classList.remove('active');
+                        h.nextElementSibling.classList.remove('active');
+                    });
+                    
+                    // Open clicked category if it wasn't active
+                    if (!isActive) {
+                        header.classList.add('active');
+                        items.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

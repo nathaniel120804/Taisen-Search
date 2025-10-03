@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance - Taisen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reuse CSS from main page with additions */
+        :root {
+            --primary-color: #25036b;
+            --primary-dark: #10ded8;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --bg-light: #ffffff;
+            --success-color: #10b981;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--bg-light);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--white);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .hero {
+            padding: 60px 0;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #4c1d95 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 16px;
+        }
+        
+        .content-section {
+            padding: 60px 0;
+        }
+        
+        .compliance-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 50px;
+        }
+        
+        .compliance-intro h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+        
+        .compliance-intro p {
+            font-size: 18px;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+        
+        .compliance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .compliance-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .compliance-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 28px;
+        }
+        
+        .compliance-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+        
+        .compliance-status {
+            display: inline-block;
+            background: var(--success-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .compliance-card p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .compliance-details {
+            text-align: left;
+            margin-top: 20px;
+        }
+        
+        .compliance-details h4 {
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .compliance-details ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .compliance-details li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .compliance-details li:last-child {
+            border-bottom: none;
+        }
+        
+        .compliance-details i {
+            color: var(--success-color);
+        }
+        
+        .commitment-section {
+            background: #f8fafc;
+            padding: 50px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .commitment-section h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+        
+        .commitment-section p {
+            font-size: 18px;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        
+        footer {
+            background-color: #1e293b;
+            color: var(--white);
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--white);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="security.html" class="logo">Taisen</a>
+                <div class="nav-links">
+                    <a href="overview.html">Overview</a>
+                    <a href="resources.html">Resources</a>
+                    <a href="controls.html">Controls</a>
+                    <a href="subprocessors.html">Subprocessors</a>
+                    <a href="updates.html">Updates</a>
+                    <a href="compliance.html" class="active">Compliance</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Compliance</h1>
+            <p>Meeting global standards for data protection and privacy</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="compliance-intro">
+                <h2>Our Compliance Framework</h2>
+                <p>Taisen is committed to maintaining compliance with relevant data protection regulations and implementing security best practices to protect our users' data.</p>
+            </div>
+
+            <div class="compliance-grid">
+                <div class="compliance-card">
+                    <div class="compliance-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3>GDPR</h3>
+                    <span class="compliance-status">COMPLIANT</span>
+                    <p>General Data Protection Regulation - European Union's data protection law</p>
+                    <div class="compliance-details">
+                        <h4>Key Implementations:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Data subject rights management</li>
+                            <li><i class="fas fa-check"></i> Lawful basis for processing</li>
+                            <li><i class="fas fa-check"></i> Data protection impact assessments</li>
+                            <li><i class="fas fa-check"></i> International data transfer safeguards</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="compliance-card">
+                    <div class="compliance-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3>Philippine Data Privacy Act</h3>
+                    <span class="compliance-status">COMPLIANT</span>
+                    <p>Republic Act No. 10173 - Philippines' comprehensive data privacy law</p>
+                    <div class="compliance-details">
+                        <h4>Key Implementations:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Data privacy principles adherence</li>
+                            <li><i class="fas fa-check"></i> Security measures implementation</li>
+                            <li><i class="fas fa-check"></i> Data breach management procedures</li>
+                            <li><i class="fas fa-check"></i> Registration with NPC where required</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="compliance-card">
+                    <div class="compliance-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>Global Privacy Standards</h3>
+                    <span class="compliance-status">ALIGNED</span>
+                    <p>Adherence to international privacy principles and best practices</p>
+                    <div class="compliance-details">
+                        <h4>Key Principles:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Privacy by design and default</li>
+                            <li><i class="fas fa-check"></i> Data minimization</li>
+                            <li><i class="fas fa-check"></i> Purpose limitation</li>
+                            <li><i class="fas fa-check"></i> Transparency and accountability</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="commitment-section">
+                <h2>Our Ongoing Commitment</h2>
+                <p>We continuously monitor changes in data protection regulations and update our practices accordingly. Our commitment to compliance is integral to how we build and operate the Taisen platform, ensuring that we maintain the trust of our users worldwide.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Taisen</div>
+                <div class="footer-links">
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="taisen-security.html">Security</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

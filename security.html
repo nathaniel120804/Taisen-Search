@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taisen Security</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #25036b;
+            --primary-dark: #10ded8;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --bg-light: #ffffff;
+            --success-color: #10b981;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--bg-light);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #4c1d95 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 40px;
+            padding: 60px 0;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+        
+        .contact-info {
+            margin-bottom: 32px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .contact-item i {
+            color: var(--primary-color);
+            width: 20px;
+        }
+        
+        .sidebar-links {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+        
+        .sidebar-links li {
+            margin-bottom: 12px;
+        }
+        
+        .sidebar-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            transition: color 0.2s;
+        }
+        
+        .sidebar-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .sidebar-section {
+            margin-bottom: 32px;
+        }
+        
+        .sidebar-section h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .compliance-badge {
+            display: inline-block;
+            background-color: var(--success-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            margin-bottom: 48px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .section-header h2 {
+            font-size: 24px;
+            color: #1e293b;
+        }
+        
+        .view-all {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .view-all:hover {
+            text-decoration: underline;
+        }
+        
+        /* Resources Grid */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .resource-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .resource-card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .resource-card p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        /* Controls Section */
+        .controls-section {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .control-category {
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 24px;
+        }
+        
+        .control-category:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+        
+        .category-header h3 {
+            font-size: 18px;
+            color: #1e293b;
+        }
+        
+        .control-items {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-item i {
+            color: var(--success-color);
+            font-size: 14px;
+        }
+        
+        .control-item span {
+            font-size: 14px;
+        }
+        
+        .more-controls {
+            margin-top: 12px;
+            color: var(--primary-color);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Subprocessors Grid */
+        .subprocessors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+        
+        .subprocessor-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+        
+        .subprocessor-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .subprocessor-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .subprocessor-card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .subprocessor-details {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        .subprocessor-details span:not(:last-child)::after {
+            content: "•";
+            margin-left: 8px;
+        }
+        
+        .subprocessor-card p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        /* Updates Section */
+        .updates-list {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .update-item {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .update-item:last-child {
+            border-bottom: none;
+        }
+        
+        .update-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .update-title {
+            font-size: 18px;
+            color: #1e293b;
+        }
+        
+        .update-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+        
+        .update-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .update-content p {
+            color: var(--text-light);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #1e293b;
+            color: var(--white);
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--white);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .control-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="security.html" class="logo">Taisen</a>
+                <div class="nav-links">
+                    <a href="overview.html">Overview</a>
+                    <a href="resources.html">Resources</a>
+                    <a href="#">Controls</a>
+                    <a href="#">Subprocessors</a>
+                    <a href="#">Updates</a>
+                    <a href="#">Compliance</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Taisen Security</h1>
+            <p>Taisen is a comprehensive platform that allows users to create, host, and manage custom web and mobile applications without the need for coding. Our team continually invests in Taisen's security posture so you can build with peace of mind.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="main-content">
+            <aside class="sidebar">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info.taisernservices@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-link"></i>
+                        <span>Privacy Policy</span>
+                    </div>
+                </div>
+                
+                <ul class="sidebar-links">
+                    <li><a href="overview.html">Overview</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="#">Controls</a></li>
+                    <li><a href="#">Subprocessors</a></li>
+                    <li><a href="#">Updates</a></li>
+                    <li><a href="#">Compliance</a></li>
+                </ul>
+                
+                <div class="sidebar-section">
+                    <h3>Compliance</h3>
+                    <div class="compliance-item">
+                        <a href="#">GDPR</a>
+                    </div>
+                    <div class="compliance-item">
+                        <a href="#">Philippine Data Privacy Act (RA 10173)</a>
+                        <span class="compliance-badge">COMPLIANT</span>
+                    </div>
+                </div>
+            </aside>
+
+            <main>
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>Resources</h2>
+                        <a href="#" class="view-all">View all 3 resources</a>
+                    </div>
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <h3>2024 Security Assessment</h3>
+                            <p>Overview of our security practices and infrastructure.</p>
+                        </div>
+                        <div class="resource-card">
+                            <h3>Data Processing Agreement</h3>
+                            <p>Our standard data processing agreement for customers.</p>
+                        </div>
+                        <div class="resource-card">
+                            <h3>Taisen Architecture - Technical Diagram</h3>
+                            <p>Detailed overview of Taisen's technical infrastructure.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>Controls</h2>
+                        <a href="#" class="view-all">View all controls</a>
+                    </div>
+                    <div class="controls-section">
+                        <div class="control-category">
+                            <div class="category-header">
+                                <h3>Infrastructure security</h3>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                            <div class="control-items">
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Unique account authentication enforced</span>
+                                </div>
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Secure hosting through Cloudflare & Netlify</span>
+                                </div>
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Regular security updates applied</span>
+                                </div>
+                            </div>
+                            <div class="more-controls">+ 5 more</div>
+                        </div>
+                        
+                        <div class="control-category">
+                            <div class="category-header">
+                                <h3>Data security</h3>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                            <div class="control-items">
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Data encryption utilized</span>
+                                </div>
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Data transmission encrypted</span>
+                                </div>
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Secure database access controls</span>
+                                </div>
+                            </div>
+                            <div class="more-controls">+ 3 more</div>
+                        </div>
+                        
+                        <div class="control-category">
+                            <div class="category-header">
+                                <h3>Application security</h3>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                            <div class="control-items">
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Secure authentication via Firebase</span>
+                                </div>
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Input validation and sanitization</span>
+                                </div>
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Regular dependency updates</span>
+                                </div>
+                            </div>
+                            <div class="more-controls">+ 2 more</div>
+                        </div>
+                        
+                        <div class="control-category">
+                            <div class="category-header">
+                                <h3>Privacy</h3>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                            <div class="control-items">
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Data retention procedures established</span>
+                                </div>
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Customer data access controls</span>
+                                </div>
+                                <div class="control-item">
+                                    <i class="fas fa-circle-check"></i>
+                                    <span>Privacy policy maintained</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>Subprocessors</h2>
+                        <a href="#" class="view-all">View all 6 subprocessors</a>
+                    </div>
+                    <div class="subprocessors-grid">
+                        <div class="subprocessor-card">
+                            <div class="subprocessor-logo">CF</div>
+                            <h3>Cloudflare</h3>
+                            <div class="subprocessor-details">
+                                <span>CDN & Security</span>
+                                <span>Global</span>
+                            </div>
+                            <p>Content delivery network, DDoS protection, and security services.</p>
+                        </div>
+                        <div class="subprocessor-card">
+                            <div class="subprocessor-logo">NT</div>
+                            <h3>Netlify</h3>
+                            <div class="subprocessor-details">
+                                <span>Hosting</span>
+                                <span>Global</span>
+                            </div>
+                            <p>Application hosting and deployment platform.</p>
+                        </div>
+                        <div class="subprocessor-card">
+                            <div class="subprocessor-logo">FB</div>
+                            <h3>Firebase</h3>
+                            <div class="subprocessor-details">
+                                <span>Database & Auth</span>
+                                <span>Global</span>
+                            </div>
+                            <p>Real-time database and user authentication services.</p>
+                        </div>
+                        <div class="subprocessor-card">
+                            <div class="subprocessor-logo">GS</div>
+                            <h3>Google Sheets</h3>
+                            <div class="subprocessor-details">
+                                <span>Data Management</span>
+                                <span>Global</span>
+                            </div>
+                            <p>Spreadsheet-based data storage and management.</p>
+                        </div>
+                        <div class="subprocessor-card">
+                            <div class="subprocessor-logo">GA</div>
+                            <h3>Google Analytics</h3>
+                            <div class="subprocessor-details">
+                                <span>Analytics</span>
+                                <span>Global</span>
+                            </div>
+                            <p>Website and application usage analytics.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>Updates</h2>
+                        <a href="#" class="view-all">View all 2 updates</a>
+                    </div>
+                    <div class="updates-list">
+                        <div class="update-item">
+                            <div class="update-header">
+                                <h3 class="update-title">Enhanced Data Protection Measures</h3>
+                            </div>
+                            <div class="update-meta">
+                                <span>Security</span>
+                                <span>Published September 15, 2024</span>
+                            </div>
+                            <div class="update-content">
+                                <p>We've implemented additional encryption measures for data at rest and in transit, further securing customer information across all Taisen applications.</p>
+                            </div>
+                        </div>
+                        <div class="update-item">
+                            <div class="update-header">
+                                <h3 class="update-title">Updated Privacy Policy</h3>
+                            </div>
+                            <div class="update-meta">
+                                <span>Compliance</span>
+                                <span>Published August 3, 2024</span>
+                            </div>
+                            <div class="update-content">
+                                <p>Our privacy policy has been updated to provide clearer information about data collection, usage, and protection in accordance with global privacy standards.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Taisen</div>
+                <div class="footer-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="security.html">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Add interactivity to control categories
+        document.querySelectorAll('.category-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const items = header.nextElementSibling;
+                const more = items.nextElementSibling;
+                
+                if (items.style.display === 'none') {
+                    items.style.display = 'grid';
+                    more.style.display = 'block';
+                } else {
+                    items.style.display = 'none';
+                    more.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>d
