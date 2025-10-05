@@ -1,4 +1,4 @@
-// analytics-logger.js - Instant Firebase Analytics
+// analytics-logger.js - Firebase Analytics for Taisen
 class AnalyticsLogger {
     constructor() {
         this.initialized = false;
@@ -13,14 +13,14 @@ class AnalyticsLogger {
     }
 
     async init() {
-        // Use the global signal from your main script
-        if (!window.firebaseReady) {
-            console.log('⏳ Waiting for Firebase ready signal...');
-            setTimeout(() => this.init(), 500);
-            return;
-        }
-
         try {
+            // Check if Firebase is available
+            if (typeof firebase === 'undefined') {
+                console.log('⏳ Waiting for Firebase...');
+                setTimeout(() => this.init(), 500);
+                return;
+            }
+
             const analyticsConfig = {
                 apiKey: "AIzaSyDKWcglmmQhiVwkmx9ACYvk7Jnhh2kGheM",
                 authDomain: "taisen-analytics-e2f7f.firebaseapp.com",
@@ -35,10 +35,10 @@ class AnalyticsLogger {
             this.db = firebase.firestore(analyticsApp);
             
             this.initialized = true;
-            this.setupAuthDetection();
-            await this.logPageView();
+            console.log('✅ Taisen Analytics initialized!');
             
-            console.log('✅ Taisen Analytics initialized instantly!');
+            // Log page view
+            await this.logPageView();
             
         } catch (error) {
             console.error('❌ Analytics error:', error);
@@ -47,28 +47,6 @@ class AnalyticsLogger {
 
     generateSessionId() {
         return 'taisen_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    }
-
-    setupAuthDetection() {
-        // Try to detect auth state from main app
-        const checkAuth = () => {
-            try {
-                const mainAuth = firebase.app().auth();
-                if (mainAuth) {
-                    mainAuth.onAuthStateChanged((user) => {
-                        this.userId = user?.uid || null;
-                        this.hasAccount = user ? !user.isAnonymous : false;
-                        console.log(`🔐 Auth detected: ${this.userId ? 'User' : 'Anonymous'}`);
-                    });
-                } else {
-                    setTimeout(checkAuth, 1000);
-                }
-            } catch (error) {
-                // Main auth not accessible, continue without user tracking
-                console.log('🔐 Main auth not accessible, continuing anonymously');
-            }
-        };
-        checkAuth();
     }
 
     async getClientIP() {
@@ -128,7 +106,8 @@ class AnalyticsLogger {
                 timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
                 pageTitle: document.title,
                 viewport: `${window.innerWidth}x${window.innerHeight}`,
-                language: navigator.language
+                language: navigator.language,
+                userAgent: navigator.userAgent
             };
 
             if (this.initialized && this.db) {
@@ -143,8 +122,7 @@ class AnalyticsLogger {
                 ip: ipAddress,
                 device: deviceType,
                 browser: browserInfo.name,
-                os: os,
-                hasAccount: this.hasAccount
+                os: os
             });
             
         } catch (error) {
@@ -168,6 +146,7 @@ class AnalyticsLogger {
         try {
             if (this.initialized && this.db) {
                 await this.db.collection('sessions').doc(this.sessionId).set(sessionData, { merge: true });
+                console.log('🔗 Session logged:', this.sessionId);
             }
         } catch (error) {
             console.error('❌ Session log error:', error);
@@ -195,23 +174,49 @@ class AnalyticsLogger {
             console.error('❌ Event log error:', error);
         }
     }
+
+    // Search logging method
+    async logSearch(query, resultsCount = null, searchType = 'web') {
+        await this.logEvent('search', {
+            query: query,
+            resultsCount: resultsCount,
+            searchType: searchType
+        });
+    }
+
+    // Auth logging method
+    async logAuth(authType, success = true, errorMessage = null) {
+        await this.logEvent('auth', {
+            authType: authType,
+            success: success,
+            errorMessage: errorMessage
+        });
+    }
 }
 
-// Initialize immediately
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🎯 Starting Taisen Analytics...');
     window.taisenAnalytics = new AnalyticsLogger();
     
     // Global methods for other scripts
     window.logTaisenSearch = (query, resultsCount, searchType) => {
-        window.taisenAnalytics?.logEvent('search', { query, resultsCount, searchType });
+        if (window.taisenAnalytics) {
+            window.taisenAnalytics.logSearch(query, resultsCount, searchType);
+        } else {
+            console.log('📊 Search (analytics not ready):', query);
+        }
     };
     
     window.logTaisenAuth = (authType, success, errorMessage) => {
-        window.taisenAnalytics?.logEvent('auth', { authType, success, errorMessage });
+        if (window.taisenAnalytics) {
+            window.taisenAnalytics.logAuth(authType, success, errorMessage);
+        } else {
+            console.log('📊 Auth (analytics not ready):', authType, success);
+        }
     };
     
-    console.log('🔍 Taisen Analytics ready! Use window.logTaisenSearch()');
+    console.log('🔍 Taisen Analytics global methods ready!');
 });
 
 // Track page unload

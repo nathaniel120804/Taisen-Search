@@ -2293,7 +2293,10 @@ document.addEventListener('DOMContentLoaded', () => {
     aiSearch.init();
 });
 </script>
-<!-- Add this RIGHT BEFORE the analytics script -->
+<!-- Load Firebase SDK for Analytics -->
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js"></script>
+
 <script>
   // Mobile device detection function
   function checkMobileDevice() {
@@ -2309,11 +2312,8 @@ document.addEventListener('DOMContentLoaded', () => {
           mobileRestriction.style.display = 'none';
       }
   }
-  
-  // Firebase ready signal for analytics
-  window.firebaseReady = true;
-  console.log('🔥 Firebase is ready for analytics!');
 </script>
+
 <!-- Taisen Analytics Logger -->
 <script src="analytics-logger.js"></script>
 </body>
