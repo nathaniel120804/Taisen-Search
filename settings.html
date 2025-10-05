@@ -360,6 +360,17 @@ input:checked + .toggle-slider:before {
           <span class="toggle-slider"></span>
         </label>
       </div>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>Analytics</span>
+          <small>Help improve Taisen by sharing usage data</small>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="analyticsEnabled" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
     </div>
     
     <!-- Action Buttons -->
@@ -378,6 +389,7 @@ function saveSettings() {
   localStorage.setItem('region', document.getElementById('regionSelect').value);
   localStorage.setItem('safeSearch', document.getElementById('safeSearch').checked);
   localStorage.setItem('privacyMode', document.getElementById('privacyMode').checked);
+  localStorage.setItem('analyticsEnabled', document.getElementById('analyticsEnabled').checked);
 
   // Apply theme immediately
   applyTheme();
@@ -398,12 +410,14 @@ function loadSettings() {
   const region = localStorage.getItem('region') || '';
   const safeSearch = localStorage.getItem('safeSearch') === 'true';
   const privacy = localStorage.getItem('privacyMode') === 'true';
+  const analytics = localStorage.getItem('analyticsEnabled') !== 'false'; // Default to true
 
   document.getElementById('themeSelect').value = theme;
   document.getElementById('langSelect').value = lang;
   document.getElementById('regionSelect').value = region;
   document.getElementById('safeSearch').checked = safeSearch;
   document.getElementById('privacyMode').checked = privacy;
+  document.getElementById('analyticsEnabled').checked = analytics;
 
   applyTheme();
 }
