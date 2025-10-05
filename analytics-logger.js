@@ -11,6 +11,8 @@ class AnalyticsLogger {
         this.hasAccount = false;
         this.sessionId = this.generateSessionId();
         this.pageLoadTime = Date.now();
+        this.retryCount = 0;
+        this.maxRetries = 10;
         
         this.init();
     }
@@ -20,9 +22,15 @@ class AnalyticsLogger {
         try {
             // Wait for Firebase to be available from your main app
             if (typeof firebase === 'undefined') {
-                console.log('Firebase not loaded yet, waiting...');
-                setTimeout(() => this.init(), 500);
-                return;
+                this.retryCount++;
+                if (this.retryCount < this.maxRetries) {
+                    console.log(`Firebase not loaded yet, waiting... (attempt ${this.retryCount}/${this.maxRetries})`);
+                    setTimeout(() => this.init(), 1000);
+                    return;
+                } else {
+                    console.error('Firebase failed to load after maximum retries');
+                    return;
+                }
             }
 
             // Your analytics project configuration
@@ -51,8 +59,7 @@ class AnalyticsLogger {
             
         } catch (error) {
             console.error('❌ Analytics initialization error:', error);
-            // Fallback: log to console even if Firebase fails
-            this.logToConsole();
+            // Don't retry on error to avoid infinite loops
         }
     }
 
@@ -65,7 +72,7 @@ class AnalyticsLogger {
     setupAuthListener() {
         if (!this.mainAppAuth) {
             console.log('Waiting for main auth...');
-            setTimeout(() => this.setupAuthListener(), 500);
+            setTimeout(() => this.setupAuthListener(), 1000);
             return;
         }
         
@@ -73,7 +80,7 @@ class AnalyticsLogger {
             if (user) {
                 this.userId = user.uid;
                 this.hasAccount = !user.isAnonymous;
-                console.log(`🔐 User detected: ${this.userId.substring(0, 8)}..., Has account: ${this.hasAccount}`);
+                console.log(`🔐 User detected: ${this.userId?.substring(0, 8)}..., Has account: ${this.hasAccount}`);
                 
                 // Log auth event
                 this.logEvent('user_auth_state', {
@@ -94,25 +101,22 @@ class AnalyticsLogger {
     // Get client IP address using ipify API
     async getClientIP() {
         try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            
             const response = await fetch('https://api.ipify.org?format=json', {
-                method: 'GET',
-                timeout: 5000
+                signal: controller.signal
             });
+            
+            clearTimeout(timeoutId);
             
             if (!response.ok) throw new Error('IP API response not ok');
             
             const data = await response.json();
             return data.ip;
         } catch (error) {
-            console.warn('⚠️ Primary IP fetch failed, trying fallback...');
-            try {
-                const response = await fetch('https://api64.ipify.org?format=json');
-                const data = await response.json();
-                return data.ip + ' (IPv6)';
-            } catch (fallbackError) {
-                console.error('❌ Fallback IP fetch failed:', fallbackError);
-                return 'unknown';
-            }
+            console.warn('⚠️ Primary IP fetch failed:', error.message);
+            return 'unknown';
         }
     }
 
@@ -161,7 +165,7 @@ class AnalyticsLogger {
             version = ua.match(/Version\/([0-9.]+)/)?.[1] || "unknown";
         }
         
-        return { name: browser, version: version, full: ua };
+        return { name: browser, version: version };
     }
 
     // Get screen resolution
@@ -191,20 +195,6 @@ class AnalyticsLogger {
         return "unknown";
     }
 
-    // Get connection information
-    getConnectionInfo() {
-        const connection = navigator.connection;
-        if (!connection) return { supported: false };
-        
-        return {
-            supported: true,
-            effectiveType: connection.effectiveType,
-            downlink: connection.downlink,
-            rtt: connection.rtt,
-            saveData: connection.saveData
-        };
-    }
-
     // Log page view with all analytics data
     async logPageView() {
         try {
@@ -213,7 +203,6 @@ class AnalyticsLogger {
             const deviceType = this.getDeviceType();
             const screenRes = this.getScreenResolution();
             const os = this.getOS();
-            const connectionInfo = this.getConnectionInfo();
 
             const timestamp = new Date();
             const userAgent = navigator.userAgent;
@@ -236,12 +225,11 @@ class AnalyticsLogger {
                 screenResolution: screenRes,
                 userAgent: userAgent,
                 language: language,
-                connection: connectionInfo,
                 
                 // Page data
                 url: url,
                 referrer: referrer,
-                timestamp: firebase.firestore.Timestamp.fromDate(timestamp),
+                timestamp: this.initialized ? firebase.firestore.Timestamp.fromDate(timestamp) : timestamp,
                 pageLoadDuration: pageLoadDuration,
                 
                 // Additional context
@@ -251,29 +239,24 @@ class AnalyticsLogger {
                     height: window.innerHeight
                 },
                 timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                cookiesEnabled: navigator.cookieEnabled,
-                javaEnabled: navigator.javaEnabled ? navigator.javaEnabled() : false,
-                
-                // Platform info
-                platform: navigator.platform,
-                vendor: navigator.vendor,
-                appVersion: navigator.appVersion
+                cookiesEnabled: navigator.cookieEnabled
             };
 
-            // Save to Firestore
-            if (this.initialized) {
+            // Save to Firestore if initialized
+            if (this.initialized && this.db) {
                 await this.db.collection('page_views').add(analyticsData);
                 console.log('📊 Page view logged to Firestore');
+            } else {
+                console.log('📊 Page view data (Firestore not ready):', analyticsData);
             }
             
             // Console log for debugging
-            console.log('📊 Taisen Analytics:', {
+            console.log('📊 Taisen Analytics - Page View:', {
                 ip: ipAddress,
                 device: deviceType,
                 browser: browserInfo.name,
                 hasAccount: this.hasAccount,
-                userId: this.userId ? this.userId.substring(0, 8) + '...' : 'anonymous',
-                session: this.sessionId.substring(0, 10) + '...'
+                userId: this.userId ? this.userId.substring(0, 8) + '...' : 'anonymous'
             });
             
             // Log session start
@@ -290,7 +273,7 @@ class AnalyticsLogger {
             sessionId: this.sessionId,
             userId: this.userId,
             hasAccount: this.hasAccount,
-            startTime: firebase.firestore.Timestamp.fromDate(new Date()),
+            startTime: this.initialized ? firebase.firestore.Timestamp.fromDate(new Date()) : new Date(),
             ipAddress: pageData.ipAddress,
             deviceType: pageData.deviceType,
             browser: pageData.browser,
@@ -303,9 +286,11 @@ class AnalyticsLogger {
         };
 
         try {
-            if (this.initialized) {
+            if (this.initialized && this.db) {
                 await this.db.collection('sessions').doc(this.sessionId).set(sessionData, { merge: true });
-                console.log('🔗 Session logged:', this.sessionId);
+                console.log('🔗 Session logged to Firestore:', this.sessionId);
+            } else {
+                console.log('🔗 Session data (Firestore not ready):', sessionData);
             }
         } catch (error) {
             console.error('❌ Error logging session:', error);
@@ -320,16 +305,17 @@ class AnalyticsLogger {
                 userId: this.userId,
                 hasAccount: this.hasAccount,
                 sessionId: this.sessionId,
-                timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
+                timestamp: this.initialized ? firebase.firestore.Timestamp.fromDate(new Date()) : new Date(),
                 url: window.location.href,
                 ...eventData
             };
 
-            if (this.initialized) {
+            if (this.initialized && this.db) {
                 await this.db.collection('events').add(event);
+                console.log('📈 Event logged to Firestore:', eventName);
+            } else {
+                console.log('📈 Event data (Firestore not ready):', eventName, eventData);
             }
-            
-            console.log('📈 Event logged:', eventName, eventData);
             
         } catch (error) {
             console.error('❌ Error logging event:', error);
@@ -363,20 +349,6 @@ class AnalyticsLogger {
         });
     }
 
-    // Log error events
-    async logError(errorMessage, errorStack = null, component = null) {
-        await this.logEvent('error_occurred', {
-            errorMessage: errorMessage,
-            errorStack: errorStack,
-            component: component
-        });
-    }
-
-    // Fallback: log to console if Firebase fails
-    logToConsole(message) {
-        console.log('📊 Taisen Analytics (console):', message);
-    }
-
     // Get analytics summary
     getSummary() {
         return {
@@ -393,31 +365,40 @@ class AnalyticsLogger {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Initializing Taisen Analytics...');
     
-    // Wait for your main Firebase to load
+    // Wait a bit longer for your main Firebase to load
     setTimeout(() => {
         window.taisenAnalytics = new AnalyticsLogger();
         
         // Expose global methods for other scripts to use
         window.logTaisenSearch = (query, resultsCount, searchType) => {
-            window.taisenAnalytics?.logSearch(query, resultsCount, searchType);
+            if (window.taisenAnalytics) {
+                window.taisenAnalytics.logSearch(query, resultsCount, searchType);
+            } else {
+                console.log('📊 Taisen Search (analytics not ready):', query);
+            }
         };
         
         window.logTaisenAuth = (authType, success, errorMessage) => {
-            window.taisenAnalytics?.logAuthEvent(authType, success, errorMessage);
+            if (window.taisenAnalytics) {
+                window.taisenAnalytics.logAuthEvent(authType, success, errorMessage);
+            } else {
+                console.log('📊 Taisen Auth (analytics not ready):', authType, success);
+            }
         };
         
         window.logTaisenInteraction = (elementId, action, metadata) => {
-            window.taisenAnalytics?.logInteraction(elementId, action, metadata);
+            if (window.taisenAnalytics) {
+                window.taisenAnalytics.logInteraction(elementId, action, metadata);
+            } else {
+                console.log('📊 Taisen Interaction (analytics not ready):', elementId, action);
+            }
         };
         
-        console.log('🔍 Taisen Analytics ready! Use:');
-        console.log('   - window.logTaisenSearch("query")');
-        console.log('   - window.logTaisenAuth("google", true)');
-        console.log('   - window.logTaisenInteraction("button-id")');
-    }, 2000);
+        console.log('🔍 Taisen Analytics global methods ready!');
+    }, 3000); // Increased delay to ensure Firebase is loaded
 });
 
-// Track page unload for session duration
+// Track page unload
 window.addEventListener('beforeunload', () => {
     if (window.taisenAnalytics) {
         const sessionDuration = Date.now() - window.taisenAnalytics.pageLoadTime;
@@ -427,8 +408,3 @@ window.addEventListener('beforeunload', () => {
         });
     }
 });
-
-// Export for use in other scripts
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = AnalyticsLogger;
-}
