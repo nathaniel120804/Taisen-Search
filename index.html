@@ -2293,9 +2293,9 @@ document.addEventListener('DOMContentLoaded', () => {
     aiSearch.init();
 });
 </script>
-<!-- Load Firebase SDK for Analytics -->
-<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js"></script>
+<!-- Load Firebase SDK for Analytics (COMPATIBILITY VERSION) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 <script>
   // Mobile device detection function
@@ -2325,6 +2325,8 @@ class AnalyticsLogger {
         this.hasAccount = false;
         this.sessionId = this.generateSessionId();
         this.pageLoadTime = Date.now();
+        this.retryCount = 0;
+        this.maxRetries = 10;
         
         console.log('🚀 Taisen Analytics starting...');
         this.init();
@@ -2334,9 +2336,15 @@ class AnalyticsLogger {
         try {
             // Check if Firebase is available
             if (typeof firebase === 'undefined') {
-                console.log('⏳ Waiting for Firebase SDK to load...');
-                setTimeout(() => this.init(), 1000);
-                return;
+                this.retryCount++;
+                if (this.retryCount < this.maxRetries) {
+                    console.log(`⏳ Waiting for Firebase SDK... (${this.retryCount}/${this.maxRetries})`);
+                    setTimeout(() => this.init(), 1000);
+                    return;
+                } else {
+                    console.error('❌ Firebase SDK failed to load after maximum retries');
+                    return;
+                }
             }
 
             console.log('🔥 Firebase SDK loaded, initializing analytics...');
@@ -2426,7 +2434,7 @@ class AnalyticsLogger {
                 os: os,
                 url: window.location.href,
                 referrer: document.referrer || 'direct',
-                timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 pageTitle: document.title,
                 viewport: `${window.innerWidth}x${window.innerHeight}`,
                 language: navigator.language,
@@ -2460,7 +2468,7 @@ class AnalyticsLogger {
                 sessionId: this.sessionId,
                 userId: this.userId,
                 hasAccount: this.hasAccount,
-                startTime: firebase.firestore.Timestamp.fromDate(new Date()),
+                startTime: firebase.firestore.FieldValue.serverTimestamp(),
                 ipAddress: pageData.ipAddress,
                 deviceType: pageData.deviceType,
                 browser: pageData.browser,
@@ -2484,7 +2492,7 @@ class AnalyticsLogger {
                 userId: this.userId,
                 hasAccount: this.hasAccount,
                 sessionId: this.sessionId,
-                timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 url: window.location.href,
                 ...eventData
             };
