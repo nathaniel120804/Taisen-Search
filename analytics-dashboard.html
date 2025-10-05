@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Analytics - Taisen</title>
+    <style>
+        :root {
+            --primary: #0077ff;
+            --primary-dark: #0056cc;
+            --secondary: #6c757d;
+            --success: #34a853;
+            --danger: #d93025;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --white: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #6c757d;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --gray-900: #212529;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .dashboard-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-content {
+            padding: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary);
+        }
+
+        .stat-card h3 {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .data-section {
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .data-section h2 {
+            color: var(--gray-800);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .data-table th {
+            background: var(--gray-100);
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .data-table tr:hover {
+            background: var(--gray-50);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-600);
+        }
+
+        .error {
+            background: var(--danger);
+            color: var(--white);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-600);
+            font-style: italic;
+        }
+
+        .chart-container {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>📊 My Analytics</h1>
+            <p>View your search activity and usage statistics</p>
+        </div>
+        
+        <div class="dashboard-content">
+            <a href="index.html" class="back-button">← Back to Search</a>
+            
+            <div id="loading" class="loading">
+                Loading your analytics data...
+            </div>
+            
+            <div id="error" class="error" style="display: none;">
+                Error loading analytics data. Please try again later.
+            </div>
+            
+            <div id="dashboard" style="display: none;">
+                <!-- Stats Overview -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Searches</h3>
+                        <div class="value" id="totalSearches">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Page Views</h3>
+                        <div class="value" id="totalPageViews">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Sessions</h3>
+                        <div class="value" id="totalSessions">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Most Used Device</h3>
+                        <div class="value" id="topDevice">-</div>
+                    </div>
+                </div>
+                
+                <!-- Recent Searches -->
+                <div class="data-section">
+                    <h2>🔍 Recent Searches</h2>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Search Query</th>
+                                    <th>Date</th>
+                                    <th>Results</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentSearches">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Page Views -->
+                <div class="data-section">
+                    <h2>📄 Recent Page Views</h2>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Page</th>
+                                    <th>Device</th>
+                                    <th>Browser</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentPageViews">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Device & Browser Stats -->
+                <div class="data-section">
+                    <h2>💻 Device & Browser Information</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Primary Device</h3>
+                            <div class="value" id="primaryDevice">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Primary Browser</h3>
+                            <div class="value" id="primaryBrowser">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Operating System</h3>
+                            <div class="value" id="primaryOS">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="noData" class="no-data" style="display: none;">
+                No analytics data found for your account. Start using Taisen to see your statistics!
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        // Firebase configuration for analytics project
+        const analyticsConfig = {
+            apiKey: "AIzaSyDKWcglmmQhiVwkmx9ACYvk7Jnhh2kGheM",
+            authDomain: "taisen-analytics-e2f7f.firebaseapp.com",
+            projectId: "taisen-analytics-e2f7f",
+            storageBucket: "taisen-analytics-e2f7f.firebasestorage.app",
+            messagingSenderId: "334559308937",
+            appId: "1:334559308937:web:3930ff78b17f8569f8aa58"
+        };
+
+        // Initialize Firebase
+        const analyticsApp = firebase.initializeApp(analyticsConfig, "AnalyticsDashboard");
+        const auth = firebase.auth(analyticsApp);
+        const db = firebase.firestore(analyticsApp);
+
+        class AnalyticsDashboard {
+            constructor() {
+                this.userId = null;
+                this.userData = {
+                    searches: [],
+                    pageViews: [],
+                    sessions: [],
+                    events: []
+                };
+                
+                this.init();
+            }
+
+            async init() {
+                try {
+                    // Wait for auth state
+                    await new Promise((resolve) => {
+                        auth.onAuthStateChanged((user) => {
+                            if (user) {
+                                this.userId = user.uid;
+                                resolve();
+                            } else {
+                                // Try to get user from main app
+                                this.detectMainAppUser().then(resolve).catch(resolve);
+                            }
+                        });
+                    });
+
+                    if (!this.userId) {
+                        this.showError("Please sign in to view your analytics data");
+                        return;
+                    }
+
+                    await this.loadUserData();
+                    this.renderDashboard();
+                    
+                } catch (error) {
+                    console.error('Dashboard error:', error);
+                    this.showError("Error loading analytics data");
+                }
+            }
+
+            async detectMainAppUser() {
+                // Try to detect user from main Taisen app
+                return new Promise((resolve) => {
+                    const checkMainAuth = setInterval(() => {
+                        try {
+                            const mainAuth = firebase.app().auth();
+                            if (mainAuth) {
+                                const user = mainAuth.currentUser;
+                                if (user) {
+                                    this.userId = user.uid;
+                                    clearInterval(checkMainAuth);
+                                    resolve();
+                                }
+                            }
+                        } catch (error) {
+                            // Main auth not available
+                        }
+                    }, 500);
+
+                    setTimeout(() => {
+                        clearInterval(checkMainAuth);
+                        resolve();
+                    }, 5000);
+                });
+            }
+
+            async loadUserData() {
+                const userId = this.userId;
+                
+                // Load searches
+                const searchesSnapshot = await db.collection('events')
+                    .where('userId', '==', userId)
+                    .where('eventName', '==', 'search')
+                    .orderBy('timestamp', 'desc')
+                    .limit(50)
+                    .get();
+                
+                this.userData.searches = searchesSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                // Load page views
+                const pageViewsSnapshot = await db.collection('page_views')
+                    .where('userId', '==', userId)
+                    .orderBy('timestamp', 'desc')
+                    .limit(50)
+                    .get();
+                
+                this.userData.pageViews = pageViewsSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                // Load sessions
+                const sessionsSnapshot = await db.collection('sessions')
+                    .where('userId', '==', userId)
+                    .orderBy('startTime', 'desc')
+                    .limit(20)
+                    .get();
+                
+                this.userData.sessions = sessionsSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                // Load all events for stats
+                const eventsSnapshot = await db.collection('events')
+                    .where('userId', '==', userId)
+                    .orderBy('timestamp', 'desc')
+                    .limit(100)
+                    .get();
+                
+                this.userData.events = eventsSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+            }
+
+            renderDashboard() {
+                const hasData = this.userData.searches.length > 0 || this.userData.pageViews.length > 0;
+                
+                if (!hasData) {
+                    document.getElementById('noData').style.display = 'block';
+                    document.getElementById('loading').style.display = 'none';
+                    return;
+                }
+
+                // Update stats
+                document.getElementById('totalSearches').textContent = this.userData.searches.length;
+                document.getElementById('totalPageViews').textContent = this.userData.pageViews.length;
+                document.getElementById('totalSessions').textContent = this.userData.sessions.length;
+                
+                // Find top device
+                const deviceCounts = {};
+                this.userData.pageViews.forEach(view => {
+                    deviceCounts[view.deviceType] = (deviceCounts[view.deviceType] || 0) + 1;
+                });
+                const topDevice = Object.keys(deviceCounts).reduce((a, b) => 
+                    deviceCounts[a] > deviceCounts[b] ? a : b, 'Unknown'
+                );
+                document.getElementById('topDevice').textContent = topDevice;
+
+                // Render recent searches
+                const searchesTable = document.getElementById('recentSearches');
+                searchesTable.innerHTML = this.userData.searches.slice(0, 10).map(search => `
+                    <tr>
+                        <td>${this.escapeHtml(search.query || 'Unknown')}</td>
+                        <td>${this.formatDate(search.timestamp?.toDate())}</td>
+                        <td>${search.resultsCount || 'N/A'}</td>
+                    </tr>
+                `).join('');
+
+                // Render recent page views
+                const pageViewsTable = document.getElementById('recentPageViews');
+                pageViewsTable.innerHTML = this.userData.pageViews.slice(0, 10).map(view => `
+                    <tr>
+                        <td>${this.getPageName(view.url)}</td>
+                        <td>${view.deviceType || 'Unknown'}</td>
+                        <td>${view.browser?.name || 'Unknown'}</td>
+                        <td>${this.formatDate(view.timestamp?.toDate())}</td>
+                    </tr>
+                `).join('');
+
+                // Update device and browser info
+                const primaryDevice = this.userData.pageViews[0]?.deviceType || 'Unknown';
+                const primaryBrowser = this.userData.pageViews[0]?.browser?.name || 'Unknown';
+                const primaryOS = this.userData.pageViews[0]?.os || 'Unknown';
+                
+                document.getElementById('primaryDevice').textContent = primaryDevice;
+                document.getElementById('primaryBrowser').textContent = primaryBrowser;
+                document.getElementById('primaryOS').textContent = primaryOS;
+
+                // Show dashboard
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            }
+
+            getPageName(url) {
+                if (url.includes('index.html')) return 'Home Page';
+                if (url.includes('captcha.html')) return 'Search Results';
+                if (url.includes('settings.html')) return 'Settings';
+                return 'Other Page';
+            }
+
+            formatDate(date) {
+                if (!date) return 'Unknown';
+                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            showError(message) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').textContent = message;
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new AnalyticsDashboard();
+        });
+    </script>
+</body>
+</html>

@@ -1027,6 +1027,16 @@
     .background-success.active {
       display: block;
     }
+    .account-button.analytics {
+    background: var(--info);
+    color: white;
+}
+
+.account-button.analytics:hover {
+    background: #138496;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
   </style>
 </head>
 <body>
@@ -1185,6 +1195,8 @@
           </div>
         </div>
         <div class="account-actions">
+          <!-- In your account modal, add this button -->
+<button class="account-button analytics" id="viewAnalytics">View My Analytics</button>
           <button class="account-button manage" id="manageAccount">Manage Account</button>
           <button class="account-button signout" id="signOutButton">Sign Out</button>
         </div>
@@ -1405,7 +1417,7 @@
   </script>
 
   <!-- Firebase Authentication with Modal -->
-  <script type="module">
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
     import { 
       getAuth, 
@@ -1457,6 +1469,7 @@
     const verificationCodeGroup = document.getElementById("verificationCodeGroup");
     const signOutButton = document.getElementById("signOutButton");
     const manageAccount = document.getElementById("manageAccount");
+    const viewAnalytics = document.getElementById("viewAnalytics");
     
     // Account modal elements
     const accountDisplayName = document.getElementById("accountDisplayName");
@@ -1464,7 +1477,7 @@
     const accountUserId = document.getElementById("accountUserId");
     const accountType = document.getElementById("accountType");
     
-    // Background Personalization Elements - NEW FEATURE
+    // Background Personalization Elements
     const backgroundButton = document.getElementById("backgroundButton");
     const backgroundModal = document.getElementById("backgroundModal");
     const backgroundClose = document.getElementById("backgroundClose");
@@ -1482,7 +1495,7 @@
     let isSignUp = false;
     let selectedFile = null;
 
-    // Default Backgrounds - NEW FEATURE
+    // Default Backgrounds
     const DEFAULT_BACKGROUNDS = [
       {
         id: 'gradient-blue',
@@ -1526,7 +1539,7 @@
       }
     ];
 
-    // Background Personalization Functions - NEW FEATURE
+    // Background Personalization Functions
     function initBackgroundPersonalization() {
       loadDefaultBackgrounds();
       setupBackgroundEventListeners();
@@ -1553,14 +1566,12 @@
     }
 
     function setupBackgroundEventListeners() {
-      // Background modal
       backgroundButton.addEventListener('click', openBackgroundModal);
       backgroundClose.addEventListener('click', closeBackgroundModal);
       backgroundModal.addEventListener('click', (e) => {
         if (e.target === backgroundModal) closeBackgroundModal();
       });
 
-      // File upload
       uploadArea.addEventListener('click', () => backgroundUpload.click());
       uploadArea.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -1622,12 +1633,10 @@
       try {
         showBackgroundSuccess('Uploading background...');
         
-        // Upload to Firebase Storage
         const storageRef = ref(storage, `backgrounds/${user.uid}/${Date.now()}_${selectedFile.name}`);
         const snapshot = await uploadBytes(storageRef, selectedFile);
         const downloadURL = await getDownloadURL(snapshot.ref);
 
-        // Save to Firestore
         const userRef = doc(db, "users", user.uid);
         await updateDoc(userRef, {
           customBackground: downloadURL,
@@ -1635,11 +1644,9 @@
           backgroundUpdated: new Date()
         });
 
-        // Apply background
         applyCustomBackground(downloadURL);
         showBackgroundSuccess('Background updated successfully!');
         
-        // Reset upload
         setTimeout(() => {
           cancelBackgroundUpload();
           closeBackgroundModal();
@@ -1662,16 +1669,13 @@
     function selectDefaultBackground(bgId, bgCss) {
       const user = auth.currentUser;
       
-      // Update UI
       document.querySelectorAll('.background-option').forEach(option => {
         option.classList.remove('active');
       });
       document.querySelector(`[data-bg-id="${bgId}"]`).classList.add('active');
 
-      // Apply background
       document.body.style.background = bgCss;
 
-      // Save to Firestore if user is signed in
       if (user) {
         const userRef = doc(db, "users", user.uid);
         updateDoc(userRef, {
@@ -1683,7 +1687,6 @@
           console.error('Error saving background preference:', error);
         });
       } else {
-        // Save to localStorage for anonymous users
         localStorage.setItem('taisen_background', bgCss);
         localStorage.setItem('taisen_background_type', 'default');
         localStorage.setItem('taisen_background_id', bgId);
@@ -1716,7 +1719,6 @@
       const user = auth.currentUser;
       
       if (user) {
-        // Load from Firestore for authenticated users
         try {
           const userRef = doc(db, "users", user.uid);
           const userDoc = await getDoc(userRef);
@@ -1728,7 +1730,6 @@
                 applyCustomBackground(userData.background);
               } else {
                 document.body.style.background = userData.background;
-                // Activate the corresponding default background
                 const bgOption = document.querySelector(`[data-bg-id="${userData.backgroundId}"]`);
                 if (bgOption) bgOption.classList.add('active');
               }
@@ -1738,7 +1739,6 @@
           console.error('Error loading user background:', error);
         }
       } else {
-        // Load from localStorage for anonymous users
         const savedBackground = localStorage.getItem('taisen_background');
         const backgroundType = localStorage.getItem('taisen_background_type');
         const backgroundId = localStorage.getItem('taisen_background_id');
@@ -1805,7 +1805,6 @@
     }
 
     function resetForms() {
-      // Reset all forms and errors
       document.getElementById("email").value = "";
       document.getElementById("password").value = "";
       document.getElementById("phoneNumber").value = "";
@@ -1851,11 +1850,9 @@
       tab.addEventListener("click", () => {
         const targetTab = tab.getAttribute("data-tab");
         
-        // Update active tab
         authTabs.forEach(t => t.classList.remove("active"));
         tab.classList.add("active");
         
-        // Update forms based on tab
         if (targetTab === "signin") {
           emailSubmit.textContent = "Sign In";
           isSignUp = false;
@@ -1880,12 +1877,10 @@
       
       try {
         if (isSignUp) {
-          // Sign up with email/password
           await createUserWithEmailAndPassword(auth, email, password);
           showSuccess(emailSuccess, "Account created successfully!");
           setTimeout(closeAuthModal, 1500);
         } else {
-          // Sign in with email/password
           await signInWithEmailAndPassword(auth, email, password);
           showSuccess(emailSuccess, "Signed in successfully!");
           setTimeout(closeAuthModal, 1500);
@@ -1910,7 +1905,6 @@
       
       try {
         if (!confirmationResult) {
-          // First step: Send verification code
           const appVerifier = new RecaptchaVerifier(auth, 'phoneSubmit', {
             'size': 'invisible'
           });
@@ -1920,7 +1914,6 @@
           phoneSubmit.textContent = "Verify Code";
           showSuccess(phoneSuccess, "Verification code sent!");
         } else {
-          // Second step: Verify code
           await confirmationResult.confirm(verificationCode);
           showSuccess(phoneSuccess, "Phone verified successfully!");
           setTimeout(closeAuthModal, 1500);
@@ -1963,21 +1956,25 @@
       }
     });
 
-    // Manage Account (external link)
+    // Manage Account
     manageAccount.addEventListener("click", () => {
       window.open("https://taisenaccounts.pages.dev/account", "_blank");
+    });
+
+    // View Analytics
+    viewAnalytics.addEventListener("click", () => {
+      window.open('analytics-dashboard.html', '_blank');
+      closeAccountModal();
     });
 
     // Update User Button
     function updateButton(user) {
       if (user) {
-        // User is signed in - show user's name or "User"
         const name = user.displayName || "User";
         userButton.textContent = name;
         userButton.style.display = "block";
         userButton.onclick = openAccountModal;
       } else {
-        // User is signed out - show "Sign In" button
         userButton.textContent = "Sign In";
         userButton.style.display = "block";
         userButton.onclick = openAuthModal;
@@ -1988,7 +1985,6 @@
     authClose.addEventListener("click", closeAuthModal);
     accountClose.addEventListener("click", closeAccountModal);
     
-    // Close modals when clicking outside
     authModal.addEventListener("click", (e) => {
       if (e.target === authModal) {
         closeAuthModal();
@@ -2004,7 +2000,6 @@
     // Initialize auth state listener
     onAuthStateChanged(auth, (user) => {
       updateButton(user);
-      // Load user background when auth state changes
       loadUserBackground();
     });
 
