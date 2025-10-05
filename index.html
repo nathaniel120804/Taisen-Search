@@ -1277,6 +1277,11 @@
           .then(data => console.log("Logged:", data))
           .catch(err => console.error("Failed to log search:", err));
 
+          // Log search to analytics
+          if (window.logTaisenSearch) {
+            window.logTaisenSearch(query, null, 'web');
+          }
+
           // Call original search function (redirect to results.html)
           originalExecute.call(searchBox, query);
         };
@@ -1286,6 +1291,11 @@
       function showRandomTrivia() {
         const randomTopic = TRIVIA_TOPICS[Math.floor(Math.random() * TRIVIA_TOPICS.length)];
         
+        // Log trivia view to analytics
+        if (window.logTaisenSearch) {
+          window.logTaisenSearch('trivia_trigger', null, 'trivia');
+        }
+
         // Use Google Custom Search API to get trivia
         fetch(`https://www.googleapis.com/customsearch/v1?key=AIzaSyCjAJ9y0oY7dI5qDZ_WbYqJ9Q8nQ9Q8nQ8&cx=${CSE_CX}&q=${encodeURIComponent(randomTopic)}&num=1`)
           .then(response => response.json())
@@ -2081,6 +2091,10 @@ class TAISEN_AISearch {
                     const originalExecute = searchBox.execute.bind(searchBox);
                     searchBox.execute = (query) => {
                         if (query && query.trim() !== "") {
+                            // Log AI search to analytics
+                            if (window.logTaisenSearch) {
+                                window.logTaisenSearch(query, null, 'ai');
+                            }
                             this.showAIResults(query);
                         }
                         originalExecute(query);
@@ -2502,13 +2516,39 @@ class AnalyticsLogger {
         }
     }
 
-    // Search logging method
+    // Enhanced Search logging method
     async logSearch(query, resultsCount = null, searchType = 'web') {
-        await this.logEvent('search', {
+        const searchData = {
             query: query,
             resultsCount: resultsCount,
-            searchType: searchType
-        });
+            searchType: searchType,
+            queryLength: query.length,
+            hasSpecialChars: /[^a-zA-Z0-9\s]/.test(query),
+            wordCount: query.split(/\s+/).filter(word => word.length > 0).length
+        };
+
+        await this.logEvent('search', searchData);
+        
+        // Also log to a dedicated search queries collection for better analysis
+        if (this.initialized && this.db) {
+            try {
+                const searchQueryData = {
+                    ...searchData,
+                    userId: this.userId,
+                    hasAccount: this.hasAccount,
+                    sessionId: this.sessionId,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    ipAddress: await this.getClientIP(),
+                    deviceType: this.getDeviceType(),
+                    browser: this.getBrowserInfo().name
+                };
+                
+                await this.db.collection('search_queries').add(searchQueryData);
+                console.log('🔍 Search query logged to dedicated collection:', query);
+            } catch (error) {
+                console.error('❌ Search query logging error:', error);
+            }
+        }
     }
 
     // Auth logging method
@@ -2532,6 +2572,12 @@ document.addEventListener('DOMContentLoaded', function() {
             window.taisenAnalytics.logSearch(query, resultsCount, searchType);
         } else {
             console.log('📊 Search (analytics not ready):', query);
+            // Queue the search for when analytics is ready
+            setTimeout(() => {
+                if (window.taisenAnalytics) {
+                    window.taisenAnalytics.logSearch(query, resultsCount, searchType);
+                }
+            }, 1000);
         }
     };
     
