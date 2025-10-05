@@ -5,200 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Analytics - Taisen</title>
     <style>
-        :root {
-            --primary: #0077ff;
-            --primary-dark: #0056cc;
-            --secondary: #6c757d;
-            --success: #34a853;
-            --danger: #d93025;
-            --warning: #ffc107;
-            --info: #17a2b8;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --white: #ffffff;
-            --gray-100: #f8f9fa;
-            --gray-200: #e9ecef;
-            --gray-300: #dee2e6;
-            --gray-400: #ced4da;
-            --gray-500: #adb5bd;
-            --gray-600: #6c757d;
-            --gray-700: #495057;
-            --gray-800: #343a40;
-            --gray-900: #212529;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .dashboard-header {
-            background: var(--primary);
-            color: var(--white);
-            padding: 30px;
-            text-align: center;
-        }
-
-        .dashboard-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .dashboard-header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .dashboard-content {
-            padding: 30px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-left: 4px solid var(--primary);
-        }
-
-        .stat-card h3 {
-            color: var(--gray-600);
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-card .value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .data-section {
-            background: var(--gray-100);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .data-section h2 {
-            color: var(--gray-800);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--white);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .data-table th {
-            background: var(--gray-100);
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        .data-table tr:hover {
-            background: var(--gray-50);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: var(--gray-600);
-        }
-
-        .error {
-            background: var(--danger);
-            color: var(--white);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background: var(--primary);
-            color: var(--white);
-            text-decoration: none;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            transition: background 0.3s ease;
-        }
-
-        .back-button:hover {
-            background: var(--primary-dark);
-        }
-
-        .no-data {
-            text-align: center;
-            padding: 40px;
-            color: var(--gray-600);
-            font-style: italic;
-        }
-
-        .chart-container {
-            background: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .dashboard-content {
-                padding: 15px;
-            }
-        }
+        /* ... (keep all your existing CSS styles) ... */
     </style>
 </head>
 <body>
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <!-- ... (keep all your existing auth modal HTML) ... -->
+    </div>
+
     <div class="dashboard-container">
         <div class="dashboard-header">
             <h1>📊 My Analytics</h1>
             <p>View your search activity and usage statistics</p>
+            <div class="user-info">
+                <button id="userButton" class="user-button">Sign In</button>
+            </div>
         </div>
         
         <div class="dashboard-content">
@@ -220,29 +42,29 @@
                         <div class="value" id="totalSearches">0</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Page Views</h3>
-                        <div class="value" id="totalPageViews">0</div>
+                        <h3>Last Active</h3>
+                        <div class="value" id="lastActive">-</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Sessions</h3>
-                        <div class="value" id="totalSessions">0</div>
+                        <h3>Account Created</h3>
+                        <div class="value" id="accountCreated">-</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Most Used Device</h3>
-                        <div class="value" id="topDevice">-</div>
+                        <h3>User Status</h3>
+                        <div class="value" id="userStatus">-</div>
                     </div>
                 </div>
                 
                 <!-- Recent Searches -->
                 <div class="data-section">
-                    <h2>🔍 Recent Searches</h2>
+                    <h2>🔍 Search History</h2>
                     <div class="data-table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
                                     <th>Search Query</th>
-                                    <th>Date</th>
-                                    <th>Results</th>
+                                    <th>Date & Time</th>
+                                    <th>Type</th>
                                 </tr>
                             </thead>
                             <tbody id="recentSearches">
@@ -252,48 +74,65 @@
                     </div>
                 </div>
                 
-                <!-- Page Views -->
+                <!-- User Information -->
                 <div class="data-section">
-                    <h2>📄 Recent Page Views</h2>
-                    <div class="data-table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Page</th>
-                                    <th>Device</th>
-                                    <th>Browser</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody id="recentPageViews">
-                                <!-- Will be populated by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Device & Browser Stats -->
-                <div class="data-section">
-                    <h2>💻 Device & Browser Information</h2>
+                    <h2>👤 Account Information</h2>
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <h3>Primary Device</h3>
-                            <div class="value" id="primaryDevice">-</div>
+                            <h3>Email</h3>
+                            <div class="value" id="userEmail">-</div>
                         </div>
                         <div class="stat-card">
-                            <h3>Primary Browser</h3>
-                            <div class="value" id="primaryBrowser">-</div>
+                            <h3>Display Name</h3>
+                            <div class="value" id="userDisplayName">-</div>
                         </div>
                         <div class="stat-card">
-                            <h3>Operating System</h3>
-                            <div class="value" id="primaryOS">-</div>
+                            <h3>User ID</h3>
+                            <div class="value" id="userId">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Account Type</h3>
+                            <div class="value" id="accountType">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session Information -->
+                <div class="data-section">
+                    <h2>📱 Current Session</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Device</h3>
+                            <div class="value" id="currentDevice">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Browser</h3>
+                            <div class="value" id="currentBrowser">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Platform</h3>
+                            <div class="value" id="currentPlatform">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Screen Size</h3>
+                            <div class="value" id="screenSize">-</div>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div id="noData" class="no-data" style="display: none;">
-                No analytics data found for your account. Start using Taisen to see your statistics!
+                <h3>Welcome to Taisen Analytics! 🎉</h3>
+                <p>No search data found yet. Start searching on the main page to see your analytics here!</p>
+                <div style="margin-top: 20px;">
+                    <a href="index.html" class="auth-button" style="display: inline-block; width: auto; padding: 12px 24px;">Start Searching Now</a>
+                </div>
+            </div>
+
+            <div id="signInPrompt" class="no-data" style="display: none;">
+                <h3>Sign In Required</h3>
+                <p>Please sign in to view your analytics data.</p>
+                <button id="signInPromptButton" class="auth-button" style="width: auto; margin-top: 15px;">Sign In Now</button>
             </div>
         </div>
     </div>
@@ -304,211 +143,363 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // Firebase configuration for analytics project
-        const analyticsConfig = {
-            apiKey: "AIzaSyDKWcglmmQhiVwkmx9ACYvk7Jnhh2kGheM",
-            authDomain: "taisen-analytics-e2f7f.firebaseapp.com",
-            projectId: "taisen-analytics-e2f7f",
-            storageBucket: "taisen-analytics-e2f7f.firebasestorage.app",
-            messagingSenderId: "334559308937",
-            appId: "1:334559308937:web:3930ff78b17f8569f8aa58"
+        // Use the SAME Firebase configuration as index.html
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMy4SNOU3eAl4iSfbmHWTxae9pVcnJFmc",
+            authDomain: "taisen-search-ad9eb.firebaseapp.com",
+            projectId: "taisen-search-ad9eb",
+            storageBucket: "taisen-search-ad9eb.appspot.com",
+            messagingSenderId: "779736719927",
+            appId: "1:779736719927:web:07ccea945f7549ad56d5b2"
         };
 
-        // Initialize Firebase
-        const analyticsApp = firebase.initializeApp(analyticsConfig, "AnalyticsDashboard");
-        const auth = firebase.auth(analyticsApp);
-        const db = firebase.firestore(analyticsApp);
+        // Initialize Firebase with the main app configuration
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth(app);
+        const db = firebase.firestore(app);
 
         class AnalyticsDashboard {
             constructor() {
                 this.userId = null;
                 this.userData = {
                     searches: [],
-                    pageViews: [],
-                    sessions: [],
-                    events: []
+                    userInfo: {},
+                    sessionInfo: {}
                 };
                 
-                this.init();
+                this.initAuth();
+                this.initEventListeners();
             }
 
-            async init() {
-                try {
-                    // Wait for auth state
-                    await new Promise((resolve) => {
-                        auth.onAuthStateChanged((user) => {
-                            if (user) {
-                                this.userId = user.uid;
-                                resolve();
-                            } else {
-                                // Try to get user from main app
-                                this.detectMainAppUser().then(resolve).catch(resolve);
-                            }
-                        });
-                    });
-
-                    if (!this.userId) {
-                        this.showError("Please sign in to view your analytics data");
-                        return;
+            initAuth() {
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        this.userId = user.uid;
+                        this.updateUserButton(user);
+                        this.loadUserData(user);
+                    } else {
+                        this.userId = null;
+                        this.updateUserButton(null);
+                        this.showSignInPrompt();
                     }
-
-                    await this.loadUserData();
-                    this.renderDashboard();
-                    
-                } catch (error) {
-                    console.error('Dashboard error:', error);
-                    this.showError("Error loading analytics data");
-                }
-            }
-
-            async detectMainAppUser() {
-                // Try to detect user from main Taisen app
-                return new Promise((resolve) => {
-                    const checkMainAuth = setInterval(() => {
-                        try {
-                            const mainAuth = firebase.app().auth();
-                            if (mainAuth) {
-                                const user = mainAuth.currentUser;
-                                if (user) {
-                                    this.userId = user.uid;
-                                    clearInterval(checkMainAuth);
-                                    resolve();
-                                }
-                            }
-                        } catch (error) {
-                            // Main auth not available
-                        }
-                    }, 500);
-
-                    setTimeout(() => {
-                        clearInterval(checkMainAuth);
-                        resolve();
-                    }, 5000);
                 });
             }
 
-            async loadUserData() {
-                const userId = this.userId;
-                
-                // Load searches
-                const searchesSnapshot = await db.collection('events')
-                    .where('userId', '==', userId)
-                    .where('eventName', '==', 'search')
-                    .orderBy('timestamp', 'desc')
-                    .limit(50)
-                    .get();
-                
-                this.userData.searches = searchesSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
+            initEventListeners() {
+                // Auth modal
+                document.getElementById('userButton').addEventListener('click', () => {
+                    this.openAuthModal();
+                });
 
-                // Load page views
-                const pageViewsSnapshot = await db.collection('page_views')
-                    .where('userId', '==', userId)
-                    .orderBy('timestamp', 'desc')
-                    .limit(50)
-                    .get();
-                
-                this.userData.pageViews = pageViewsSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
+                document.getElementById('authClose').addEventListener('click', () => {
+                    this.closeAuthModal();
+                });
 
-                // Load sessions
-                const sessionsSnapshot = await db.collection('sessions')
-                    .where('userId', '==', userId)
-                    .orderBy('startTime', 'desc')
-                    .limit(20)
-                    .get();
-                
-                this.userData.sessions = sessionsSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
+                document.getElementById('signInPromptButton').addEventListener('click', () => {
+                    this.openAuthModal();
+                });
 
-                // Load all events for stats
-                const eventsSnapshot = await db.collection('events')
-                    .where('userId', '==', userId)
-                    .orderBy('timestamp', 'desc')
-                    .limit(100)
-                    .get();
-                
-                this.userData.events = eventsSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
+                // Auth modal close when clicking outside
+                document.getElementById('authModal').addEventListener('click', (e) => {
+                    if (e.target === document.getElementById('authModal')) {
+                        this.closeAuthModal();
+                    }
+                });
+
+                // Tab switching
+                document.querySelectorAll('.auth-tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const targetTab = tab.getAttribute('data-tab');
+                        this.switchAuthTab(targetTab);
+                    });
+                });
+
+                // Email form submission
+                document.getElementById('emailForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleEmailAuth();
+                });
+
+                // Google sign in
+                document.getElementById('googleSignIn').addEventListener('click', () => {
+                    this.handleGoogleAuth();
+                });
+
+                // Anonymous sign in
+                document.getElementById('anonymousSignIn').addEventListener('click', () => {
+                    this.handleAnonymousAuth();
+                });
             }
 
-            renderDashboard() {
-                const hasData = this.userData.searches.length > 0 || this.userData.pageViews.length > 0;
-                
-                if (!hasData) {
-                    document.getElementById('noData').style.display = 'block';
-                    document.getElementById('loading').style.display = 'none';
+            updateUserButton(user) {
+                const userButton = document.getElementById('userButton');
+                if (user) {
+                    const name = user.displayName || user.email || 'User';
+                    userButton.textContent = name;
+                } else {
+                    userButton.textContent = 'Sign In';
+                }
+            }
+
+            openAuthModal() {
+                document.getElementById('authModal').classList.add('active');
+                this.resetAuthForms();
+            }
+
+            closeAuthModal() {
+                document.getElementById('authModal').classList.remove('active');
+                this.resetAuthForms();
+            }
+
+            switchAuthTab(tab) {
+                // Update active tab
+                document.querySelectorAll('.auth-tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+                // Update form
+                const emailSubmit = document.getElementById('emailSubmit');
+                if (tab === 'signin') {
+                    emailSubmit.textContent = 'Sign In';
+                } else {
+                    emailSubmit.textContent = 'Sign Up';
+                }
+            }
+
+            resetAuthForms() {
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('emailError').classList.remove('active');
+                document.getElementById('emailSuccess').classList.remove('active');
+                this.switchAuthTab('signin');
+            }
+
+            showAuthError(message) {
+                const errorElement = document.getElementById('emailError');
+                errorElement.textContent = message;
+                errorElement.classList.add('active');
+            }
+
+            showAuthSuccess(message) {
+                const successElement = document.getElementById('emailSuccess');
+                successElement.textContent = message;
+                successElement.classList.add('active');
+            }
+
+            async handleEmailAuth() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const isSignUp = document.getElementById('emailSubmit').textContent === 'Sign Up';
+
+                if (!email || !password) {
+                    this.showAuthError('Please fill in all fields');
                     return;
                 }
 
+                try {
+                    if (isSignUp) {
+                        await auth.createUserWithEmailAndPassword(email, password);
+                        this.showAuthSuccess('Account created successfully!');
+                    } else {
+                        await auth.signInWithEmailAndPassword(email, password);
+                        this.showAuthSuccess('Signed in successfully!');
+                    }
+                    
+                    setTimeout(() => {
+                        this.closeAuthModal();
+                    }, 1500);
+                } catch (error) {
+                    this.showAuthError(error.message);
+                }
+            }
+
+            async handleGoogleAuth() {
+                try {
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    await auth.signInWithPopup(provider);
+                    this.closeAuthModal();
+                } catch (error) {
+                    this.showAuthError(error.message);
+                }
+            }
+
+            async handleAnonymousAuth() {
+                try {
+                    await auth.signInAnonymously();
+                    this.closeAuthModal();
+                } catch (error) {
+                    this.showAuthError(error.message);
+                }
+            }
+
+            showSignInPrompt() {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'none';
+                document.getElementById('noData').style.display = 'none';
+                document.getElementById('signInPrompt').style.display = 'block';
+            }
+
+            async loadUserData(user) {
+                if (!this.userId) return;
+
+                try {
+                    document.getElementById('loading').style.display = 'block';
+                    document.getElementById('signInPrompt').style.display = 'none';
+
+                    // Load user document from Firestore
+                    const userDoc = await db.collection('users').doc(this.userId).get();
+                    
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        
+                        // Process search data
+                        this.userData.searches = [];
+                        if (userData.lastSearch) {
+                            this.userData.searches.push({
+                                query: userData.lastSearch,
+                                timestamp: userData.timestamp || user.metadata.lastSignInTime || new Date(),
+                                type: 'Web Search'
+                            });
+                        }
+
+                        // Store user info
+                        this.userData.userInfo = {
+                            email: user.email,
+                            displayName: user.displayName,
+                            userId: user.uid,
+                            accountType: user.isAnonymous ? 'Guest' : 'Registered',
+                            creationTime: user.metadata.creationTime,
+                            lastSignIn: user.metadata.lastSignInTime
+                        };
+
+                        // Get session info
+                        this.userData.sessionInfo = this.getSessionInfo();
+                        
+                        this.renderDashboard();
+                    } else {
+                        // User document doesn't exist yet, but we have auth user
+                        this.userData.searches = [];
+                        this.userData.userInfo = {
+                            email: user.email,
+                            displayName: user.displayName,
+                            userId: user.uid,
+                            accountType: user.isAnonymous ? 'Guest' : 'Registered',
+                            creationTime: user.metadata.creationTime,
+                            lastSignIn: user.metadata.lastSignInTime
+                        };
+                        this.userData.sessionInfo = this.getSessionInfo();
+                        this.renderDashboard();
+                    }
+                    
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                    this.showError("Error loading analytics data. Please try again.");
+                }
+            }
+
+            getSessionInfo() {
+                const ua = navigator.userAgent;
+                let device = 'Desktop';
+                let browser = 'Unknown';
+                let platform = 'Unknown';
+
+                // Detect device
+                if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+                    device = 'Mobile';
+                } else if (/Tablet|iPad|PlayBook|Silk/.test(ua)) {
+                    device = 'Tablet';
+                }
+
+                // Detect browser
+                if (ua.includes('Firefox')) browser = 'Firefox';
+                else if (ua.includes('Chrome')) browser = 'Chrome';
+                else if (ua.includes('Safari')) browser = 'Safari';
+                else if (ua.includes('Edge')) browser = 'Edge';
+
+                // Detect platform
+                if (ua.includes('Windows')) platform = 'Windows';
+                else if (ua.includes('Mac')) platform = 'macOS';
+                else if (ua.includes('Linux')) platform = 'Linux';
+                else if (ua.includes('Android')) platform = 'Android';
+                else if (ua.includes('iOS') || ua.includes('iPhone') || ua.includes('iPad')) platform = 'iOS';
+
+                return {
+                    device,
+                    browser,
+                    platform,
+                    screenSize: `${screen.width}x${screen.height}`,
+                    language: navigator.language
+                };
+            }
+
+            renderDashboard() {
+                const hasSearches = this.userData.searches.length > 0;
+                
+                // Update user info
+                document.getElementById('userEmail').textContent = this.userData.userInfo.email || 'Not set';
+                document.getElementById('userDisplayName').textContent = this.userData.userInfo.displayName || 'Not set';
+                document.getElementById('userId').textContent = this.userData.userInfo.userId ? this.userData.userInfo.userId.substring(0, 8) + '...' : 'Unknown';
+                document.getElementById('accountType').textContent = this.userData.userInfo.accountType || 'Unknown';
+
                 // Update stats
                 document.getElementById('totalSearches').textContent = this.userData.searches.length;
-                document.getElementById('totalPageViews').textContent = this.userData.pageViews.length;
-                document.getElementById('totalSessions').textContent = this.userData.sessions.length;
-                
-                // Find top device
-                const deviceCounts = {};
-                this.userData.pageViews.forEach(view => {
-                    deviceCounts[view.deviceType] = (deviceCounts[view.deviceType] || 0) + 1;
-                });
-                const topDevice = Object.keys(deviceCounts).reduce((a, b) => 
-                    deviceCounts[a] > deviceCounts[b] ? a : b, 'Unknown'
-                );
-                document.getElementById('topDevice').textContent = topDevice;
+                document.getElementById('lastActive').textContent = this.formatRelativeTime(this.userData.userInfo.lastSignIn);
+                document.getElementById('accountCreated').textContent = this.formatRelativeTime(this.userData.userInfo.creationTime);
+                document.getElementById('userStatus').textContent = this.userData.userInfo.accountType === 'Guest' ? 'Guest' : 'Active';
+
+                // Update session info
+                document.getElementById('currentDevice').textContent = this.userData.sessionInfo.device;
+                document.getElementById('currentBrowser').textContent = this.userData.sessionInfo.browser;
+                document.getElementById('currentPlatform').textContent = this.userData.sessionInfo.platform;
+                document.getElementById('screenSize').textContent = this.userData.sessionInfo.screenSize;
 
                 // Render recent searches
                 const searchesTable = document.getElementById('recentSearches');
-                searchesTable.innerHTML = this.userData.searches.slice(0, 10).map(search => `
-                    <tr>
-                        <td>${this.escapeHtml(search.query || 'Unknown')}</td>
-                        <td>${this.formatDate(search.timestamp?.toDate())}</td>
-                        <td>${search.resultsCount || 'N/A'}</td>
-                    </tr>
-                `).join('');
+                if (hasSearches) {
+                    searchesTable.innerHTML = this.userData.searches.map(search => `
+                        <tr>
+                            <td>${this.escapeHtml(search.query)}</td>
+                            <td>${this.formatDate(search.timestamp)}</td>
+                            <td>${search.type}</td>
+                        </tr>
+                    `).join('');
+                } else {
+                    searchesTable.innerHTML = `
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: var(--gray-600); font-style: italic;">
+                                No searches yet. Try searching on the main page!
+                            </td>
+                        </tr>
+                    `;
+                }
 
-                // Render recent page views
-                const pageViewsTable = document.getElementById('recentPageViews');
-                pageViewsTable.innerHTML = this.userData.pageViews.slice(0, 10).map(view => `
-                    <tr>
-                        <td>${this.getPageName(view.url)}</td>
-                        <td>${view.deviceType || 'Unknown'}</td>
-                        <td>${view.browser?.name || 'Unknown'}</td>
-                        <td>${this.formatDate(view.timestamp?.toDate())}</td>
-                    </tr>
-                `).join('');
-
-                // Update device and browser info
-                const primaryDevice = this.userData.pageViews[0]?.deviceType || 'Unknown';
-                const primaryBrowser = this.userData.pageViews[0]?.browser?.name || 'Unknown';
-                const primaryOS = this.userData.pageViews[0]?.os || 'Unknown';
-                
-                document.getElementById('primaryDevice').textContent = primaryDevice;
-                document.getElementById('primaryBrowser').textContent = primaryBrowser;
-                document.getElementById('primaryOS').textContent = primaryOS;
-
-                // Show dashboard
+                // Show appropriate view
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('noData').style.display = 'none';
             }
 
-            getPageName(url) {
-                if (url.includes('index.html')) return 'Home Page';
-                if (url.includes('captcha.html')) return 'Search Results';
-                if (url.includes('settings.html')) return 'Settings';
-                return 'Other Page';
+            formatRelativeTime(timestamp) {
+                if (!timestamp) return 'Unknown';
+                const date = new Date(timestamp);
+                const now = new Date();
+                const diffMs = now - date;
+                const diffMins = Math.floor(diffMs / 60000);
+                const diffHours = Math.floor(diffMs / 3600000);
+                const diffDays = Math.floor(diffMs / 86400000);
+
+                if (diffMins < 1) return 'Just now';
+                if (diffMins < 60) return `${diffMins}m ago`;
+                if (diffHours < 24) return `${diffHours}h ago`;
+                if (diffDays < 7) return `${diffDays}d ago`;
+                return date.toLocaleDateString();
             }
 
             formatDate(date) {
                 if (!date) return 'Unknown';
-                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                const dateObj = date.toDate ? date.toDate() : new Date(date);
+                return dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString();
             }
 
             escapeHtml(text) {
