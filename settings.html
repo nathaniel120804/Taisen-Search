@@ -300,67 +300,6 @@ input:checked + .toggle-slider:before {
         </select>
       </div>
     </div>
-    
-    <!-- Search Settings -->
-    <div class="settings-group">
-      <h3>Search Preferences</h3>
-      
-      <div class="setting-item">
-        <div class="setting-label">
-          <span>Language</span>
-          <small>Preferred search language</small>
-        </div>
-        <select id="langSelect">
-          <option value="en">English</option>
-          <option value="fil">Filipino</option>
-          <option value="es">Spanish</option>
-          <option value="fr">French</option>
-          <option value="de">German</option>
-        </select>
-      </div>
-      
-      <div class="setting-item">
-        <div class="setting-label">
-          <span>Region</span>
-          <small>Search results from specific region</small>
-        </div>
-        <select id="regionSelect">
-          <option value="">Global</option>
-          <option value="us">United States</option>
-          <option value="ph">Philippines</option>
-          <option value="uk">United Kingdom</option>
-          <option value="ca">Canada</option>
-          <option value="au">Australia</option>
-        </select>
-      </div>
-    </div>
-    
-    <!-- Privacy & Safety -->
-    <div class="settings-group">
-      <h3>Privacy & Safety</h3>
-      
-      <div class="setting-item">
-        <div class="setting-label">
-          <span>SafeSearch</span>
-          <small>Filter explicit content from results</small>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="safeSearch">
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
-      
-      <div class="setting-item">
-        <div class="setting-label">
-          <span>Privacy Mode</span>
-          <small>Mask IP address and disable logging</small>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="privacyMode">
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
-      
       <div class="setting-item">
         <div class="setting-label">
           <span>Analytics</span>
@@ -385,10 +324,6 @@ input:checked + .toggle-slider:before {
 // Save settings and redirect
 function saveSettings() {
   localStorage.setItem('theme', document.getElementById('themeSelect').value);
-  localStorage.setItem('language', document.getElementById('langSelect').value);
-  localStorage.setItem('region', document.getElementById('regionSelect').value);
-  localStorage.setItem('safeSearch', document.getElementById('safeSearch').checked);
-  localStorage.setItem('privacyMode', document.getElementById('privacyMode').checked);
   localStorage.setItem('analyticsEnabled', document.getElementById('analyticsEnabled').checked);
 
   // Apply theme immediately
@@ -406,17 +341,9 @@ function saveSettings() {
 // Load saved settings
 function loadSettings() {
   const theme = localStorage.getItem('theme') || 'auto';
-  const lang = localStorage.getItem('language') || 'en';
-  const region = localStorage.getItem('region') || '';
-  const safeSearch = localStorage.getItem('safeSearch') === 'true';
-  const privacy = localStorage.getItem('privacyMode') === 'true';
   const analytics = localStorage.getItem('analyticsEnabled') !== 'false'; // Default to true
 
   document.getElementById('themeSelect').value = theme;
-  document.getElementById('langSelect').value = lang;
-  document.getElementById('regionSelect').value = region;
-  document.getElementById('safeSearch').checked = safeSearch;
-  document.getElementById('privacyMode').checked = privacy;
   document.getElementById('analyticsEnabled').checked = analytics;
 
   applyTheme();
