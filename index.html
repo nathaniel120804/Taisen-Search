@@ -1865,8 +1865,10 @@
       if (user) {
         accountDisplayName.textContent = user.displayName || "Not set";
         accountEmail.textContent = user.email || "No email";
-        accountUserId.textContent = user.uid.substring(0, 8) + "...";
+        accountUserId.textContent = user.uid || "Not available";
         accountType.textContent = user.isAnonymous ? "Guest Account" : "Full Account";
+        
+        console.log("Account Info - User ID:", user.uid);
       }
     }
 
@@ -1902,14 +1904,30 @@
       
       try {
         if (isSignUp) {
-          await createUserWithEmailAndPassword(auth, email, password);
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+          
+          // Create user document in Firestore
+          const userRef = doc(db, "users", user.uid);
+          await setDoc(userRef, {
+            email: user.email,
+            displayName: user.displayName || "User",
+            createdAt: new Date(),
+            lastLogin: new Date()
+          });
+          
+          // Update analytics
+          if (window.taisenAnalytics) {
+            window.taisenAnalytics.userId = user.uid;
+            window.taisenAnalytics.hasAccount = true;
+          }
+          
           showSuccess(emailSuccess, "Account created successfully!");
-          setTimeout(closeAuthModal, 1500);
         } else {
           await signInWithEmailAndPassword(auth, email, password);
           showSuccess(emailSuccess, "Signed in successfully!");
-          setTimeout(closeAuthModal, 1500);
         }
+        setTimeout(closeAuthModal, 1500);
       } catch (error) {
         console.error("Email auth error:", error);
         showError(emailError, error.message);
@@ -1939,7 +1957,22 @@
           phoneSubmit.textContent = "Verify Code";
           showSuccess(phoneSuccess, "Verification code sent!");
         } else {
-          await confirmationResult.confirm(verificationCode);
+          const userCredential = await confirmationResult.confirm(verificationCode);
+          const user = userCredential.user;
+          
+          // Create user document
+          const userRef = doc(db, "users", user.uid);
+          await setDoc(userRef, {
+            phoneNumber: user.phoneNumber,
+            lastLogin: new Date()
+          }, { merge: true });
+          
+          // Update analytics
+          if (window.taisenAnalytics) {
+            window.taisenAnalytics.userId = user.uid;
+            window.taisenAnalytics.hasAccount = true;
+          }
+          
           showSuccess(phoneSuccess, "Phone verified successfully!");
           setTimeout(closeAuthModal, 1500);
         }
@@ -1952,7 +1985,24 @@
     // Google Authentication
     googleSignIn.addEventListener("click", async () => {
       try {
-        await signInWithPopup(auth, provider);
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        
+        // Create/update user document
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, {
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          lastLogin: new Date()
+        }, { merge: true });
+        
+        // Update analytics
+        if (window.taisenAnalytics) {
+          window.taisenAnalytics.userId = user.uid;
+          window.taisenAnalytics.hasAccount = true;
+        }
+        
         closeAuthModal();
       } catch (error) {
         console.error("Google auth error:", error);
@@ -1963,7 +2013,23 @@
     // Anonymous Authentication
     anonymousSignIn.addEventListener("click", async () => {
       try {
-        await signInAnonymously(auth);
+        const userCredential = await signInAnonymously(auth);
+        const user = userCredential.user;
+        
+        // Create anonymous user document
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, {
+          isAnonymous: true,
+          createdAt: new Date(),
+          lastLogin: new Date()
+        });
+        
+        // Update analytics
+        if (window.taisenAnalytics) {
+          window.taisenAnalytics.userId = user.uid;
+          window.taisenAnalytics.hasAccount = false;
+        }
+        
         closeAuthModal();
       } catch (error) {
         console.error("Anonymous auth error:", error);
@@ -1974,6 +2040,12 @@
     // Sign Out
     signOutButton.addEventListener("click", async () => {
       try {
+        // Update analytics before signing out
+        if (window.taisenAnalytics) {
+          window.taisenAnalytics.userId = null;
+          window.taisenAnalytics.hasAccount = false;
+        }
+        
         await signOut(auth);
         closeAccountModal();
       } catch (error) {
@@ -1999,10 +2071,23 @@
         userButton.textContent = name;
         userButton.style.display = "block";
         userButton.onclick = openAccountModal;
+        
+        // Update analytics with user info
+        if (window.taisenAnalytics) {
+          window.taisenAnalytics.userId = user.uid;
+          window.taisenAnalytics.hasAccount = !user.isAnonymous;
+          console.log('✅ Analytics updated with user:', user.uid);
+        }
       } else {
         userButton.textContent = "Sign In";
         userButton.style.display = "block";
         userButton.onclick = openAuthModal;
+        
+        // Clear analytics user info
+        if (window.taisenAnalytics) {
+          window.taisenAnalytics.userId = null;
+          window.taisenAnalytics.hasAccount = false;
+        }
       }
     }
 
@@ -2024,6 +2109,7 @@
 
     // Initialize auth state listener
     onAuthStateChanged(auth, (user) => {
+      console.log("Auth state changed. User:", user);
       updateButton(user);
       loadUserBackground();
     });
@@ -2338,7 +2424,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 </script>
 
-<!-- Taisen Analytics Logger -->
+<!-- Taisen Analytics Logger - FIXED VERSION -->
 <script>
 // analytics-logger.js - Firebase Analytics for Taisen
 class AnalyticsLogger {
@@ -2449,7 +2535,7 @@ class AnalyticsLogger {
             const os = this.getOS();
 
             const analyticsData = {
-                userId: this.userId,
+                userId: this.userId, // This will now be properly set from main auth
                 hasAccount: this.hasAccount,
                 sessionId: this.sessionId,
                 ipAddress: ipAddress,
@@ -2467,13 +2553,15 @@ class AnalyticsLogger {
 
             if (this.initialized && this.db) {
                 await this.db.collection('page_views').add(analyticsData);
-                console.log('✅ Page view logged to Firestore!');
+                console.log('✅ Page view logged to Firestore! User ID:', this.userId);
                 
                 // Also log session
                 await this.logSession(analyticsData);
             }
 
             console.log('📊 Analytics Summary:', {
+                userId: this.userId,
+                hasAccount: this.hasAccount,
                 ip: ipAddress,
                 device: deviceType,
                 browser: browserInfo.name,
@@ -2502,7 +2590,7 @@ class AnalyticsLogger {
 
             if (this.initialized && this.db) {
                 await this.db.collection('sessions').doc(this.sessionId).set(sessionData, { merge: true });
-                console.log('🔗 Session logged to Firestore');
+                console.log('🔗 Session logged to Firestore. User ID:', this.userId);
             }
         } catch (error) {
             console.error('❌ Session logging error:', error);
@@ -2523,7 +2611,7 @@ class AnalyticsLogger {
 
             if (this.initialized && this.db) {
                 await this.db.collection('events').add(event);
-                console.log('📈 Event logged:', eventName);
+                console.log('📈 Event logged:', eventName, 'for user:', this.userId);
             }
             
         } catch (error) {
@@ -2559,7 +2647,7 @@ class AnalyticsLogger {
                 };
                 
                 await this.db.collection('search_queries').add(searchQueryData);
-                console.log('🔍 Search query logged to dedicated collection:', query);
+                console.log('🔍 Search query logged to dedicated collection:', query, 'User ID:', this.userId);
             } catch (error) {
                 console.error('❌ Search query logging error:', error);
             }
