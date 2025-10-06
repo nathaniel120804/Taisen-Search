@@ -6,6 +6,21 @@
   <title>Taisen</title>
   <link rel="icon" type="image/png" href="original.png">
   <link rel="stylesheet" href="style.css?v=20250901">
+  
+  <!-- Analytics Check - Must be first -->
+  <script>
+    // Check analytics setting before loading anything
+    (function() {
+      const analyticsEnabled = localStorage.getItem('analyticsEnabled');
+      // If analytics is explicitly disabled, redirect immediately
+      if (analyticsEnabled === 'false') {
+        window.location.href = 'redirect.html';
+        // Prevent further execution
+        throw new Error('Analytics disabled - redirecting');
+      }
+    })();
+  </script>
+  
   <style>
     /* Modernized base styles */
     :root {
