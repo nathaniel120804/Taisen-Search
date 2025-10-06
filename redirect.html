@@ -1,0 +1,2326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taisen</title>
+  <link rel="icon" type="image/png" href="original.png">
+  <link rel="stylesheet" href="style.css?v=20250901">
+  <style>
+    /* Modernized base styles */
+    :root {
+      --primary: #0077ff;
+      --primary-dark: #0056cc;
+      --secondary: #6c757d;
+      --success: #34a853;
+      --danger: #d93025;
+      --warning: #ffc107;
+      --info: #17a2b8;
+      --light: #f8f9fa;
+      --dark: #343a40;
+      --white: #ffffff;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-300: #dee2e6;
+      --gray-400: #ced4da;
+      --gray-500: #adb5bd;
+      --gray-600: #6c757d;
+      --gray-700: #495057;
+      --gray-800: #343a40;
+      --gray-900: #212529;
+      --gradient-primary: linear-gradient(135deg, #0077ff 0%, #0056cc 100%);
+      --gradient-secondary: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+      --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
+      --border-radius: 8px;
+      --border-radius-lg: 12px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--gray-800);
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.5s ease;
+    }
+
+    /* Header */
+    header {
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      z-index: 1000;
+    }
+
+    .hamburger {
+      top: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .hamburger div {
+      height: 2px;
+      background: var(--gray-700);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    .hamburger:hover div {
+      background: var(--primary);
+    }
+
+    .hamburger.active div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active div:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active div:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -6px);
+    }
+    .gsc-input-box:hover, .gsc-input-box:focus-within {
+      border-width: 1px;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1) !important;
+}
+    /* Search Section */
+    .search-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .site-title {
+      font-size: 4rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 2px 4px rgba(0, 119, 255, 0.1);
+    }
+
+    .search-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Trivia Section */
+    .trivia-container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: var(--white);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+      display: none;
+      border-left: 4px solid var(--primary);
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .trivia-title {
+      font-size: 1.2em;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+
+    .trivia-snippet {
+      color: var(--gray-700);
+      line-height: 1.5;
+    }
+
+    .trivia-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .trivia-link:hover {
+      text-decoration: underline;
+      transform: translateX(3px);
+    }
+
+    /* Footer */
+    footer {
+      padding: 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.8);
+      margin-top: auto;
+    }
+
+    .footer-links a {
+      color: var(--gray-500);
+      text-decoration: none;
+      margin: 0 8px;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    /* User Button */
+    #userButton {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      padding: 10px 20px;
+      background: var(--gradient-primary);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      z-index: 10000;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      display: none;
+    }
+
+    #userButton:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Auth Modal Styles */
+    .auth-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10001;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .auth-modal.active {
+      display: flex;
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .auth-container {
+      background: var(--white);
+      border-radius: var(--border-radius-lg);
+      width: 90%;
+      max-width: 400px;
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+      transform: scale(0.9);
+      animation: modalScaleIn 0.3s ease forwards;
+    }
+
+    @keyframes modalScaleIn {
+      to { transform: scale(1); }
+    }
+
+    .auth-header {
+      padding: 25px;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--gradient-primary);
+      color: var(--white);
+    }
+
+    .auth-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .auth-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--white);
+      transition: var(--transition);
+    }
+
+    .auth-close:hover {
+      transform: scale(1.1);
+    }
+
+    .auth-content {
+      padding: 25px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      overflow: hidden;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: var(--transition);
+      font-weight: 500;
+      color: var(--gray-600);
+    }
+
+    .auth-tab.active {
+      border-bottom: 3px solid var(--primary);
+      color: var(--primary);
+      background: rgba(0, 119, 255, 0.05);
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--gray-700);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--border-radius);
+      box-sizing: border-box;
+      transition: var(--transition);
+      font-size: 16px;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1);
+    }
+
+    .auth-button {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 500;
+      margin-top: 10px;
+      transition: var(--transition);
+      font-size: 16px;
+    }
+
+    .auth-button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .auth-button.google {
+      background: #db4437;
+    }
+
+    .auth-button.google:hover {
+      background: #c23321;
+    }
+
+    .auth-button.phone {
+      background: #34a853;
+    }
+
+    .auth-button.phone:hover {
+      background: #2d9248;
+    }
+
+    .auth-button.anonymous {
+      background: var(--gray-600);
+    }
+
+    .auth-button.anonymous:hover {
+      background: var(--gray-700);
+    }
+
+    .auth-divider {
+      text-align: center;
+      margin: 25px 0;
+      position: relative;
+    }
+
+    .auth-divider::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--gray-300);
+    }
+
+    .auth-divider span {
+      background: var(--white);
+      padding: 0 15px;
+      color: var(--gray-600);
+      font-size: 14px;
+    }
+
+    .auth-error {
+      color: var(--danger);
+      font-size: 0.9rem;
+      margin-top: 10px;
+      display: none;
+      padding: 8px 12px;
+      background: rgba(217, 48, 37, 0.05);
+      border-radius: var(--border-radius);
+      border-left: 3px solid var(--danger);
+    }
+
+    .auth-error.active {
+      display: block;
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .auth-success {
+      color: var(--success);
+      font-size: 0.9rem;
+      margin-top: 10px;
+      display: none;
+      padding: 8px 12px;
+      background: rgba(52, 168, 83, 0.05);
+      border-radius: var(--border-radius);
+      border-left: 3px solid var(--success);
+    }
+
+    .auth-success.active {
+      display: block;
+    }
+
+    /* Account Modal Styles */
+    .account-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10002;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .account-modal.active {
+      display: flex;
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    .account-container {
+      background: var(--white);
+      border-radius: var(--border-radius-lg);
+      width: 90%;
+      max-width: 500px;
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+      transform: scale(0.9);
+      animation: modalScaleIn 0.3s ease forwards;
+    }
+
+    .account-header {
+      padding: 25px;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--gradient-primary);
+      color: var(--white);
+    }
+
+    .account-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .account-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--white);
+      transition: var(--transition);
+    }
+
+    .account-close:hover {
+      transform: scale(1.1);
+    }
+
+    .account-content {
+      padding: 25px;
+    }
+
+    .account-info {
+      margin-bottom: 25px;
+    }
+
+    .account-info-item {
+      margin-bottom: 15px;
+      padding: 15px;
+      background: var(--gray-100);
+      border-radius: var(--border-radius);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .account-info-item:hover {
+      background: var(--gray-200);
+      transform: translateX(5px);
+    }
+
+    .account-info-label {
+      font-weight: 600;
+      color: var(--gray-600);
+    }
+
+    .account-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .account-button {
+      padding: 12px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .account-button.signout {
+      background: var(--danger);
+      color: white;
+    }
+
+    .account-button.signout:hover {
+      background: #c23321;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .account-button.manage {
+      background: var(--primary);
+      color: white;
+    }
+
+    .account-button.manage:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Mobile restriction message */
+    .mobile-restriction {
+      display: none;
+      text-align: center;
+      padding: 50px 20px;
+      background: var(--white);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-lg);
+      max-width: 500px;
+      margin: 100px auto;
+    }
+
+    .mobile-restriction h1 {
+      color: var(--danger);
+      margin-bottom: 20px;
+    }
+
+    .mobile-restriction p {
+      color: var(--gray-700);
+      line-height: 1.6;
+    }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --light: #1a1a1a;
+        --dark: #f8f9fa;
+        --white: #2d2d2d;
+        --gray-100: #1a1a1a;
+        --gray-200: #2d2d2d;
+        --gray-300: #404040;
+        --gray-400: #595959;
+        --gray-500: #737373;
+        --gray-600: #8c8c8c;
+        --gray-700: #a6a6a6;
+        --gray-800: #bfbfbf;
+        --gray-900: #d9d9d9;
+      }
+
+      body {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        color: var(--gray-800);
+      }
+
+      header, footer {
+        background: rgba(45, 45, 45, 0.95);
+      }
+
+      .site-title {
+        background: linear-gradient(135deg, #4dabf7 0%, #339af0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .site-title {
+        font-size: 3rem;
+      }
+      
+      .search-section {
+        padding: 30px 15px;
+      }
+      
+      .auth-container, .account-container {
+        width: 95%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .site-title {
+        font-size: 2.5rem;
+      }
+      
+      .auth-tabs {
+        flex-direction: column;
+      }
+      
+      .auth-tab {
+        border-bottom: none;
+        border-right: 3px solid transparent;
+      }
+      
+      .auth-tab.active {
+        border-bottom: none;
+        border-right: 3px solid var(--primary);
+      }
+    }
+    /* AI Mode Button Styles */
+    #aiModeButton {
+      position: fixed;
+      top: 80px;
+      right: 20px; /* Positioned to the left of the Sign In button */
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      background: var(--gradient-primary);
+      color: var(--white);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10000;
+      font-size: 18px;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      display: block;
+      text-decoration: none;
+      text-align: center;
+      line-height: 40px;
+    }
+
+    #aiModeButton:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Tooltip for AI Mode Button */
+    #aiModeButton::after {
+      content: "AI Mode";
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gray-800);
+      color: var(--white);
+      padding: 4px 8px;
+      border-radius: var(--border-radius);
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #aiModeButton:hover::after {
+      opacity: 1;
+    }
+
+    /* Adjust the existing Sign In button position */
+    #userButton {
+      position: fixed;
+      top: 85px;
+      right: 120px;
+      font-size: 11px; /* Keep original position */
+      /* ... rest of your existing styles ... */
+    }
+
+    /* Background Personalization Styles - NEW FEATURE */
+    #backgroundButton {
+      position: fixed;
+      top: 80px;
+      right: 70px;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      background: var(--gradient-primary);
+      color: var(--white);
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      z-index: 10000;
+      font-size: 18px;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      display: block;
+      line-height: 40px;
+    }
+
+    #backgroundButton:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Tooltip for Background Button */
+    #backgroundButton::after {
+      content: "Customize Background";
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gray-800);
+      color: var(--white);
+      padding: 4px 8px;
+      border-radius: var(--border-radius);
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #backgroundButton:hover::after {
+      opacity: 1;
+    }
+
+    .background-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10003;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .background-modal.active {
+      display: flex;
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    .background-container {
+      background: var(--white);
+      border-radius: var(--border-radius-lg);
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-xl);
+      transform: scale(0.9);
+      animation: modalScaleIn 0.3s ease forwards;
+    }
+
+    .background-header {
+      padding: 25px;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--gradient-primary);
+      color: var(--white);
+    }
+
+    .background-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .background-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--white);
+      transition: var(--transition);
+    }
+
+    .background-close:hover {
+      transform: scale(1.1);
+    }
+
+    .background-content {
+      padding: 25px;
+    }
+
+    .background-section {
+      margin-bottom: 30px;
+    }
+
+    .background-section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--gray-700);
+    }
+
+    .default-backgrounds {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .background-option {
+      position: relative;
+      aspect-ratio: 4/3;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 3px solid transparent;
+    }
+
+    .background-option:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-md);
+    }
+
+    .background-option.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.3);
+    }
+
+    .background-option img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .background-option .background-name {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 5px;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    .upload-section {
+      border-top: 1px solid var(--gray-200);
+      padding-top: 20px;
+    }
+
+    .upload-area {
+      border: 2px dashed var(--gray-300);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 15px;
+    }
+
+    .upload-area:hover {
+      border-color: var(--primary);
+      background: rgba(0, 119, 255, 0.05);
+    }
+
+    .upload-area.dragover {
+      border-color: var(--primary);
+      background: rgba(0, 119, 255, 0.1);
+    }
+
+    .upload-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: var(--gray-500);
+    }
+
+    .upload-text {
+      color: var(--gray-600);
+      margin-bottom: 10px;
+    }
+
+    .upload-button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .upload-button:hover {
+      background: var(--primary-dark);
+    }
+
+    .upload-preview {
+      display: none;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .upload-preview img {
+      max-width: 200px;
+      max-height: 150px;
+      border-radius: var(--border-radius);
+      margin-bottom: 10px;
+    }
+
+    .upload-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .upload-confirm {
+      background: var(--success);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .upload-cancel {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .background-error {
+      color: var(--danger);
+      font-size: 0.9rem;
+      margin-top: 10px;
+      display: none;
+      padding: 8px 12px;
+      background: rgba(217, 48, 37, 0.05);
+      border-radius: var(--border-radius);
+      border-left: 3px solid var(--danger);
+    }
+
+    .background-error.active {
+      display: block;
+    }
+
+    .background-success {
+      color: var(--success);
+      font-size: 0.9rem;
+      margin-top: 10px;
+      display: none;
+      padding: 8px 12px;
+      background: rgba(52, 168, 83, 0.05);
+      border-radius: var(--border-radius);
+      border-left: 3px solid var(--success);
+    }
+
+    .background-success.active {
+      display: block;
+    }
+    .account-button.analytics {
+    background: var(--info);
+    color: white;
+}
+
+.account-button.analytics:hover {
+    background: #138496;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <!-- Hamburger Icon -->
+    <div id="hamburger" class="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    
+    <!-- Background Button - NEW FEATURE -->
+    <button id="backgroundButton" title="Customize Background">🎨</button>
+    
+    <!-- AI Mode Button -->
+    <button id="aiModeButton" class="header-button" title="AI Mode" onclick="window.open('https://taisenai.pages.dev', '_blank')">🤖</button>
+    
+    <!-- User Button -->
+    <button id="userButton">Sign In</button>
+    
+    <section class="header-section">
+    </section>
+  </header>
+
+  <!-- Search Section -->
+  <section class="search-section">
+    <div><h1 class="site-title">Taisen</h1></div>
+    <div class="search-container">
+      <div class="gcse-searchbox-only" data-resultsUrl="captcha.html" data-newWindow="false"></div>
+    </div>
+  </section>
+
+  <!-- Trivia Section -->
+  <section id="triviaSection" class="trivia-container">
+    <div class="trivia-title" id="triviaTitle"></div>
+    <div class="trivia-snippet" id="triviaSnippet"></div>
+    <a href="#" class="trivia-link" id="triviaLink" target="_blank">Read more</a>
+  </section>
+
+  <!-- Background Personalization Modal - NEW FEATURE -->
+  <div id="backgroundModal" class="background-modal">
+    <div class="background-container">
+      <div class="background-header">
+        <h2 class="background-title">Customize Background</h2>
+        <button id="backgroundClose" class="background-close">&times;</button>
+      </div>
+      <div class="background-content">
+        <div class="background-section">
+          <h3 class="background-section-title">Default Backgrounds</h3>
+          <div class="default-backgrounds" id="defaultBackgrounds">
+            <!-- Default backgrounds will be loaded here -->
+          </div>
+        </div>
+        
+        <div class="background-section upload-section">
+          <h3 class="background-section-title">Upload Your Own Background</h3>
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">Click to upload or drag and drop</div>
+            <div class="upload-text" style="font-size: 0.8rem;">PNG, JPG, GIF up to 5MB</div>
+            <input type="file" id="backgroundUpload" accept="image/*" style="display: none;">
+          </div>
+          <div class="upload-preview" id="uploadPreview">
+            <img id="previewImage" src="" alt="Preview">
+            <div class="upload-actions">
+              <button class="upload-confirm" id="confirmUpload">Set as Background</button>
+              <button class="upload-cancel" id="cancelUpload">Cancel</button>
+            </div>
+          </div>
+          <div id="backgroundError" class="background-error"></div>
+          <div id="backgroundSuccess" class="background-success"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="auth-modal">
+    <div class="auth-container">
+      <div class="auth-header">
+        <h2 class="auth-title">Sign In to Taisen</h2>
+        <button id="authClose" class="auth-close">&times;</button>
+      </div>
+      <div class="auth-content">
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="signin">Sign In</button>
+          <button class="auth-tab" data-tab="signup">Sign Up</button>
+        </div>
+        
+        <!-- Email/Password Form -->
+        <form id="emailForm" class="auth-form active">
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input type="email" id="email" class="form-input" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" id="password" class="form-input" placeholder="Your password">
+          </div>
+          <button type="submit" class="auth-button" id="emailSubmit">Sign In</button>
+          <div id="emailError" class="auth-error"></div>
+          <div id="emailSuccess" class="auth-success"></div>
+          <div class="terms-agreement" style=" margin: 15px 0; padding: 10px; background: rgba(0, 119, 255, 0.05); border-radius: var(--border-radius); border-left: 3px solid var(--primary); font-size: 14px; line-height: 1.4; color: var(--gray-600); "> <label for="termsAgreement"> By signing in and signing up to our services, you agree to our <a href="terms.html" target="_blank" style="color: var(--primary); text-decoration: none;">Terms of Service</a> and <a href="privacy.html" target="_blank" style="color: var(--primary); text-decoration: none;">Privacy Policy</a> </label> </div>
+        </form>
+        
+        <!-- Phone Form -->
+        <form id="phoneForm" class="auth-form">
+          <div class="form-group">
+            <label class="form-label" for="phoneNumber">Phone Number</label>
+            <input type="tel" id="phoneNumber" class="form-input" placeholder="+1 234 567 8900">
+          </div>
+          <div class="form-group" id="verificationCodeGroup" style="display: none;">
+            <label class="form-label" for="verificationCode">Verification Code</label>
+            <input type="text" id="verificationCode" class="form-input" placeholder="Enter code">
+          </div>
+          <button type="submit" class="auth-button phone" id="phoneSubmit">Send Code</button>
+          <div id="phoneError" class="auth-error"></div>
+          <div id="phoneSuccess" class="auth-success"></div>
+        </form>
+        
+        <!-- Provider Buttons -->
+        <div class="auth-divider"><span>or continue with</span></div>
+        
+        <button class="auth-button google" id="googleSignIn">Sign in with Google</button>
+        <button class="auth-button anonymous" id="anonymousSignIn">Continue as Guest</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Modal -->
+  <div id="accountModal" class="account-modal">
+    <div class="account-container">
+      <div class="account-header">
+        <h2 class="account-title">Taisen Account</h2>
+        <button id="accountClose" class="account-close">&times;</button>
+      </div>
+      <div class="account-content">
+        <div class="account-info">
+          <div class="account-info-item">
+            <span class="account-info-label">Display Name:</span>
+            <span id="accountDisplayName">Loading...</span>
+          </div>
+          <div class="account-info-item">
+            <span class="account-info-label">Email:</span>
+            <span id="accountEmail">Loading...</span>
+          </div>
+          <div class="account-info-item">
+            <span class="account-info-label">User ID:</span>
+            <span id="accountUserId">Loading...</span>
+          </div>
+          <div class="account-info-item">
+            <span class="account-info-label">Account Type:</span>
+            <span id="accountType">Loading...</span>
+          </div>
+        </div>
+        <div class="account-actions">
+          <!-- In your account modal, add this button -->
+<button class="account-button analytics" id="viewAnalytics">View My Analytics</button>
+          <button class="account-button manage" id="manageAccount">Manage Account</button>
+          <button class="account-button signout" id="signOutButton">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="Footer">
+    <div class="footer-section">
+      <nav class="footer-links">
+        <a href="about.html">About</a>
+        <a href="advertising.html">Advertising</a>
+        <a href="help center.html">Help Center</a>
+        <a href="labs.html">Labs</a>
+        <a href="security.html">Security</a>
+        <a href="TaisenSearch_Documentation.html">Documentation</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Mobile Restriction Message (hidden by default) -->
+  <div id="mobileRestriction" class="mobile-restriction">
+    <h1>Sorry, this website is not available on mobile devices.</h1>
+    <p>Please access Taisen from a desktop or laptop computer for the best experience.</p>
+  </div>
+
+  <!-- Google Custom Search Script -->
+  <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
+
+  <!-- Search Logging JS -->
+  <script>
+    const SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbye72BaC5itl9lQNV8k8OrO_E4VjdFbqm3quUX6RnS8s9tOE_UbvVd8WBPLDhpgUp6W/exec";
+    const CSE_CX = "178f66b21f928448b";
+
+    // Predefined trivia search terms
+    const TRIVIA_TOPICS = [
+      "interesting science facts",
+      "historical events today",
+      "amazing animal facts",
+      "space exploration discoveries",
+      "technology innovations",
+      "world records facts",
+      "cultural traditions around the world",
+      "famous inventions history",
+      "natural wonders of the world",
+      "human body amazing facts"
+    ];
+
+    window.onload = () => {
+      function initCSE() {
+        if (typeof google === "undefined" || !google.search || !google.search.cse) {
+          setTimeout(initCSE, 100);
+          return;
+        }
+
+        const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
+        if (!searchBox) return;
+
+        const originalExecute = searchBox.execute;
+
+        searchBox.execute = function(query) {
+          console.log("User searched:", query);
+
+          // If query is empty, show trivia instead
+          if (!query || query.trim() === "") {
+            showRandomTrivia();
+            return; // Don't proceed with normal search
+          }
+
+          // Send search to Google Sheet
+          fetch(SHEET_WEB_APP_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query, timestamp: new Date() })
+          })
+          .then(res => res.json())
+          .then(data => console.log("Logged:", data))
+          .catch(err => console.error("Failed to log search:", err));
+
+          // Log search to analytics
+          if (window.logTaisenSearch) {
+            window.logTaisenSearch(query, null, 'web');
+          }
+
+          // Call original search function (redirect to results.html)
+          originalExecute.call(searchBox, query);
+        };
+      }
+
+      // Function to show random trivia
+      function showRandomTrivia() {
+        const randomTopic = TRIVIA_TOPICS[Math.floor(Math.random() * TRIVIA_TOPICS.length)];
+        
+        // Log trivia view to analytics
+        if (window.logTaisenSearch) {
+          window.logTaisenSearch('trivia_trigger', null, 'trivia');
+        }
+
+        // Use Google Custom Search API to get trivia
+        fetch(`https://www.googleapis.com/customsearch/v1?key=AIzaSyCjAJ9y0oY7dI5qDZ_WbYqJ9Q8nQ9Q8nQ8&cx=${CSE_CX}&q=${encodeURIComponent(randomTopic)}&num=1`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.items && data.items.length > 0) {
+              const result = data.items[0];
+              displayTrivia(result.title, result.snippet, result.link);
+            } else {
+              // Fallback if no results found
+              displayTrivia(
+                "Did you know?",
+                "The world is full of interesting facts! Try searching for something specific to learn more.",
+                "https://www.funtrivia.com/"
+              );
+            }
+          })
+          .catch(error => {
+            console.error("Error fetching trivia:", error);
+            displayTrivia(
+              "Search Tip",
+              "Enter a search term to explore the web. You can search for anything from science to history!",
+              "https://www.funtrivia.com/"
+            );
+          });
+      }
+
+      // Function to display trivia in the UI
+      function displayTrivia(title, snippet, link) {
+        const triviaSection = document.getElementById('triviaSection');
+        const triviaTitle = document.getElementById('triviaTitle');
+        const triviaSnippet = document.getElementById('triviaSnippet');
+        const triviaLink = document.getElementById('triviaLink');
+
+        triviaTitle.textContent = title;
+        triviaSnippet.textContent = snippet;
+        triviaLink.href = link;
+        triviaLink.textContent = "Learn more about this topic";
+
+        // Show the trivia section
+        triviaSection.style.display = 'block';
+
+        // Hide trivia after 10 seconds
+        setTimeout(() => {
+          triviaSection.style.display = 'none';
+        }, 10000);
+      }
+
+      // Add event listeners for both click and enter key
+      function setupSearchListeners() {
+        // Wait for CSE to load and then find the search elements
+        const checkElements = setInterval(() => {
+          const searchButton = document.querySelector('.gsc-search-button');
+          const searchInput = document.querySelector('.gsc-input input');
+          
+          if (searchButton && searchInput) {
+            clearInterval(checkElements);
+            
+            // Click event for search button
+            searchButton.addEventListener('click', function() {
+              if (searchInput.value.trim() === '') {
+                showRandomTrivia();
+              }
+            });
+            
+            // Enter key event for search input
+            searchInput.addEventListener('keypress', function(event) {
+              if (event.key === 'Enter') {
+                // Small delay to ensure the input value is captured correctly
+                setTimeout(() => {
+                  if (searchInput.value.trim() === '') {
+                    event.preventDefault();
+                    showRandomTrivia();
+                  }
+                }, 10);
+              }
+            });
+
+            // Additional safety check on form submission
+            const searchForm = document.querySelector('.gsc-search-box');
+            if (searchForm) {
+              searchForm.addEventListener('submit', function(event) {
+                if (searchInput.value.trim() === '') {
+                  event.preventDefault();
+                  showRandomTrivia();
+                }
+              });
+            }
+          }
+        }, 100);
+      }
+
+      // Alternative approach: Monitor the entire document for enter key presses
+      function setupGlobalEnterKeyListener() {
+        document.addEventListener('keypress', function(event) {
+          // Check if enter key is pressed and search input is focused and empty
+          if (event.key === 'Enter') {
+            const searchInput = document.querySelector('.gsc-input input');
+            const activeElement = document.activeElement;
+            
+            // Check if the focused element is the search input and it's empty
+            if (searchInput && activeElement === searchInput && searchInput.value.trim() === '') {
+              event.preventDefault();
+              event.stopPropagation();
+              showRandomTrivia();
+            }
+          }
+        });
+      }
+
+      initCSE();
+      setupSearchListeners();
+      setupGlobalEnterKeyListener(); // Added as backup
+      checkMobileDevice();
+    };
+  </script>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      window.location.href = 'settings.html'; // Opens settings page
+    });
+
+    // Apply saved theme on index page
+    window.addEventListener('load', () => {
+      const theme = localStorage.getItem('theme');
+      if(theme === 'dark') document.body.classList.add('dark');
+    });
+  </script>
+
+  <!-- Firebase Authentication with Modal -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged, 
+      GoogleAuthProvider, 
+      signInWithPopup, 
+      signOut,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signInAnonymously,
+      RecaptchaVerifier,
+      signInWithPhoneNumber
+    } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCMy4SNOU3eAl4iSfbmHWTxae9pVcnJFmc",
+      authDomain: "taisen-search-ad9eb.firebaseapp.com",
+      projectId: "taisen-search-ad9eb",
+      storageBucket: "taisen-search-ad9eb.appspot.com",
+      messagingSenderId: "779736719927",
+      appId: "1:779736719927:web:07ccea945f7549ad56d5b2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+    const provider = new GoogleAuthProvider();
+    
+    // DOM Elements
+    const userButton = document.getElementById("userButton");
+    const authModal = document.getElementById("authModal");
+    const accountModal = document.getElementById("accountModal");
+    const authClose = document.getElementById("authClose");
+    const accountClose = document.getElementById("accountClose");
+    const authTabs = document.querySelectorAll(".auth-tab");
+    const emailForm = document.getElementById("emailForm");
+    const phoneForm = document.getElementById("phoneForm");
+    const emailSubmit = document.getElementById("emailSubmit");
+    const phoneSubmit = document.getElementById("phoneSubmit");
+    const googleSignIn = document.getElementById("googleSignIn");
+    const anonymousSignIn = document.getElementById("anonymousSignIn");
+    const emailError = document.getElementById("emailError");
+    const phoneError = document.getElementById("phoneError");
+    const emailSuccess = document.getElementById("emailSuccess");
+    const phoneSuccess = document.getElementById("phoneSuccess");
+    const verificationCodeGroup = document.getElementById("verificationCodeGroup");
+    const signOutButton = document.getElementById("signOutButton");
+    const manageAccount = document.getElementById("manageAccount");
+    const viewAnalytics = document.getElementById("viewAnalytics");
+    
+    // Account modal elements
+    const accountDisplayName = document.getElementById("accountDisplayName");
+    const accountEmail = document.getElementById("accountEmail");
+    const accountUserId = document.getElementById("accountUserId");
+    const accountType = document.getElementById("accountType");
+    
+    // Background Personalization Elements
+    const backgroundButton = document.getElementById("backgroundButton");
+    const backgroundModal = document.getElementById("backgroundModal");
+    const backgroundClose = document.getElementById("backgroundClose");
+    const defaultBackgrounds = document.getElementById("defaultBackgrounds");
+    const uploadArea = document.getElementById("uploadArea");
+    const backgroundUpload = document.getElementById("backgroundUpload");
+    const uploadPreview = document.getElementById("uploadPreview");
+    const previewImage = document.getElementById("previewImage");
+    const confirmUpload = document.getElementById("confirmUpload");
+    const cancelUpload = document.getElementById("cancelUpload");
+    const backgroundError = document.getElementById("backgroundError");
+    const backgroundSuccess = document.getElementById("backgroundSuccess");
+    
+    let confirmationResult = null;
+    let isSignUp = false;
+    let selectedFile = null;
+
+    // Default Backgrounds
+    const DEFAULT_BACKGROUNDS = [
+      {
+        id: 'gradient-blue',
+        name: 'Blue Gradient',
+        css: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+      },
+      {
+        id: 'gradient-sunset',
+        name: 'Sunset',
+        css: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+      },
+      {
+        id: 'gradient-ocean',
+        name: 'Ocean',
+        css: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+      },
+      {
+        id: 'gradient-forest',
+        name: 'Forest',
+        css: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
+      },
+      {
+        id: 'gradient-warm',
+        name: 'Warm',
+        css: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+      },
+      {
+        id: 'gradient-cool',
+        name: 'Cool',
+        css: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+      },
+      {
+        id: 'solid-light',
+        name: 'Light Gray',
+        css: '#f5f7fa'
+      },
+      {
+        id: 'solid-dark',
+        name: 'Dark Gray',
+        css: '#2d3748'
+      }
+    ];
+
+    // Background Personalization Functions
+    function initBackgroundPersonalization() {
+      loadDefaultBackgrounds();
+      setupBackgroundEventListeners();
+      loadUserBackground();
+    }
+
+    function loadDefaultBackgrounds() {
+      defaultBackgrounds.innerHTML = '';
+      
+      DEFAULT_BACKGROUNDS.forEach(bg => {
+        const bgElement = document.createElement('div');
+        bgElement.className = 'background-option';
+        bgElement.setAttribute('data-bg-id', bg.id);
+        bgElement.setAttribute('data-bg-css', bg.css);
+        
+        bgElement.innerHTML = `
+          <div style="width: 100%; height: 100%; background: ${bg.css};"></div>
+          <div class="background-name">${bg.name}</div>
+        `;
+        
+        bgElement.addEventListener('click', () => selectDefaultBackground(bg.id, bg.css));
+        defaultBackgrounds.appendChild(bgElement);
+      });
+    }
+
+    function setupBackgroundEventListeners() {
+      backgroundButton.addEventListener('click', openBackgroundModal);
+      backgroundClose.addEventListener('click', closeBackgroundModal);
+      backgroundModal.addEventListener('click', (e) => {
+        if (e.target === backgroundModal) closeBackgroundModal();
+      });
+
+      uploadArea.addEventListener('click', () => backgroundUpload.click());
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+      });
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+      });
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          handleFileSelect(files[0]);
+        }
+      });
+
+      backgroundUpload.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          handleFileSelect(e.target.files[0]);
+        }
+      });
+
+      confirmUpload.addEventListener('click', uploadCustomBackground);
+      cancelUpload.addEventListener('click', cancelBackgroundUpload);
+    }
+
+    function handleFileSelect(file) {
+      if (!file.type.match('image.*')) {
+        showBackgroundError('Please select an image file (PNG, JPG, GIF)');
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        showBackgroundError('File size must be less than 5MB');
+        return;
+      }
+
+      selectedFile = file;
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImage.src = e.target.result;
+        uploadPreview.style.display = 'block';
+        hideBackgroundError();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function uploadCustomBackground() {
+      if (!selectedFile) return;
+
+      const user = auth.currentUser;
+      if (!user) {
+        showBackgroundError('Please sign in to upload custom backgrounds');
+        return;
+      }
+
+      try {
+        showBackgroundSuccess('Uploading background...');
+        
+        const storageRef = ref(storage, `backgrounds/${user.uid}/${Date.now()}_${selectedFile.name}`);
+        const snapshot = await uploadBytes(storageRef, selectedFile);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, {
+          customBackground: downloadURL,
+          backgroundType: 'custom',
+          backgroundUpdated: new Date()
+        });
+
+        applyCustomBackground(downloadURL);
+        showBackgroundSuccess('Background updated successfully!');
+        
+        setTimeout(() => {
+          cancelBackgroundUpload();
+          closeBackgroundModal();
+        }, 1500);
+
+      } catch (error) {
+        console.error('Background upload error:', error);
+        showBackgroundError('Failed to upload background: ' + error.message);
+      }
+    }
+
+    function cancelBackgroundUpload() {
+      selectedFile = null;
+      backgroundUpload.value = '';
+      uploadPreview.style.display = 'none';
+      hideBackgroundError();
+      hideBackgroundSuccess();
+    }
+
+    function selectDefaultBackground(bgId, bgCss) {
+      const user = auth.currentUser;
+      
+      document.querySelectorAll('.background-option').forEach(option => {
+        option.classList.remove('active');
+      });
+      document.querySelector(`[data-bg-id="${bgId}"]`).classList.add('active');
+
+      document.body.style.background = bgCss;
+
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        updateDoc(userRef, {
+          background: bgCss,
+          backgroundType: 'default',
+          backgroundId: bgId,
+          backgroundUpdated: new Date()
+        }).catch(error => {
+          console.error('Error saving background preference:', error);
+        });
+      } else {
+        localStorage.setItem('taisen_background', bgCss);
+        localStorage.setItem('taisen_background_type', 'default');
+        localStorage.setItem('taisen_background_id', bgId);
+      }
+
+      showBackgroundSuccess('Background updated!');
+      setTimeout(hideBackgroundSuccess, 2000);
+    }
+
+    function applyCustomBackground(url) {
+      document.body.style.background = `url('${url}') center/cover no-repeat fixed`;
+      
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        updateDoc(userRef, {
+          background: url,
+          backgroundType: 'custom',
+          backgroundUpdated: new Date()
+        }).catch(error => {
+          console.error('Error saving custom background:', error);
+        });
+      } else {
+        localStorage.setItem('taisen_background', url);
+        localStorage.setItem('taisen_background_type', 'custom');
+      }
+    }
+
+    async function loadUserBackground() {
+      const user = auth.currentUser;
+      
+      if (user) {
+        try {
+          const userRef = doc(db, "users", user.uid);
+          const userDoc = await getDoc(userRef);
+          
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            if (userData.background) {
+              if (userData.backgroundType === 'custom') {
+                applyCustomBackground(userData.background);
+              } else {
+                document.body.style.background = userData.background;
+                const bgOption = document.querySelector(`[data-bg-id="${userData.backgroundId}"]`);
+                if (bgOption) bgOption.classList.add('active');
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error loading user background:', error);
+        }
+      } else {
+        const savedBackground = localStorage.getItem('taisen_background');
+        const backgroundType = localStorage.getItem('taisen_background_type');
+        const backgroundId = localStorage.getItem('taisen_background_id');
+        
+        if (savedBackground) {
+          if (backgroundType === 'custom') {
+            applyCustomBackground(savedBackground);
+          } else {
+            document.body.style.background = savedBackground;
+            const bgOption = document.querySelector(`[data-bg-id="${backgroundId}"]`);
+            if (bgOption) bgOption.classList.add('active');
+          }
+        }
+      }
+    }
+
+    function openBackgroundModal() {
+      backgroundModal.classList.add("active");
+    }
+
+    function closeBackgroundModal() {
+      backgroundModal.classList.remove("active");
+      cancelBackgroundUpload();
+      hideBackgroundError();
+      hideBackgroundSuccess();
+    }
+
+    function showBackgroundError(message) {
+      backgroundError.textContent = message;
+      backgroundError.classList.add("active");
+    }
+
+    function hideBackgroundError() {
+      backgroundError.classList.remove("active");
+    }
+
+    function showBackgroundSuccess(message) {
+      backgroundSuccess.textContent = message;
+      backgroundSuccess.classList.add("active");
+    }
+
+    function hideBackgroundSuccess() {
+      backgroundSuccess.classList.remove("active");
+    }
+
+    // Modal Functions
+    function openAuthModal() {
+      authModal.classList.add("active");
+      resetForms();
+    }
+
+    function closeAuthModal() {
+      authModal.classList.remove("active");
+      resetForms();
+    }
+
+    function openAccountModal() {
+      accountModal.classList.add("active");
+      updateAccountInfo();
+    }
+
+    function closeAccountModal() {
+      accountModal.classList.remove("active");
+    }
+
+    function resetForms() {
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("phoneNumber").value = "";
+      document.getElementById("verificationCode").value = "";
+      
+      emailError.textContent = "";
+      phoneError.textContent = "";
+      emailSuccess.textContent = "";
+      phoneSuccess.textContent = "";
+      
+      emailError.classList.remove("active");
+      phoneError.classList.remove("active");
+      emailSuccess.classList.remove("active");
+      phoneSuccess.classList.remove("active");
+      
+      verificationCodeGroup.style.display = "none";
+      phoneSubmit.textContent = "Send Code";
+      isSignUp = false;
+    }
+
+    function showError(element, message) {
+      element.textContent = message;
+      element.classList.add("active");
+    }
+
+    function showSuccess(element, message) {
+      element.textContent = message;
+      element.classList.add("active");
+    }
+
+    function updateAccountInfo() {
+      const user = auth.currentUser;
+      if (user) {
+        accountDisplayName.textContent = user.displayName || "Not set";
+        accountEmail.textContent = user.email || "No email";
+        accountUserId.textContent = user.uid.substring(0, 8) + "...";
+        accountType.textContent = user.isAnonymous ? "Guest Account" : "Full Account";
+      }
+    }
+
+    // Tab Switching
+    authTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        const targetTab = tab.getAttribute("data-tab");
+        
+        authTabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        
+        if (targetTab === "signin") {
+          emailSubmit.textContent = "Sign In";
+          isSignUp = false;
+        } else {
+          emailSubmit.textContent = "Sign Up";
+          isSignUp = true;
+        }
+      });
+    });
+
+    // Email/Password Authentication
+    emailForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      
+      if (!email || !password) {
+        showError(emailError, "Please fill in all fields");
+        return;
+      }
+      
+      try {
+        if (isSignUp) {
+          await createUserWithEmailAndPassword(auth, email, password);
+          showSuccess(emailSuccess, "Account created successfully!");
+          setTimeout(closeAuthModal, 1500);
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+          showSuccess(emailSuccess, "Signed in successfully!");
+          setTimeout(closeAuthModal, 1500);
+        }
+      } catch (error) {
+        console.error("Email auth error:", error);
+        showError(emailError, error.message);
+      }
+    });
+
+    // Phone Authentication
+    phoneForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const phoneNumber = document.getElementById("phoneNumber").value;
+      const verificationCode = document.getElementById("verificationCode").value;
+      
+      if (!phoneNumber) {
+        showError(phoneError, "Please enter a phone number");
+        return;
+      }
+      
+      try {
+        if (!confirmationResult) {
+          const appVerifier = new RecaptchaVerifier(auth, 'phoneSubmit', {
+            'size': 'invisible'
+          });
+          
+          confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+          verificationCodeGroup.style.display = "block";
+          phoneSubmit.textContent = "Verify Code";
+          showSuccess(phoneSuccess, "Verification code sent!");
+        } else {
+          await confirmationResult.confirm(verificationCode);
+          showSuccess(phoneSuccess, "Phone verified successfully!");
+          setTimeout(closeAuthModal, 1500);
+        }
+      } catch (error) {
+        console.error("Phone auth error:", error);
+        showError(phoneError, error.message);
+      }
+    });
+
+    // Google Authentication
+    googleSignIn.addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, provider);
+        closeAuthModal();
+      } catch (error) {
+        console.error("Google auth error:", error);
+        showError(emailError, error.message);
+      }
+    });
+
+    // Anonymous Authentication
+    anonymousSignIn.addEventListener("click", async () => {
+      try {
+        await signInAnonymously(auth);
+        closeAuthModal();
+      } catch (error) {
+        console.error("Anonymous auth error:", error);
+        showError(emailError, error.message);
+      }
+    });
+
+    // Sign Out
+    signOutButton.addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        closeAccountModal();
+      } catch (error) {
+        console.error("Sign out error:", error);
+      }
+    });
+
+    // Manage Account
+    manageAccount.addEventListener("click", () => {
+      window.open("https://taisenaccounts.pages.dev/account", "_blank");
+    });
+
+    // View Analytics
+    viewAnalytics.addEventListener("click", () => {
+      window.open('analytics-dashboard.html', '_blank');
+      closeAccountModal();
+    });
+
+    // Update User Button
+    function updateButton(user) {
+      if (user) {
+        const name = user.displayName || "User";
+        userButton.textContent = name;
+        userButton.style.display = "block";
+        userButton.onclick = openAccountModal;
+      } else {
+        userButton.textContent = "Sign In";
+        userButton.style.display = "block";
+        userButton.onclick = openAuthModal;
+      }
+    }
+
+    // Event Listeners
+    authClose.addEventListener("click", closeAuthModal);
+    accountClose.addEventListener("click", closeAccountModal);
+    
+    authModal.addEventListener("click", (e) => {
+      if (e.target === authModal) {
+        closeAuthModal();
+      }
+    });
+
+    accountModal.addEventListener("click", (e) => {
+      if (e.target === accountModal) {
+        closeAccountModal();
+      }
+    });
+
+    // Initialize auth state listener
+    onAuthStateChanged(auth, (user) => {
+      updateButton(user);
+      loadUserBackground();
+    });
+
+    // Initialize background personalization
+    initBackgroundPersonalization();
+
+    // Log search function
+    async function logSearch(query) {
+      const user = auth.currentUser;
+      if (!user) return;
+      try {
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, { 
+          lastSearch: query, 
+          timestamp: new Date(),
+          email: user.email,
+          displayName: user.displayName 
+        }, { merge: true });
+        console.log("Search logged:", query);
+      } catch (err) {
+        console.error("Error logging search:", err);
+      }
+    }
+
+    // Override search execution to log searches
+    const interval = setInterval(() => {
+      if (window.google && google.search && google.search.cse) {
+        const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
+        if (searchBox && searchBox.execute) {
+          clearInterval(interval);
+          const originalExecute = searchBox.execute.bind(searchBox);
+          searchBox.execute = function(query) {
+            if (query && query.trim() !== "") logSearch(query);
+            originalExecute(query);
+          };
+        }
+      }
+    }, 100);
+  </script>
+  <script>
+// AI GPT Search Integration for Index Page
+class TAISEN_AISearch {
+    constructor() {
+        this.API_KEY = '4344c369928a4a26997e233f39cce26d';
+        this.API_URL = 'https://api.aimlapi.com/v1/chat/completions';
+        this.MODEL = 'google/gemma-3-12b-it';
+        this.aiResultsContainer = null;
+        this.isProcessing = false;
+    }
+
+    init() {
+        this.createAIContainer();
+        this.overrideSearchExecution();
+    }
+
+    createAIContainer() {
+        this.aiResultsContainer = document.createElement('div');
+        this.aiResultsContainer.id = 'taisen-ai-results';
+        this.aiResultsContainer.style.cssText = `
+            max-width: 600px;
+            margin: 20px auto;
+            display: none;
+        `;
+        
+        // Insert before the trivia section
+        const triviaSection = document.getElementById('triviaSection');
+        if (triviaSection) {
+            triviaSection.parentNode.insertBefore(this.aiResultsContainer, triviaSection);
+        }
+    }
+
+    overrideSearchExecution() {
+        const interval = setInterval(() => {
+            if (window.google && google.search && google.search.cse) {
+                const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
+                if (searchBox && searchBox.execute) {
+                    clearInterval(interval);
+                    
+                    const originalExecute = searchBox.execute.bind(searchBox);
+                    searchBox.execute = (query) => {
+                        if (query && query.trim() !== "") {
+                            // Log AI search to analytics
+                            if (window.logTaisenSearch) {
+                                window.logTaisenSearch(query, null, 'ai');
+                            }
+                            this.showAIResults(query);
+                        }
+                        originalExecute(query);
+                    };
+                }
+            }
+        }, 100);
+    }
+
+    async showAIResults(query) {
+        if (this.isProcessing) return;
+        
+        this.isProcessing = true;
+        this.showLoadingState(query);
+
+        try {
+            const aiResponse = await this.fetchAIResponse(query);
+            this.displayAIResults(query, aiResponse);
+        } catch (error) {
+            console.error('AI Search Error:', error);
+            this.hideAIResults();
+        } finally {
+            this.isProcessing = false;
+        }
+    }
+
+    showLoadingState(query) {
+        this.aiResultsContainer.innerHTML = `
+            <div class="ai-result-card" style="
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+                border-left: 4px solid #0077ff;
+            ">
+                <div class="ai-header" style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    margin-bottom: 15px;
+                    color: #0077ff;
+                    font-weight: 600;
+                ">
+                    <span>🤖 TAISEN AI</span>
+                    <div class="typing-indicator" style="
+                        display: flex;
+                        gap: 4px;
+                    ">
+                        <div class="dot" style="
+                            width: 6px;
+                            height: 6px;
+                            background: #0077ff;
+                            border-radius: 50%;
+                            animation: bounce 1.4s infinite ease-in-out;
+                        "></div>
+                        <div class="dot" style="
+                            width: 6px;
+                            height: 6px;
+                            background: #0077ff;
+                            border-radius: 50%;
+                            animation: bounce 1.4s infinite ease-in-out;
+                            animation-delay: 0.2s;
+                        "></div>
+                        <div class="dot" style="
+                            width: 6px;
+                            height: 6px;
+                            background: #0077ff;
+                            border-radius: 50%;
+                            animation: bounce 1.4s infinite ease-in-out;
+                            animation-delay: 0.4s;
+                        "></div>
+                    </div>
+                </div>
+                <div class="ai-query" style="
+                    color: #333;
+                    margin-bottom: 10px;
+                    font-weight: 500;
+                ">Searching: "${query}"</div>
+            </div>
+        `;
+        
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bounce {
+                0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+                40% { transform: scale(1); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        this.aiResultsContainer.style.display = 'block';
+    }
+
+    async fetchAIResponse(query) {
+        const requestBody = {
+            model: this.MODEL,
+            messages: [
+                {
+                    role: "user",
+                    content: `Provide a concise, informative answer about: ${query}. Format the response in clear paragraphs with emojis for readability. Keep it under 300 words.`
+                }
+            ],
+            temperature: 0.2,
+            top_p: 0.7,
+            frequency_penalty: 1,
+            max_tokens: 1536,
+            top_k: 50
+        };
+
+        const response = await fetch(this.API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.API_KEY}`
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.choices[0].message.content;
+    }
+
+    displayAIResults(query, aiResponse) {
+        this.aiResultsContainer.innerHTML = `
+            <div class="ai-result-card" style="
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+                border-left: 4px solid #0077ff;
+                margin-bottom: 20px;
+            ">
+                <div class="ai-header" style="
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin-bottom: 15px;
+                    color: #0077ff;
+                    font-weight: 600;
+                    font-size: 16px;
+                ">
+                    <span>🤖</span>
+                    <span>TAISEN AI Overview</span>
+                </div>
+                
+                <div class="ai-query" style="
+                    color: #333;
+                    margin-bottom: 12px;
+                    font-weight: 500;
+                    font-size: 14px;
+                ">${query}</div>
+                
+                <div class="ai-response" style="
+                    color: #444;
+                    line-height: 1.6;
+                    font-size: 14px;
+                ">${aiResponse}</div>
+                
+                <div class="ai-footer" style="
+                    margin-top: 15px;
+                    padding-top: 12px;
+                    border-top: 1px solid #eee;
+                    color: #666;
+                    font-size: 12px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                ">
+                    <span>AI-powered search (Gemma-3-12b)</span>
+                    <button class="feedback-btn" style="
+                        background: none;
+                        border: 1px solid #ddd;
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 11px;
+                        color: #666;
+                    ">Feedback</button>
+                </div>
+            </div>
+        `;
+
+        // Add feedback button functionality
+        const feedbackBtn = this.aiResultsContainer.querySelector('.feedback-btn');
+        feedbackBtn.addEventListener('click', () => {
+            alert('Thanks for your feedback!');
+        });
+
+        this.aiResultsContainer.style.display = 'block';
+    }
+
+    hideAIResults() {
+        this.aiResultsContainer.style.display = 'none';
+    }
+}
+
+// Initialize AI Search when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    const aiSearch = new TAISEN_AISearch();
+    aiSearch.init();
+});
+</script>
+<!-- Load Firebase SDK for Analytics (COMPATIBILITY VERSION) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+  // Mobile device detection function
+  function checkMobileDevice() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const mobileRestriction = document.getElementById('mobileRestriction');
+      
+      if (isMobile && mobileRestriction) {
+          mobileRestriction.style.display = 'block';
+          document.querySelector('header').style.display = 'none';
+          document.querySelector('.search-section').style.display = 'none';
+          document.querySelector('footer').style.display = 'none';
+      } else if (mobileRestriction) {
+          mobileRestriction.style.display = 'none';
+      }
+  }
+</script>
+</body>
+</html>
