@@ -560,6 +560,36 @@
             background: rgba(248, 150, 30, 0.1);
             color: var(--warning);
         }
+
+        .log-type-pageview {
+            background: rgba(247, 37, 133, 0.1);
+            color: var(--danger);
+        }
+
+        .log-type-session {
+            background: rgba(63, 55, 201, 0.1);
+            color: var(--secondary);
+        }
+
+        .log-type-event {
+            background: rgba(76, 201, 240, 0.1);
+            color: var(--info);
+        }
+
+        .collection-stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .collection-stat {
+            background: var(--gray-100);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--gray-700);
+        }
     </style>
 </head>
 <body>
@@ -688,7 +718,10 @@
                 <!-- User Activity Logs -->
                 <div class="data-section">
                     <h2>📋 Complete Activity Logs</h2>
-                    <p style="margin-bottom: 15px; color: var(--gray-600);">Your complete history of searches and activities</p>
+                    <p style="margin-bottom: 15px; color: var(--gray-600);">Your complete history from all tracking collections</p>
+                    <div class="collection-stats" id="collectionStats">
+                        <!-- Collection statistics will appear here -->
+                    </div>
                     <div class="data-table-container logs-container">
                         <div id="userLogs">
                             <!-- Will be populated by JavaScript -->
@@ -787,7 +820,13 @@
                     searches: [],
                     userInfo: {},
                     sessionInfo: {},
-                    activityLogs: []
+                    activityLogs: [],
+                    collectionStats: {
+                        events: 0,
+                        page_views: 0,
+                        search_queries: 0,
+                        sessions: 0
+                    }
                 };
                 
                 this.initAuth();
@@ -970,62 +1009,193 @@
                     document.getElementById('loading').style.display = 'block';
                     document.getElementById('signInPrompt').style.display = 'none';
 
-                    // Load user document from Firestore
-                    const userDoc = await db.collection('users').doc(this.userId).get();
+                    // Load data from all tracking collections
+                    await Promise.all([
+                        this.loadEventsData(),
+                        this.loadPageViewsData(),
+                        this.loadSearchQueriesData(),
+                        this.loadSessionsData(),
+                        this.loadUserDocumentData(user)
+                    ]);
                     
-                    if (userDoc.exists) {
-                        const userData = userDoc.data();
-                        
-                        // Process search data
-                        this.userData.searches = [];
-                        if (userData.lastSearch) {
-                            this.userData.searches.push({
-                                query: userData.lastSearch,
-                                timestamp: userData.timestamp || user.metadata.lastSignInTime || new Date(),
-                                type: 'Web Search'
-                            });
-                        }
-
-                        // Load activity logs
-                        this.userData.activityLogs = [];
-                        if (userData.activityLogs && Array.isArray(userData.activityLogs)) {
-                            this.userData.activityLogs = userData.activityLogs;
-                        }
-
-                        // Store user info
-                        this.userData.userInfo = {
-                            email: user.email,
-                            displayName: user.displayName,
-                            userId: user.uid,
-                            accountType: user.isAnonymous ? 'Guest' : 'Registered',
-                            creationTime: user.metadata.creationTime,
-                            lastSignIn: user.metadata.lastSignInTime
-                        };
-
-                        // Get session info
-                        this.userData.sessionInfo = this.getSessionInfo();
-                        
-                        this.renderDashboard();
-                    } else {
-                        // User document doesn't exist yet, but we have auth user
-                        this.userData.searches = [];
-                        this.userData.activityLogs = [];
-                        this.userData.userInfo = {
-                            email: user.email,
-                            displayName: user.displayName,
-                            userId: user.uid,
-                            accountType: user.isAnonymous ? 'Guest' : 'Registered',
-                            creationTime: user.metadata.creationTime,
-                            lastSignIn: user.metadata.lastSignInTime
-                        };
-                        this.userData.sessionInfo = this.getSessionInfo();
-                        this.renderDashboard();
-                    }
+                    this.renderDashboard();
                     
                 } catch (error) {
                     console.error('Error loading user data:', error);
                     this.showError("Error loading analytics data. Please try again.");
                 }
+            }
+
+            async loadUserDocumentData(user) {
+                // Load user document from Firestore
+                const userDoc = await db.collection('users').doc(this.userId).get();
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    
+                    // Process search data
+                    this.userData.searches = [];
+                    if (userData.lastSearch) {
+                        this.userData.searches.push({
+                            query: userData.lastSearch,
+                            timestamp: userData.timestamp || user.metadata.lastSignInTime || new Date(),
+                            type: 'Web Search'
+                        });
+                    }
+
+                    // Load activity logs from user document if they exist
+                    if (userData.activityLogs && Array.isArray(userData.activityLogs)) {
+                        this.userData.activityLogs = [...this.userData.activityLogs, ...userData.activityLogs];
+                    }
+                }
+
+                // Store user info
+                this.userData.userInfo = {
+                    email: user.email,
+                    displayName: user.displayName,
+                    userId: user.uid,
+                    accountType: user.isAnonymous ? 'Guest' : 'Registered',
+                    creationTime: user.metadata.creationTime,
+                    lastSignIn: user.metadata.lastSignInTime
+                };
+
+                // Get session info
+                this.userData.sessionInfo = this.getSessionInfo();
+            }
+
+            async loadEventsData() {
+                try {
+                    const eventsSnapshot = await db.collection('events')
+                        .where('userId', '==', this.userId)
+                        .orderBy('timestamp', 'desc')
+                        .limit(50)
+                        .get();
+
+                    this.userData.collectionStats.events = eventsSnapshot.size;
+
+                    eventsSnapshot.forEach(doc => {
+                        const eventData = doc.data();
+                        this.userData.activityLogs.push({
+                            id: doc.id,
+                            action: eventData.eventName || 'Event',
+                            details: this.formatEventDetails(eventData),
+                            timestamp: eventData.timestamp,
+                            type: 'event',
+                            collection: 'events'
+                        });
+                    });
+                } catch (error) {
+                    console.error('Error loading events:', error);
+                }
+            }
+
+            async loadPageViewsData() {
+                try {
+                    const pageViewsSnapshot = await db.collection('page_views')
+                        .where('userId', '==', this.userId)
+                        .orderBy('timestamp', 'desc')
+                        .limit(50)
+                        .get();
+
+                    this.userData.collectionStats.page_views = pageViewsSnapshot.size;
+
+                    pageViewsSnapshot.forEach(doc => {
+                        const pageData = doc.data();
+                        this.userData.activityLogs.push({
+                            id: doc.id,
+                            action: 'Page View',
+                            details: `Viewed ${pageData.pageUrl || pageData.pageName || 'Unknown Page'}`,
+                            timestamp: pageData.timestamp,
+                            type: 'pageview',
+                            collection: 'page_views'
+                        });
+                    });
+                } catch (error) {
+                    console.error('Error loading page views:', error);
+                }
+            }
+
+            async loadSearchQueriesData() {
+                try {
+                    const searchQueriesSnapshot = await db.collection('search_queries')
+                        .where('userId', '==', this.userId)
+                        .orderBy('timestamp', 'desc')
+                        .limit(50)
+                        .get();
+
+                    this.userData.collectionStats.search_queries = searchQueriesSnapshot.size;
+
+                    searchQueriesSnapshot.forEach(doc => {
+                        const searchData = doc.data();
+                        this.userData.activityLogs.push({
+                            id: doc.id,
+                            action: 'Search Query',
+                            details: `Searched for: "${searchData.query}"` + (searchData.resultsCount ? ` (${searchData.resultsCount} results)` : ''),
+                            timestamp: searchData.timestamp,
+                            type: 'search',
+                            collection: 'search_queries'
+                        });
+
+                        // Also add to searches for the search history section
+                        this.userData.searches.push({
+                            query: searchData.query,
+                            timestamp: searchData.timestamp,
+                            type: 'Web Search'
+                        });
+                    });
+                } catch (error) {
+                    console.error('Error loading search queries:', error);
+                }
+            }
+
+            async loadSessionsData() {
+                try {
+                    const sessionsSnapshot = await db.collection('sessions')
+                        .where('userId', '==', this.userId)
+                        .orderBy('startTime', 'desc')
+                        .limit(20)
+                        .get();
+
+                    this.userData.collectionStats.sessions = sessionsSnapshot.size;
+
+                    sessionsSnapshot.forEach(doc => {
+                        const sessionData = doc.data();
+                        this.userData.activityLogs.push({
+                            id: doc.id,
+                            action: 'Session',
+                            details: `Session ${sessionData.sessionId ? sessionData.sessionId.substring(0, 8) + '...' : 'started'} - Duration: ${this.formatSessionDuration(sessionData)}`,
+                            timestamp: sessionData.startTime,
+                            type: 'session',
+                            collection: 'sessions'
+                        });
+                    });
+                } catch (error) {
+                    console.error('Error loading sessions:', error);
+                }
+            }
+
+            formatEventDetails(eventData) {
+                const details = [];
+                if (eventData.eventName) details.push(`Event: ${eventData.eventName}`);
+                if (eventData.category) details.push(`Category: ${eventData.category}`);
+                if (eventData.action) details.push(`Action: ${eventData.action}`);
+                if (eventData.label) details.push(`Label: ${eventData.label}`);
+                if (eventData.value) details.push(`Value: ${eventData.value}`);
+                
+                return details.length > 0 ? details.join(' | ') : 'No additional event details';
+            }
+
+            formatSessionDuration(sessionData) {
+                if (sessionData.duration) {
+                    return `${sessionData.duration}s`;
+                }
+                if (sessionData.startTime && sessionData.endTime) {
+                    const start = sessionData.startTime.toDate ? sessionData.startTime.toDate() : new Date(sessionData.startTime);
+                    const end = sessionData.endTime.toDate ? sessionData.endTime.toDate() : new Date(sessionData.endTime);
+                    const duration = Math.round((end - start) / 1000);
+                    return `${duration}s`;
+                }
+                return 'Unknown';
             }
 
             getSessionInfo() {
@@ -1066,6 +1236,7 @@
             renderDashboard() {
                 const hasSearches = this.userData.searches.length > 0;
                 const hasLogs = this.userData.activityLogs.length > 0;
+                const totalRecords = Object.values(this.userData.collectionStats).reduce((sum, count) => sum + count, 0);
                 
                 // Update user info
                 document.getElementById('userEmail').textContent = this.userData.userInfo.email || 'Not set';
@@ -1085,10 +1256,25 @@
                 document.getElementById('currentPlatform').textContent = this.userData.sessionInfo.platform;
                 document.getElementById('screenSize').textContent = this.userData.sessionInfo.screenSize;
 
+                // Render collection statistics
+                const collectionStatsElement = document.getElementById('collectionStats');
+                collectionStatsElement.innerHTML = `
+                    <div class="collection-stat">Total Records: ${totalRecords}</div>
+                    <div class="collection-stat">Events: ${this.userData.collectionStats.events}</div>
+                    <div class="collection-stat">Page Views: ${this.userData.collectionStats.page_views}</div>
+                    <div class="collection-stat">Search Queries: ${this.userData.collectionStats.search_queries}</div>
+                    <div class="collection-stat">Sessions: ${this.userData.collectionStats.sessions}</div>
+                `;
+
                 // Render recent searches
                 const searchesTable = document.getElementById('recentSearches');
                 if (hasSearches) {
-                    searchesTable.innerHTML = this.userData.searches.map(search => `
+                    // Get unique searches (deduplicate)
+                    const uniqueSearches = this.userData.searches.filter((search, index, self) => 
+                        index === self.findIndex(s => s.query === search.query && s.timestamp === search.timestamp)
+                    ).slice(0, 10); // Limit to 10 most recent
+
+                    searchesTable.innerHTML = uniqueSearches.map(search => `
                         <tr>
                             <td>${this.escapeHtml(search.query)}</td>
                             <td>${this.formatDate(search.timestamp)}</td>
@@ -1120,7 +1306,7 @@
                             <div class="log-info">
                                 <div class="log-action">
                                     ${this.escapeHtml(log.action || 'Unknown action')}
-                                    <span class="log-type-badge ${this.getLogTypeClass(log.type)}">${log.type || 'system'}</span>
+                                    <span class="log-type-badge ${this.getLogTypeClass(log.type)}">${log.collection || log.type || 'system'}</span>
                                 </div>
                                 <div class="log-details">${this.escapeHtml(log.details || 'No additional details')}</div>
                             </div>
@@ -1130,7 +1316,7 @@
                 } else {
                     logsContainer.innerHTML = `
                         <div style="text-align: center; padding: 40px 20px; color: var(--gray-600); font-style: italic;">
-                            No activity logs found. Your search activities will appear here.
+                            No activity logs found. Your activities will appear here as you use the application.
                         </div>
                     `;
                 }
@@ -1146,6 +1332,9 @@
                     case 'search': return 'log-type-search';
                     case 'auth': return 'log-type-auth';
                     case 'system': return 'log-type-system';
+                    case 'pageview': return 'log-type-pageview';
+                    case 'session': return 'log-type-session';
+                    case 'event': return 'log-type-event';
                     default: return 'log-type-system';
                 }
             }
