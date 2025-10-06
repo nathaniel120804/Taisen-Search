@@ -300,9 +300,67 @@ input:checked + .toggle-slider:before {
         </select>
       </div>
     </div>
+    
+    <!-- Search Settings -->
+    <div class="settings-group">
+      <h3>Search Preferences</h3>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>Language</span>
+          <small>Preferred search language</small>
+        </div>
+        <select id="langSelect">
+          <option value="en">English</option>
+          <option value="fil">Filipino</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+        </select>
+      </div>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>Region</span>
+          <small>Search results from specific region</small>
+        </div>
+        <select id="regionSelect">
+          <option value="">Global</option>
+          <option value="us">United States</option>
+          <option value="ph">Philippines</option>
+          <option value="uk">United Kingdom</option>
+          <option value="ca">Canada</option>
+          <option value="au">Australia</option>
+        </select>
+      </div>
+    </div>
+    
     <!-- Privacy & Safety -->
     <div class="settings-group">
       <h3>Privacy & Safety</h3>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>SafeSearch</span>
+          <small>Filter explicit content from results</small>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="safeSearch">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>Privacy Mode</span>
+          <small>Mask IP address and disable logging</small>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="privacyMode">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      
       <div class="setting-item">
         <div class="setting-label">
           <span>Analytics</span>
