@@ -942,6 +942,17 @@ footer {
 .read-more-btn.expanded i {
   transform: rotate(180deg);
 }
+
+.account-button.analytics {
+      background: var(--info);
+      color: white;
+    }
+
+    .account-button.analytics:hover {
+      background: #138496;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
 </style>
 </head>
 <body>
@@ -1110,6 +1121,7 @@ footer {
         </div>
       </div>
       <div class="account-actions">
+        <button class="account-button analytics" id="viewAnalytics">View My Analytics</button>
         <button class="account-button manage" id="manageAccount">Manage Account</button>
         <button class="account-button signout" id="signOutButton">Sign Out</button>
       </div>
@@ -1529,8 +1541,14 @@ window.addEventListener('load', loadData);
 
   // Manage Account (external link)
   manageAccount.addEventListener("click", () => {
-    window.open("https://taisenaccounts.pages.dev/account", "_blank");
+    window.open("taisen-login/index.html", "_blank");
   });
+
+  // View Analytics
+    viewAnalytics.addEventListener("click", () => {
+      window.open('analytics-dashboard.html', '_blank');
+      closeAccountModal();
+    });
 
   // Update User Button
   function updateButton(user) {

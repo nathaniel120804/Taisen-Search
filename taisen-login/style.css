@@ -1,0 +1,136 @@
+/* Root Colors */
+:root {
+  --brand-color: #0077ff;
+  --brand-dark: #005fcc;
+  --danger: #e11d48;
+  --text-dark: #0f1724;
+  --text-light: #ffffff;
+  --bg-light: #f4f6f9;
+}
+
+/* Global */
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg-light);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Reusable Container */
+.auth-container, .profile-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 350px;
+  text-align: center;
+}
+
+.auth-container h2, 
+.profile-container h2 {
+  margin-bottom: 1rem;
+  color: var(--brand-color);
+}
+
+/* Form Inputs */
+.auth-container input, 
+.profile-container input, 
+.profile-container textarea {
+  width: 100%;
+  padding: 0.7rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.auth-container input:focus,
+.profile-container input:focus,
+.profile-container textarea:focus {
+  border-color: var(--brand-color);
+  outline: none;
+  box-shadow: 0 0 6px rgba(0,119,255,0.3);
+}
+
+/* Buttons */
+.auth-container button,
+.profile-container button {
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 0.6rem;
+  background: var(--brand-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s ease;
+}
+
+.auth-container button:hover,
+.profile-container button:hover {
+  background: var(--brand-dark);
+}
+
+/* Special Buttons */
+.google-btn {
+  background: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.google-btn:hover {
+  background: #f0f0f0;
+}
+
+.guest-btn {
+  background: #444;
+}
+
+.guest-btn:hover {
+  background: #222;
+}
+
+.danger-btn {
+  background: var(--danger);
+}
+
+.danger-btn:hover {
+  background: #be123c;
+}
+
+/* Error & Success Messages */
+.error, .error-msg {
+  color: var(--danger);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.success-msg {
+  color: green;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* Profile Page Layout */
+.profile-container form {
+  text-align: left;
+}
+
+.profile-container label {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-top: 0.8rem;
+  display: block;
+  text-align: left;
+}
+
+.profile-actions {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

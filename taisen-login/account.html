@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Taisen Account — Account</title>
+  <style>
+    /* Taisen Design System Variables */
+    :root {
+      --brand-color: #3B82F6;
+      --text-dark: #e8e9eb;
+      --text-light: #f5f5f5;
+      --bg-light: #ffffff;
+      --bg-dark: #ffffff;
+      --neutral-gray: #9a9b9c;
+      --success: #28A745;
+      --danger: #FF4C4C;
+      --spacing-unit: 8px;
+      --border-radius: 8px;
+      --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Section */
+    .header-section {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 3);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .site-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--brand-color);
+      margin: 0;
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--spacing-unit) * 4);
+    }
+
+    .center-box {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* Auth Card */
+    .auth-card {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 4);
+      border-radius: 14px;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+    }
+
+    .auth-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .auth-card h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: calc(var(--spacing-unit) * 3);
+      color: var(--text-dark);
+      border-bottom: 2px solid var(--brand-color);
+      padding-bottom: calc(var(--spacing-unit) * 1);
+      display: inline-block;
+    }
+
+    /* Account Info */
+    .account-info p {
+      margin-bottom: calc(var(--spacing-unit) * 2);
+      padding: calc(var(--spacing-unit) * 2);
+      background: #f8f9fa;
+      border-radius: var(--border-radius);
+      border-left: 4px solid var(--brand-color);
+    }
+
+    .account-info strong {
+      color: var(--text-dark);
+      display: block;
+      margin-bottom: calc(var(--spacing-unit) * 0.5);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .account-info span {
+      color: var(--text-dark);
+      font-size: 16px;
+    }
+
+    /* Buttons */
+    button {
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+      margin-bottom: calc(var(--spacing-unit) * 2);
+    }
+
+    #logoutBtn {
+      background: var(--neutral-gray);
+      color: white;
+    }
+
+    #logoutBtn:hover {
+      background: #7f7f7f;
+      transform: scale(1.02);
+    }
+
+    .danger-btn {
+      background: var(--danger);
+      color: white;
+    }
+
+    .danger-btn:hover {
+      background: #e04545;
+      transform: scale(1.02);
+    }
+
+    /* Messages */
+    .error-msg {
+      color: var(--danger);
+      font-size: 14px;
+      margin-top: calc(var(--spacing-unit) * 2);
+      padding: calc(var(--spacing-unit) * 2);
+      background: #ffe6e6;
+      border-radius: var(--border-radius);
+      border-left: 4px solid var(--danger);
+    }
+
+    /* Links */
+    .profile-actions {
+      text-align: center;
+      margin-top: calc(var(--spacing-unit) * 3);
+    }
+
+    .auth-links {
+      color: var(--brand-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+      border: 2px solid var(--brand-color);
+      border-radius: var(--border-radius);
+      display: inline-block;
+    }
+
+    .auth-links:hover {
+      background: var(--brand-color);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    .footer-section {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 3);
+      text-align: center;
+      color: var(--neutral-gray);
+      border-top: 1px solid #e0e0e0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      main {
+        padding: calc(var(--spacing-unit) * 2);
+      }
+      
+      .auth-card {
+        padding: calc(var(--spacing-unit) * 3);
+      }
+      
+      .site-title {
+        font-size: 24px;
+      }
+    }
+
+    /* Dark Theme Support */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: var(--bg-dark);
+        color: var(--text-light);
+      }
+      
+      .header-section,
+      .footer-section,
+      .auth-card {
+        background: #1f1f1f;
+      }
+      
+      .account-info p {
+        background: #2a2a2a;
+        color: var(--text-light);
+      }
+      
+      .auth-card {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header-section">
+    <h1 class="site-title">TAISEN Account</h1>
+  </header>
+
+  <main class="center-box">
+    <div class="auth-card">
+      <h2>Account</h2>
+
+      <div class="account-info">
+        <p><strong>Name</strong> <span id="accountName">—</span></p>
+        <p><strong>Email</strong> <span id="accountEmail">—</span></p>
+        <p><strong>UID</strong> <span id="accountUid">—</span></p>
+      </div>
+
+      <button id="logoutBtn">Log out</button>
+      <button id="deleteBtn" class="danger-btn">Delete my account</button>
+
+      <p id="accountMsg" class="error-msg" aria-live="polite" style="display: none;"></p>
+
+      <div class="profile-actions">
+        <a class="auth-links" href="profile.html">Edit profile</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-section">
+    <p>&copy; 2025 Taisen Search</p>
+  </footer>
+
+  <script type="module" src="account.js"></script>
+</body>
+</html>

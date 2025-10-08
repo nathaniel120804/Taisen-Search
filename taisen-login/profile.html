@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Taisen Account — Profile</title>
+  <style>
+    /* Taisen Design System Variables */
+    :root {
+      --brand-color: #3B82F6;
+      --text-dark: white;
+      --text-light: #f5f5f5;
+      --bg-light: #ffffff;
+      --bg-dark: white;
+      --neutral-gray: #9a9b9c;
+      --success: #28A745;
+      --danger: #FF4C4C;
+      --spacing-unit: 8px;
+      --border-radius: 8px;
+      --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Section */
+    .header-section {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 3);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .site-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--brand-color);
+      margin: 0;
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--spacing-unit) * 4);
+    }
+
+    .center-box {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* Auth Card */
+    .auth-card {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 4);
+      border-radius: 14px;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+    }
+
+    .auth-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .auth-card h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: calc(var(--spacing-unit) * 3);
+      color: var(--text-dark);
+      border-bottom: 2px solid var(--brand-color);
+      padding-bottom: calc(var(--spacing-unit) * 1);
+      display: inline-block;
+    }
+
+    /* Form Styles */
+    #profile-form {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing-unit) * 3);
+    }
+
+    label {
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: calc(var(--spacing-unit) * 1);
+      display: block;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--neutral-gray);
+      border-radius: var(--border-radius);
+      font-size: 16px;
+      transition: var(--transition);
+      background: var(--bg-light);
+      color: var(--text-dark);
+      font-family: inherit;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--brand-color);
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
+      outline: none;
+    }
+
+    input[readonly] {
+      background: #f8f9fa;
+      color: var(--neutral-gray);
+      cursor: not-allowed;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Submit Button */
+    button[type="submit"] {
+      background: var(--brand-color);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: var(--border-radius);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: calc(var(--spacing-unit) * 2);
+    }
+
+    button[type="submit"]:hover {
+      background: #2563eb;
+      transform: scale(1.02);
+    }
+
+    button[type="submit"]:active {
+      transform: scale(0.98);
+    }
+
+    /* Messages */
+    .error-msg {
+      color: var(--danger);
+      font-size: 14px;
+      margin-top: calc(var(--spacing-unit) * 2);
+      padding: calc(var(--spacing-unit) * 2);
+      background: #ffe6e6;
+      border-radius: var(--border-radius);
+      border-left: 4px solid var(--danger);
+      display: none;
+    }
+
+    .success-msg {
+      color: var(--success);
+      font-size: 14px;
+      margin-top: calc(var(--spacing-unit) * 2);
+      padding: calc(var(--spacing-unit) * 2);
+      background: #e6ffe6;
+      border-radius: var(--border-radius);
+      border-left: 4px solid var(--success);
+      display: none;
+    }
+
+    /* Links */
+    .profile-actions {
+      text-align: center;
+      margin-top: calc(var(--spacing-unit) * 4);
+    }
+
+    .auth-links {
+      color: var(--brand-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+      border: 2px solid var(--brand-color);
+      border-radius: var(--border-radius);
+      display: inline-block;
+    }
+
+    .auth-links:hover {
+      background: var(--brand-color);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    .footer-section {
+      background: var(--bg-light);
+      padding: calc(var(--spacing-unit) * 3);
+      text-align: center;
+      color: var(--neutral-gray);
+      border-top: 1px solid #e0e0e0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      main {
+        padding: calc(var(--spacing-unit) * 2);
+      }
+      
+      .auth-card {
+        padding: calc(var(--spacing-unit) * 3);
+      }
+      
+      .site-title {
+        font-size: 24px;
+      }
+    }
+
+    /* Dark Theme Support */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: var(--bg-dark);
+        color: var(--text-light);
+      }
+      
+      .header-section,
+      .footer-section,
+      .auth-card {
+        background: #1f1f1f;
+      }
+      
+      input[type="text"],
+      input[type="email"],
+      textarea {
+        background: #2a2a2a;
+        color: var(--text-light);
+        border-color: #555;
+      }
+      
+      input[readonly] {
+        background: #333;
+        color: #888;
+      }
+      
+      .auth-card {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header-section">
+    <h1 class="site-title">TAISEN Account</h1>
+  </header>
+
+  <main class="center-box">
+    <div class="auth-card">
+      <h2>Edit Profile</h2>
+
+      <form id="profile-form">
+        <div>
+          <label for="displayName">Name</label>
+          <input id="displayName" type="text" placeholder="Your display name" required />
+        </div>
+
+        <div>
+          <label for="bio">Bio</label>
+          <textarea id="bio" rows="4" placeholder="A short bio..."></textarea>
+        </div>
+
+        <div>
+          <label for="emailView">Email (read-only)</label>
+          <input id="emailView" type="email" readonly />
+        </div>
+
+        <button type="submit">Save changes</button>
+
+        <p id="profile-msg" class="error-msg" aria-live="polite"></p>
+        <p id="profile-success" class="success-msg" aria-live="polite"></p>
+      </form>
+
+      <div class="profile-actions">
+        <a class="auth-links" href="account.html">Open Account Manager</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-section">
+    <p>&copy; 2025 Taisen Search</p>
+  </footer>
+
+  <script type="module" src="profile.js"></script>
+</body>
+</html>
