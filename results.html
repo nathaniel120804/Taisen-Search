@@ -1401,6 +1401,143 @@ footer {
     color: var(--white) !important;
   }
 }
+/* Hide GCSE main tabs but keep refinement tabs */
+.gsc-tabsArea {
+    display: none !important;
+}
+
+/* GCSE Refinement Tabs Container - Taisen Design */
+.taisen-refinements-container {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-300);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Inner container for refinements */
+.taisen-refinements-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Refinement chips - Uniform size containers */
+.taisen-refinement-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    height: 40px;
+    padding: 0 20px;
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: 24px;
+    color: var(--gray-700);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    text-align: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.taisen-refinement-chip:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    background: rgba(0, 119, 255, 0.03);
+}
+
+.taisen-refinement-chip.selected {
+    background: var(--gradient-primary);
+    color: var(--white);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+    font-weight: 600;
+    transform: translateY(-1px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .taisen-refinements-inner {
+        padding: 12px 16px;
+        overflow-x: auto;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .taisen-refinements-inner::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .taisen-refinement-chip {
+        min-width: 70px;
+        height: 36px;
+        padding: 0 16px;
+        font-size: 13px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .taisen-refinements-container {
+        background: rgba(45, 45, 45, 0.95);
+        border-bottom-color: var(--gray-300);
+    }
+    
+    .taisen-refinement-chip {
+        background: var(--white);
+        border-color: var(--gray-300);
+        color: var(--gray-800);
+    }
+    
+    .taisen-refinement-chip:hover {
+        border-color: var(--primary);
+        background: rgba(0, 119, 255, 0.05);
+    }
+    
+    .taisen-refinement-chip.selected {
+        background: var(--gradient-primary);
+        color: var(--white);
+    }
+}
+
+/* Focus states for accessibility */
+.taisen-refinement-chip:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1);
+}
+
+/* Remove default GCSE styling */
+.gsc-above-wrapper-area {
+    border: none !important;
+    background: transparent !important;
+    margin-bottom: 0 !important;
+}
+
+.gsc-adBlock {
+    display: none !important;
+}
+
+/* Hide original refinement area but keep functionality */
+.gsc-refinementsArea {
+    display: none !important;
+}
 </style>
 </head>
 <body>
@@ -2527,5 +2664,165 @@ window.addEventListener('load', () => {
     }
 }
 </style>
+<script>
+  // Create Taisen-styled container for refinement tabs with uniform sizing
+function createTaisenRefinementContainer() {
+    const interval = setInterval(() => {
+        const refinementsArea = document.querySelector('.gsc-refinementsArea');
+        const header = document.querySelector('header');
+        const main = document.querySelector('.results-container');
+        
+        if (refinementsArea && header && main) {
+            clearInterval(interval);
+            
+            // Remove existing Taisen container if it exists
+            const existingContainer = document.querySelector('.taisen-refinements-container');
+            if (existingContainer) {
+                existingContainer.remove();
+            }
+            
+            // Create Taisen-styled container
+            const taisenContainer = document.createElement('div');
+            taisenContainer.className = 'taisen-refinements-container';
+            
+            // Create inner container for content
+            const innerContainer = document.createElement('div');
+            innerContainer.className = 'taisen-refinements-inner';
+            
+            // Find all refinement elements
+            const refinementHeaders = refinementsArea.querySelectorAll('.gsc-refinementHeader');
+            
+            if (refinementHeaders.length > 0) {
+                // Create Taisen-styled chips for each refinement
+                refinementHeaders.forEach((refinement, index) => {
+                    const chip = document.createElement('button');
+                    chip.className = 'taisen-refinement-chip';
+                    
+                    // Copy text content
+                    const textElement = refinement.querySelector('.gsc-refinementh');
+                    chip.textContent = textElement ? textElement.textContent : refinement.textContent;
+                    
+                    // Copy selected state
+                    if (refinement.classList.contains('gsc-selected')) {
+                        chip.classList.add('selected');
+                    }
+                    
+                    // Copy click functionality
+                    chip.addEventListener('click', () => {
+                        refinement.click();
+                    });
+                    
+                    // Add to container
+                    innerContainer.appendChild(chip);
+                });
+                
+                // Observe for changes in original refinements to sync states
+                const observer = new MutationObserver(() => {
+                    syncRefinementStates(refinementHeaders, innerContainer);
+                });
+                
+                observer.observe(refinementsArea, {
+                    attributes: true,
+                    attributeFilter: ['class'],
+                    subtree: true
+                });
+                
+                // Add container to DOM
+                taisenContainer.appendChild(innerContainer);
+                main.parentNode.insertBefore(taisenContainer, main);
+                
+                console.log('Taisen refinement container created with', refinementHeaders.length, 'uniform chips');
+            }
+            
+            // Handle responsive layout
+            handleRefinementLayout();
+        }
+    }, 100);
+}
+
+// Sync selected states between original and Taisen chips
+function syncRefinementStates(originalRefinements, taisenContainer) {
+    const taisenChips = taisenContainer.querySelectorAll('.taisen-refinement-chip');
+    
+    originalRefinements.forEach((original, index) => {
+        const taisenChip = taisenChips[index];
+        if (taisenChip) {
+            if (original.classList.contains('gsc-selected')) {
+                taisenChip.classList.add('selected');
+            } else {
+                taisenChip.classList.remove('selected');
+            }
+        }
+    });
+}
+
+// Handle responsive layout
+function handleRefinementLayout() {
+    const innerContainer = document.querySelector('.taisen-refinements-inner');
+    
+    if (!innerContainer) return;
+    
+    if (window.innerWidth <= 768) {
+        innerContainer.style.overflowX = 'auto';
+        innerContainer.style.flexWrap = 'nowrap';
+        innerContainer.style.whiteSpace = 'nowrap';
+    } else {
+        innerContainer.style.overflowX = 'visible';
+        innerContainer.style.flexWrap = 'wrap';
+        innerContainer.style.whiteSpace = 'normal';
+    }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', createTaisenRefinementContainer);
+window.addEventListener('load', createTaisenRefinementContainer);
+
+// Handle window resize
+window.addEventListener('resize', handleRefinementLayout);
+
+// Observe for dynamic content changes
+const observer = new MutationObserver(function(mutations) {
+    let shouldUpdate = false;
+    
+    mutations.forEach(function(mutation) {
+        if (mutation.addedNodes.length) {
+            Array.from(mutation.addedNodes).forEach(node => {
+                if (node.nodeType === 1) {
+                    if (node.classList?.contains('gsc-refinementsArea') || 
+                        node.querySelector?.('.gsc-refinementsArea')) {
+                        shouldUpdate = true;
+                    }
+                }
+            });
+        }
+    });
+    
+    if (shouldUpdate) {
+        setTimeout(createTaisenRefinementContainer, 500);
+    }
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
+});
+
+// Also observe the GCSE results area specifically
+const gcseObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.target.classList?.contains('gcse-searchresults-only')) {
+            setTimeout(createTaisenRefinementContainer, 300);
+        }
+    });
+});
+
+const gcseElement = document.querySelector('.gcse-searchresults-only');
+if (gcseElement) {
+    gcseObserver.observe(gcseElement, {
+        childList: true,
+        subtree: true
+    });
+}
+</script>
 </body>
 </html>
