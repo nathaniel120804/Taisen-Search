@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Search Results - Taisen</title>
 <link rel="icon" type="image/png" href="original.png">
-<link rel="stylesheet" href="style.css?v=20250901">
+<link rel="stylesheet" href="style.css"
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script async src="https://cse.google.com/cse.js?cx=178f66b21f928448b"></script>
 
 <style>
@@ -175,7 +176,7 @@ header {
 .gsc-webResult .gsc-result {
   padding: 20px !important;
   margin-bottom: 20px !important;
-  background: blur 100px !important;
+  background: var(--white) !important;
   border-radius: var(--border-radius-lg) !important;
   box-shadow: var(--shadow-md) !important;
   border: none !important;
@@ -184,12 +185,12 @@ header {
 .gsc-webResult .gsc-result .gs-title {
   font-size: 18px !important;
   font-weight: bold !important;
-  color: #a79595 !important;
+  color: var(--primary) !important;
 }
 /* Main Content - KEEPING ORIGINAL STRUCTURE */
 .results-container {
-  max-width: 1200px;
-  margin-left: 123px;
+  max-width: 1400px;
+  margin: 0 auto;
   padding: 1.5rem 1rem;
   flex: 1;
   display: flex;
@@ -467,433 +468,121 @@ footer {
   color: var(--primary);
 }
 
-/* Auth Modal Styles */
-    .auth-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 10001;
-      justify-content: center;
-      align-items: center;
-      backdrop-filter: blur(5px);
-    }
-
-    .auth-modal.active {
-      display: flex;
-      animation: modalFadeIn 0.3s ease;
-    }
-
-    @keyframes modalFadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .auth-container {
-      background: var(--white);
-      border-radius: var(--border-radius-lg);
-      width: 90%;
-      max-width: 400px;
-      box-shadow: var(--shadow-xl);
-      overflow: hidden;
-      transform: scale(0.9);
-      animation: modalScaleIn 0.3s ease forwards;
-    }
-
-    @keyframes modalScaleIn {
-      to { transform: scale(1); }
-    }
-
-    .auth-header {
-      padding: 25px;
-      border-bottom: 1px solid var(--gray-200);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--gradient-primary);
-      color: var(--white);
-    }
-
-    .auth-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 0;
-    }
-
-    .auth-close {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--white);
-      transition: var(--transition);
-    }
-
-    .auth-close:hover {
-      transform: scale(1.1);
-    }
-
-    .auth-content {
-      padding: 25px;
-    }
-
-    .auth-tabs {
-      display: flex;
-      margin-bottom: 20px;
-      border-bottom: 1px solid var(--gray-200);
-      border-radius: var(--border-radius) var(--border-radius) 0 0;
-      overflow: hidden;
-    }
-
-    .auth-tab {
-      flex: 1;
-      padding: 12px;
-      text-align: center;
-      background: none;
-      border: none;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      transition: var(--transition);
-      font-weight: 500;
-      color: var(--gray-600);
-    }
-
-    .auth-tab.active {
-      border-bottom: 3px solid var(--primary);
-      color: var(--primary);
-      background: rgba(0, 119, 255, 0.05);
-    }
-
-    .auth-form {
-      display: none;
-    }
-
-    .auth-form.active {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: var(--gray-700);
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 12px 15px;
-      border: 1px solid var(--gray-300);
-      border-radius: var(--border-radius);
-      box-sizing: border-box;
-      transition: var(--transition);
-      font-size: 16px;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1);
-    }
-
-    .auth-button {
-      width: 100%;
-      padding: 12px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      font-weight: 500;
-      margin-top: 10px;
-      transition: var(--transition);
-      font-size: 16px;
-    }
-
-    .auth-button:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .auth-button.google {
-      background: #db4437;
-    }
-
-    .auth-button.google:hover {
-      background: #c23321;
-    }
-
-    .auth-button.phone {
-      background: #34a853;
-    }
-
-    .auth-button.phone:hover {
-      background: #2d9248;
-    }
-
-    .auth-button.anonymous {
-      background: var(--gray-600);
-    }
-
-    .auth-button.anonymous:hover {
-      background: var(--gray-700);
-    }
-
-    .auth-divider {
-      text-align: center;
-      margin: 25px 0;
-      position: relative;
-    }
-
-    .auth-divider::before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: var(--gray-300);
-    }
-
-    .auth-divider span {
-      background: var(--white);
-      padding: 0 15px;
-      color: var(--gray-600);
-      font-size: 14px;
-    }
-
-    .auth-error {
-      color: var(--danger);
-      font-size: 0.9rem;
-      margin-top: 10px;
-      display: none;
-      padding: 8px 12px;
-      background: rgba(217, 48, 37, 0.05);
-      border-radius: var(--border-radius);
-      border-left: 3px solid var(--danger);
-    }
-
-    .auth-error.active {
-      display: block;
-      animation: shake 0.5s ease;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
-    }
-
-    .auth-success {
-      color: var(--success);
-      font-size: 0.9rem;
-      margin-top: 10px;
-      display: none;
-      padding: 8px 12px;
-      background: rgba(52, 168, 83, 0.05);
-      border-radius: var(--border-radius);
-      border-left: 3px solid var(--success);
-    }
-
-    .auth-success.active {
-      display: block;
-    }
-/* Account Modal Styles */
-    .account-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 10002;
-      justify-content: center;
-      align-items: center;
-      backdrop-filter: blur(5px);
-    }
-
-    .account-modal.active {
-      display: flex;
-      animation: modalFadeIn 0.3s ease;
-    }
-
-    .account-container {
-      background: var(--white);
-      border-radius: var(--border-radius-lg);
-      width: 90%;
-      max-width: 500px;
-      box-shadow: var(--shadow-xl);
-      overflow: hidden;
-      transform: scale(0.9);
-      animation: modalScaleIn 0.3s ease forwards;
-    }
-
-    .account-header {
-      padding: 25px;
-      border-bottom: 1px solid var(--gray-200);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--gradient-primary);
-      color: var(--white);
-    }
-
-    .account-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 0;
-    }
-
-    .account-close {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--white);
-      transition: var(--transition);
-    }
-
-    .account-close:hover {
-      transform: scale(1.1);
-    }
-
-    .account-content {
-      padding: 25px;
-    }
-
-    .account-info {
-      margin-bottom: 25px;
-    }
-
-    .account-info-item {
-      margin-bottom: 15px;
-      padding: 15px;
-      background: var(--gray-100);
-      border-radius: var(--border-radius);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: var(--transition);
-    }
-
-    .account-info-item:hover {
-      background: var(--gray-200);
-      transform: translateX(5px);
-    }
-
-    .account-info-label {
-      font-weight: 600;
-      color: var(--gray-600);
-    }
-
-    .account-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .account-button {
-      padding: 12px;
-      border: none;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      font-weight: 500;
-      transition: var(--transition);
-    }
-
-    .account-button.signout {
-      background: var(--danger);
-      color: white;
-    }
-
-    .account-button.signout:hover {
-      background: #c23321;
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .account-button.manage {
-      background: var(--primary);
-      color: white;
-    }
-
-    .account-button.manage:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-@keyframes modalScaleIn {
-  to { transform: scale(1); }
+/* Knowledge Panel Styles */
+.knowledge-panel {
+  flex: 0 0 350px;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  position: sticky;
+  top: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+  display: none;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .results-container {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .controls-panel {
-    flex: none;
-  }
-  
-  .results-header-inner {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .searchbar-container {
-    width: 100%;
-  }
-  
-  header {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 10px;
-  }
+.knowledge-header {
+  background: var(--gradient-primary);
+  color: white;
+  padding: 1.5rem;
 }
 
-/* Dark mode support from index.html */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --light: #1a1a1a;
-    --dark: #f8f9fa;
-    --white: #2d2d2d;
-    --gray-100: #1a1a1a;
-    --gray-200: #2d2d2d;
-    --gray-300: #404040;
-    --gray-400: #595959;
-    --gray-500: #737373;
-    --gray-600: #8c8c8c;
-    --gray-700: #a6a6a6;
-    --gray-800: #bfbfbf;
-    --gray-900: #d9d9d9;
-  }
+.knowledge-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
 
-  body {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    color: var(--gray-800);
-  }
+.knowledge-subtitle {
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
 
-  header, footer {
-    background: rgba(45, 45, 45, 0.95);
-  }
+.knowledge-body {
+  padding: 1.5rem;
+}
 
-  .results-name {
-    background: linear-gradient(135deg, #4dabf7 0%, #339af0 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+.knowledge-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--gray-700);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.knowledge-description {
+  color: var(--gray-600);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.fact-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.fact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.fact-label {
+  font-weight: 500;
+  color: var(--gray-700);
+  font-size: 0.9rem;
+}
+
+.fact-value {
+  color: var(--gray-600);
+  text-align: right;
+  font-size: 0.9rem;
+  max-width: 200px;
+}
+
+.quick-actions {
+  background: var(--gray-100);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-top: 1.5rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: var(--transition);
+}
+
+.action-button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.action-button.secondary {
+  background: var(--gray-600);
+}
+
+.action-button.secondary:hover {
+  background: var(--gray-700);
 }
 
 /* NEW STYLES FOR AI RESPONSE TRUNCATION */
@@ -955,6 +644,273 @@ footer {
     }
     .gsc-adBlock, .gcsc-find-more-on-google { display: none !important; }
 
+/* Loading indicator */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin: 20px 0;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { 
+    transform: scale(0.8); 
+    opacity: 0.5; 
+  }
+  40% { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+}
+
+/* Knowledge Panel Scrollbar */
+.knowledge-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.knowledge-panel::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 3px;
+}
+
+.knowledge-panel::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 3px;
+}
+
+.knowledge-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .results-container {
+    flex-direction: column;
+  }
+  
+  .knowledge-panel {
+    position: static;
+    max-height: none;
+    flex: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .results-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .controls-panel {
+    flex: none;
+  }
+  
+  .results-header-inner {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .searchbar-container {
+    width: 100%;
+  }
+  
+  header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 10px;
+  }
+}
+
+/* Dark mode support from index.html */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --light: #1a1a1a;
+    --dark: #f8f9fa;
+    --white: #2d2d2d;
+    --gray-100: #1a1a1a;
+    --gray-200: #2d2d2d;
+    --gray-300: #404040;
+    --gray-400: #595959;
+    --gray-500: #737373;
+    --gray-600: #8c8c8c;
+    --gray-700: #a6a6a6;
+    --gray-800: #bfbfbf;
+    --gray-900: #d9d9d9;
+  }
+
+  body {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: var(--gray-800);
+  }
+
+  header, footer {
+    background: rgba(45, 45, 45, 0.95);
+  }
+
+  .results-name {
+    background: linear-gradient(135deg, #4dabf7 0%, #339af0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+/* Taisen-Style Pagination - Synced with Design Guidelines */
+.gsc-cursor-box {
+  text-align: center;
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+}
+
+.gsc-cursor-box:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Taisen Brand Header - Using Design System Colors */
+.gsc-cursor-box::before {
+  content: "Taaaaaaaaaisen";
+  font-size: 1.75rem;
+  font-weight: 700;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  margin-bottom: 15px;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.5px;
+}
+
+/* Page Numbers - Using Design System */
+.gsc-cursor-page {
+  color: var(--primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  margin: 0 2px;
+  text-decoration: none;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--gray-300);
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+}
+
+/* Active Page - Using Primary Gradient */
+.gsc-cursor-current-page {
+  background: var(--gradient-primary);
+  color: var(--white) !important;
+  font-weight: 600;
+  border: 1px solid var(--primary);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+/* Next Button - Consistent Styling */
+.gsc-cursor-next-page {
+  color: var(--primary);
+  margin-left: 12px;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--gray-300);
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Hover Effects - Consistent with Design System */
+.gsc-cursor-page:hover,
+.gsc-cursor-next-page:hover {
+  color: var(--primary-dark);
+  background: rgba(0, 119, 255, 0.05);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+}
+
+/* Focus States for Accessibility */
+.gsc-cursor-page:focus,
+.gsc-cursor-next-page:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .gsc-cursor-box {
+    padding: 15px;
+  }
+  
+  .gsc-cursor-box::before {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+  
+  .gsc-cursor-page,
+  .gsc-cursor-next-page {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    margin: 0 1px;
+    min-width: 36px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .gsc-cursor-box {
+    background: var(--white);
+    border-color: var(--gray-300);
+  }
+  
+  .gsc-cursor-page,
+  .gsc-cursor-next-page {
+    background: var(--white);
+    border-color: var(--gray-300);
+    color: var(--primary);
+  }
+  
+  .gsc-cursor-page:hover,
+  .gsc-cursor-next-page:hover {
+    background: rgba(0, 119, 255, 0.1);
+    border-color: var(--primary);
+  }
+  
+  .gsc-cursor-current-page {
+    background: var(--gradient-primary);
+    color: var(--white) !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1018,6 +974,9 @@ footer {
       <p class="results-count">Search results for: <span class="query-term" id="queryTerm">Loading...</span></p>
     </div>
 
+    <!-- AI Results -->
+    <div id="taisen-ai-results"></div>
+
     <!-- Internal results -->
     <div class="internal-results">
       <h2 class="section-title">Taisen Labs Results</h2>
@@ -1027,6 +986,11 @@ footer {
     <!-- Google CSE Results -->
     <div class="gcse-searchresults-only"></div>
   </section>
+
+  <!-- Knowledge Panel -->
+  <aside class="knowledge-panel" id="knowledgePanel">
+    <!-- Knowledge panel will be populated by JavaScript -->
+  </aside>
 </main>
 
 <!-- Footer from index.html -->
@@ -1043,602 +1007,236 @@ footer {
     </div>
   </footer>
 
-<!-- Auth Modal from index.html -->
-<div id="authModal" class="auth-modal">
-  <div class="auth-container">
-    <div class="auth-header">
-      <h2 class="auth-title">Sign In to Taisen</h2>
-      <button id="authClose" class="auth-close">&times;</button>
-    </div>
-    <div class="auth-content">
-      <div class="auth-tabs">
-        <button class="auth-tab active" data-tab="signin">Sign In</button>
-        <button class="auth-tab" data-tab="signup">Sign Up</button>
-      </div>
-      
-      <!-- Email/Password Form -->
-      <form id="emailForm" class="auth-form active">
-        <div class="form-group">
-          <label class="form-label" for="email">Email</label>
-          <input type="email" id="email" class="form-input" placeholder="your@email.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="password">Password</label>
-          <input type="password" id="password" class="form-input" placeholder="Your password">
-        </div>
-        <button type="submit" class="auth-button" id="emailSubmit">Sign In</button>
-        <div id="emailError" class="auth-error"></div>
-        <div id="emailSuccess" class="auth-success"></div>
-        <div class="terms-agreement" style=" margin: 15px 0; padding: 10px; background: rgba(0, 119, 255, 0.05); border-radius: var(--border-radius); border-left: 3px solid var(--primary); font-size: 14px; line-height: 1.4; color: var(--gray-600); "> <label for="termsAgreement"> By signing in and signing up to our services, you agree to our <a href="terms.html" target="_blank" style="color: var(--primary); text-decoration: none;">Terms of Service</a> and <a href="privacy.html" target="_blank" style="color: var(--primary); text-decoration: none;">Privacy Policy</a> </label> </div>
-      </form>
-      
-      <!-- Phone Form -->
-      <form id="phoneForm" class="auth-form">
-        <div class="form-group">
-          <label class="form-label" for="phoneNumber">Phone Number</label>
-          <input type="tel" id="phoneNumber" class="form-input" placeholder="+1 234 567 8900">
-        </div>
-        <div class="form-group" id="verificationCodeGroup" style="display: none;">
-          <label class="form-label" for="verificationCode">Verification Code</label>
-          <input type="text" id="verificationCode" class="form-input" placeholder="Enter code">
-        </div>
-        <button type="submit" class="auth-button phone" id="phoneSubmit">Send Code</button>
-        <div id="phoneError" class="auth-error"></div>
-        <div id="phoneSuccess" class="auth-success"></div>
-      </form>
-      
-      <!-- Provider Buttons -->
-      <div class="auth-divider"><span>or continue with</span></div>
-      
-      <button class="auth-button google" id="googleSignIn">Sign in with Google</button>
-      <button class="auth-button anonymous" id="anonymousSignIn">Continue as Guest</button>
-    </div>
-  </div>
-</div>
-
-<!-- Account Modal from index.html -->
-<div id="accountModal" class="account-modal">
-  <div class="account-container">
-    <div class="account-header">
-      <h2 class="account-title">Taisen Account</h2>
-      <button id="accountClose" class="account-close">&times;</button>
-    </div>
-    <div class="account-content">
-      <div class="account-info">
-        <div class="account-info-item">
-          <span class="account-info-label">Display Name:</span>
-          <span id="accountDisplayName">Loading...</span>
-        </div>
-        <div class="account-info-item">
-          <span class="account-info-label">Email:</span>
-          <span id="accountEmail">Loading...</span>
-        </div>
-        <div class="account-info-item">
-          <span class="account-info-label">User ID:</span>
-          <span id="accountUserId">Loading...</span>
-        </div>
-        <div class="account-info-item">
-          <span class="account-info-label">Account Type:</span>
-          <span id="accountType">Loading...</span>
-        </div>
-      </div>
-      <div class="account-actions">
-        <button class="account-button analytics" id="viewAnalytics">View My Analytics</button>
-        <button class="account-button manage" id="manageAccount">Manage Account</button>
-        <button class="account-button signout" id="signOutButton">Sign Out</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ORIGINAL RESULTS PAGE JAVASCRIPT - COMPLETELY UNCHANGED -->
 <script>
-// Enhanced theme detection and application
-function applyTheme() {
-  const savedTheme = localStorage.getItem('theme');
-  const body = document.body;
-  
-  // Remove any existing theme classes
-  body.classList.remove('light', 'dark', 'auto-theme');
-  
-  if (savedTheme === 'light' || savedTheme === 'dark') {
-    // Use saved preference
-    body.classList.add(savedTheme);
-  } else {
-    // Auto-detect based on device preference
-    body.classList.add('auto-theme');
-    
-    // Also check if we need to set a default for first-time visitors
-    if (!localStorage.getItem('theme')) {
-      localStorage.setItem('theme', 'auto');
+// Wikipedia Knowledge Panel Integration
+class TAISEN_KnowledgePanel {
+    constructor() {
+        this.panel = document.getElementById('knowledgePanel');
+        this.isProcessing = false;
     }
-  }
-}
 
-// CAPTCHA Verification Function
-function verifyCaptcha() {
-  const params = new URLSearchParams(window.location.search);
-  const query = params.get('q') || '';
-  
-  // Check both session and local storage
-  const sessionVerify = JSON.parse(sessionStorage.getItem('captchaVerified') || 'null');
-  const localVerify = JSON.parse(localStorage.getItem('captchaVerified') || 'null');
-  const verification = sessionVerify || localVerify;
-  
-  // Validation checks
-  if (!verification || !verification.verified) {
-    redirectToCaptcha(query);
-    return false;
-  }
-  
-  // Check timestamp (expire after 2 hours)
-  const twoHours = 2 * 60 * 60 * 1000;
-  if (Date.now() - verification.timestamp > twoHours) {
-    redirectToCaptcha(query);
-    return false;
-  }
-  
-  return true;
-}
-
-function redirectToCaptcha(query) {
-  sessionStorage.removeItem('captchaVerified');
-  localStorage.removeItem('captchaVerified');
-  window.location.href = `captcha.html?q=${encodeURIComponent(query)}`;
-}
-
-// Listen for system theme changes
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'auto' || !savedTheme) {
-    applyTheme();
-  }
-});
-
-// Original code below - with UI integration
-let data = [];
-
-// Helpers
-function getQuery() {
-  const query = new URLSearchParams(window.location.search).get('q') || '';
-  document.getElementById('queryTerm').textContent = query;
-  return query;
-}
-
-function getLabsPreference() {
-  const saved = localStorage.getItem('showLabs');
-  return saved === null ? true : saved === 'true';
-}
-
-function saveLabsPreference(value) {
-  localStorage.setItem('showLabs', value);
-}
-
-// Load internal JSON data
-async function loadData() {
-  // Apply theme first
-  applyTheme();
-  
-  // CAPTCHA Verification Check
-  if (!verifyCaptcha()) {
-    return; // Redirect will happen automatically
-  }
-
-  const response = await fetch('taisenData.json');
-  data = await response.json();
-
-  const labsToggle = document.getElementById('labsToggle');
-  const filterEl = document.getElementById('filter');
-
-  // Initialize toggle from localStorage
-  labsToggle.checked = getLabsPreference();
-
-  function updateResults() {
-    const showLabs = labsToggle.checked;
-    const label = filterEl.value;
-    const query = getQuery();
-
-    let resultsDiv = document.getElementById('results-internal');
-    const sectionTitle = document.querySelector('.section-title');
-
-    if (!showLabs) {
-      // If toggle OFF, hide internal results completely
-      resultsDiv.innerHTML = '';
-      sectionTitle.style.display = 'none';
-      return;
-    }
-    
-    sectionTitle.style.display = 'flex';
-
-    // Filter results based on query & label
-    const filtered = data.filter(item => {
-      const matchesQuery = item.title.toLowerCase().includes(query.toLowerCase()) ||
-                           item.snippet.toLowerCase().includes(query.toLowerCase());
-      const matchesLabel = label === 'all' || item.label === label;
-      return matchesQuery && matchesLabel;
-    });
-
-    // Display
-    resultsDiv.innerHTML = '';
-    if (!filtered.length) {
-      resultsDiv.innerHTML = `
-        <div class="no-results">
-          <p>No internal results found for your search.</p>
-          <p>Try adjusting your search terms or changing the category filter.</p>
-        </div>
-      `;
-      return;
-    }
-    
-    filtered.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'result-card';
-      card.innerHTML = `
-        <h3 class="result-title">${item.title}</h3>
-        <p class="result-snippet">${item.snippet}</p>
-        <div class="result-meta">
-          <span><strong>Type:</strong> ${item.type}</span>
-          <span><strong>Source:</strong> ${item.source}</span>
-        </div>
-        <a href="${item.link}" target="_blank" class="result-link">Visit Resource →</a>
-      `;
-      resultsDiv.appendChild(card);
-    });
-  }
-
-  // Event listeners
-  labsToggle.addEventListener('change', () => {
-    saveLabsPreference(labsToggle.checked);
-    updateResults();
-  });
-  
-  filterEl.addEventListener('change', updateResults);
-
-  // Initial display
-  updateResults();
-}
-
-window.addEventListener('load', loadData);
-</script>
-
-<!-- AUTHENTICATION SCRIPT FROM INDEX.HTML -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-  import { 
-    getAuth, 
-    onAuthStateChanged, 
-    GoogleAuthProvider, 
-    signInWithPopup, 
-    signOut,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signInAnonymously,
-    RecaptchaVerifier,
-    signInWithPhoneNumber
-  } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCMy4SNOU3eAl4iSfbmHWTxae9pVcnJFmc",
-    authDomain: "taisen-search-ad9eb.firebaseapp.com",
-    projectId: "taisen-search-ad9eb",
-    storageBucket: "taisen-search-ad9eb.appspot.com",
-    messagingSenderId: "779736719927",
-    appId: "1:779736719927:web:07ccea945f7549ad56d5b2"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const provider = new GoogleAuthProvider();
-  
-  // DOM Elements
-  const userButton = document.getElementById("userButton");
-  const authModal = document.getElementById("authModal");
-  const accountModal = document.getElementById("accountModal");
-  const authClose = document.getElementById("authClose");
-  const accountClose = document.getElementById("accountClose");
-  const authTabs = document.querySelectorAll(".auth-tab");
-  const emailForm = document.getElementById("emailForm");
-  const phoneForm = document.getElementById("phoneForm");
-  const emailSubmit = document.getElementById("emailSubmit");
-  const phoneSubmit = document.getElementById("phoneSubmit");
-  const googleSignIn = document.getElementById("googleSignIn");
-  const anonymousSignIn = document.getElementById("anonymousSignIn");
-  const emailError = document.getElementById("emailError");
-  const phoneError = document.getElementById("phoneError");
-  const emailSuccess = document.getElementById("emailSuccess");
-  const phoneSuccess = document.getElementById("phoneSuccess");
-  const verificationCodeGroup = document.getElementById("verificationCodeGroup");
-  const signOutButton = document.getElementById("signOutButton");
-  const manageAccount = document.getElementById("manageAccount");
-  
-  // Account modal elements
-  const accountDisplayName = document.getElementById("accountDisplayName");
-  const accountEmail = document.getElementById("accountEmail");
-  const accountUserId = document.getElementById("accountUserId");
-  const accountType = document.getElementById("accountType");
-  
-  let confirmationResult = null;
-  let isSignUp = false;
-
-  // Modal Functions
-  function openAuthModal() {
-    authModal.classList.add("active");
-    resetForms();
-  }
-
-  function closeAuthModal() {
-    authModal.classList.remove("active");
-    resetForms();
-  }
-
-  function openAccountModal() {
-    accountModal.classList.add("active");
-    updateAccountInfo();
-  }
-
-  function closeAccountModal() {
-    accountModal.classList.remove("active");
-  }
-
-  function resetForms() {
-    // Reset all forms and errors
-    document.getElementById("email").value = "";
-    document.getElementById("password").value = "";
-    document.getElementById("phoneNumber").value = "";
-    document.getElementById("verificationCode").value = "";
-    
-    emailError.textContent = "";
-    phoneError.textContent = "";
-    emailSuccess.textContent = "";
-    phoneSuccess.textContent = "";
-    
-    emailError.classList.remove("active");
-    phoneError.classList.remove("active");
-    emailSuccess.classList.remove("active");
-    phoneSuccess.classList.remove("active");
-    
-    verificationCodeGroup.style.display = "none";
-    phoneSubmit.textContent = "Send Code";
-    isSignUp = false;
-  }
-
-  function showError(element, message) {
-    element.textContent = message;
-    element.classList.add("active");
-  }
-
-  function showSuccess(element, message) {
-    element.textContent = message;
-    element.classList.add("active");
-  }
-
-  function updateAccountInfo() {
-    const user = auth.currentUser;
-    if (user) {
-      accountDisplayName.textContent = user.displayName || "Not set";
-      accountEmail.textContent = user.email || "No email";
-      accountUserId.textContent = user.uid.substring(0, 8) + "...";
-      accountType.textContent = user.isAnonymous ? "Guest Account" : "Full Account";
-    }
-  }
-
-  // Tab Switching
-  authTabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      const targetTab = tab.getAttribute("data-tab");
-      
-      // Update active tab
-      authTabs.forEach(t => t.classList.remove("active"));
-      tab.classList.add("active");
-      
-      // Update forms based on tab
-      if (targetTab === "signin") {
-        emailSubmit.textContent = "Sign In";
-        isSignUp = false;
-      } else {
-        emailSubmit.textContent = "Sign Up";
-        isSignUp = true;
-      }
-    });
-  });
-
-  // Email/Password Authentication
-  emailForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    
-    if (!email || !password) {
-      showError(emailError, "Please fill in all fields");
-      return;
-    }
-    
-    try {
-      if (isSignUp) {
-        // Sign up with email/password
-        await createUserWithEmailAndPassword(auth, email, password);
-        showSuccess(emailSuccess, "Account created successfully!");
-        setTimeout(closeAuthModal, 1500);
-      } else {
-        // Sign in with email/password
-        await signInWithEmailAndPassword(auth, email, password);
-        showSuccess(emailSuccess, "Signed in successfully!");
-        setTimeout(closeAuthModal, 1500);
-      }
-    } catch (error) {
-      console.error("Email auth error:", error);
-      showError(emailError, error.message);
-    }
-  });
-
-  // Phone Authentication
-  phoneForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    
-    const phoneNumber = document.getElementById("phoneNumber").value;
-    const verificationCode = document.getElementById("verificationCode").value;
-    
-    if (!phoneNumber) {
-      showError(phoneError, "Please enter a phone number");
-      return;
-    }
-    
-    try {
-      if (!confirmationResult) {
-        // First step: Send verification code
-        const appVerifier = new RecaptchaVerifier(auth, 'phoneSubmit', {
-          'size': 'invisible'
-        });
+    async fetchData(query) {
+        if (this.isProcessing) return;
         
-        confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-        verificationCodeGroup.style.display = "block";
-        phoneSubmit.textContent = "Verify Code";
-        showSuccess(phoneSuccess, "Verification code sent!");
-      } else {
-        // Second step: Verify code
-        await confirmationResult.confirm(verificationCode);
-        showSuccess(phoneSuccess, "Phone verified successfully!");
-        setTimeout(closeAuthModal, 1500);
-      }
-    } catch (error) {
-      console.error("Phone auth error:", error);
-      showError(phoneError, error.message);
+        this.isProcessing = true;
+        this.showLoading();
+
+        try {
+            // Search Wikipedia for the page
+            const searchData = await this.searchWikipedia(query);
+            if (!searchData || !searchData.query || !searchData.query.search.length) {
+                this.showNoResults();
+                return;
+            }
+
+            const pageTitle = searchData.query.search[0].title;
+            
+            // Get page content and extract
+            const pageData = await this.getPageData(pageTitle);
+            
+            // Get Wikidata structured data
+            const wikidataInfo = await this.getWikidataInfo(pageTitle);
+            
+            // Display the knowledge panel
+            this.displayKnowledgePanel(pageTitle, pageData, wikidataInfo);
+            
+        } catch (error) {
+            console.error('Knowledge Panel Error:', error);
+            this.showError();
+        } finally {
+            this.isProcessing = false;
+        }
     }
-  });
 
-  // Google Authentication
-  googleSignIn.addEventListener("click", async () => {
-    try {
-      await signInWithPopup(auth, provider);
-      closeAuthModal();
-    } catch (error) {
-      console.error("Google auth error:", error);
-      showError(emailError, error.message);
+    async searchWikipedia(query) {
+        const url = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*`;
+        const response = await fetch(url);
+        return await response.json();
     }
-  });
 
-  // Anonymous Authentication
-  anonymousSignIn.addEventListener("click", async () => {
-    try {
-      await signInAnonymously(auth);
-      closeAuthModal();
-    } catch (error) {
-      console.error("Anonymous auth error:", error);
-      showError(emailError, error.message);
+    async getPageData(pageTitle) {
+        const url = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts|pageimages|info&exintro=true&explaintext=true&pithumbsize=400&titles=${encodeURIComponent(pageTitle)}&format=json&origin=*`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        const pageId = Object.keys(data.query.pages)[0];
+        return data.query.pages[pageId];
     }
-  });
 
-  // Sign Out
-  signOutButton.addEventListener("click", async () => {
-    try {
-      await signOut(auth);
-      closeAccountModal();
-    } catch (error) {
-      console.error("Sign out error:", error);
+    async getWikidataInfo(pageTitle) {
+        try {
+            // Get Wikidata ID
+            const propsUrl = `https://en.wikipedia.org/w/api.php?action=query&prop=pageprops&titles=${encodeURIComponent(pageTitle)}&format=json&origin=*`;
+            const propsResponse = await fetch(propsUrl);
+            const propsData = await propsResponse.json();
+            
+            const pageId = Object.keys(propsData.query.pages)[0];
+            const wikidataId = propsData.query.pages[pageId].pageprops?.wikibase_item;
+            
+            if (!wikidataId) return null;
+
+            // Get Wikidata entity data
+            const wikidataUrl = `https://www.wikidata.org/wiki/Special:EntityData/${wikidataId}.json`;
+            const wdResponse = await fetch(wikidataUrl);
+            const wdData = await wdResponse.json();
+            
+            return wdData.entities[wikidataId];
+        } catch (error) {
+            console.error('Wikidata fetch error:', error);
+            return null;
+        }
     }
-  });
 
-  // Manage Account (external link)
-  manageAccount.addEventListener("click", () => {
-    window.open("taisen-login/index.html", "_blank");
-  });
-
-  // View Analytics
-    viewAnalytics.addEventListener("click", () => {
-      window.open('analytics-dashboard.html', '_blank');
-      closeAccountModal();
-    });
-
-  // Update User Button
-  function updateButton(user) {
-    if (user) {
-      // User is signed in - show user's name or "User"
-      const name = user.displayName || "User";
-      userButton.textContent = name;
-      userButton.style.display = "block";
-      userButton.onclick = openAccountModal;
-    } else {
-      // User is signed out - show "Sign In" button
-      userButton.textContent = "Sign In";
-      userButton.style.display = "block";
-      userButton.onclick = openAuthModal;
+    showLoading() {
+        this.panel.innerHTML = `
+            <div class="knowledge-header">
+                <div class="knowledge-title">Loading Knowledge Panel</div>
+                <div class="knowledge-subtitle">Fetching information from Wikipedia</div>
+            </div>
+            <div class="knowledge-body">
+                <div class="loading-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        `;
+        this.panel.style.display = 'block';
     }
-  }
 
-  // Event Listeners
-  authClose.addEventListener("click", closeAuthModal);
-  accountClose.addEventListener("click", closeAccountModal);
-  
-  // Close modals when clicking outside
-  authModal.addEventListener("click", (e) => {
-    if (e.target === authModal) {
-      closeAuthModal();
+    showNoResults() {
+        this.panel.innerHTML = `
+            <div class="knowledge-header">
+                <div class="knowledge-title">No Knowledge Panel Available</div>
+                <div class="knowledge-subtitle">Try a different search term</div>
+            </div>
+            <div class="knowledge-body">
+                <p>We couldn't find structured information for this search term in Wikipedia.</p>
+            </div>
+        `;
+        this.panel.style.display = 'block';
     }
-  });
 
-  accountModal.addEventListener("click", (e) => {
-    if (e.target === accountModal) {
-      closeAccountModal();
+    showError() {
+        this.panel.innerHTML = `
+            <div class="knowledge-header">
+                <div class="knowledge-title">Error Loading Knowledge Panel</div>
+                <div class="knowledge-subtitle">Please try again later</div>
+            </div>
+            <div class="knowledge-body">
+                <p>There was an error fetching information from Wikipedia. Please check your connection and try again.</p>
+            </div>
+        `;
+        this.panel.style.display = 'block';
     }
-  });
 
-  // Initialize auth state listener
-  onAuthStateChanged(auth, (user) => {
-    updateButton(user);
-  });
+    displayKnowledgePanel(pageTitle, pageData, wikidataInfo) {
+        const extract = pageData.extract ? pageData.extract.substring(0, 300) + '...' : 'No description available.';
+        const thumbnail = pageData.thumbnail ? pageData.thumbnail.source : null;
+        
+        // Extract basic info from Wikidata if available
+        let structuredInfo = this.extractStructuredInfo(wikidataInfo);
 
-  // Log search function
-  async function logSearch(query) {
-    const user = auth.currentUser;
-    if (!user) return;
-    try {
-      const userRef = doc(db, "users", user.uid);
-      await setDoc(userRef, { 
-        lastSearch: query, 
-        timestamp: new Date(),
-        email: user.email,
-        displayName: user.displayName 
-      }, { merge: true });
-      console.log("Search logged:", query);
-    } catch (err) {
-      console.error("Error logging search:", err);
+        this.panel.innerHTML = `
+            <div class="knowledge-header">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    ${thumbnail ? `<img src="${thumbnail}" alt="${pageTitle}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">` : ''}
+                    <div>
+                        <div class="knowledge-title">${pageTitle}</div>
+                        <div class="knowledge-subtitle">Wikipedia</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="knowledge-body">
+                <div class="knowledge-section">
+                    <div class="section-title">
+                        <i class="fas fa-book"></i> Description
+                    </div>
+                    <p class="knowledge-description">${extract}</p>
+                    <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 14px; font-weight: 500;">Read more on Wikipedia →</a>
+                </div>
+
+                ${structuredInfo ? `
+                <div class="knowledge-section">
+                    <div class="section-title">
+                        <i class="fas fa-info-circle"></i> Key Facts
+                    </div>
+                    <div class="fact-grid">
+                        ${structuredInfo.map(fact => `
+                            <div class="fact-item">
+                                <span class="fact-label">${fact.label}:</span>
+                                <span class="fact-value">${fact.value}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+
+                <div class="quick-actions">
+                    <h4 style="margin: 0 0 10px 0; font-size: 0.9rem; color: var(--gray-700);">Quick Actions</h4>
+                    <div class="action-buttons">
+                        <button class="action-button" onclick="window.open('https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}', '_blank')">
+                            Open Wikipedia
+                        </button>
+                        <button class="action-button secondary" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(pageTitle)}', '_blank')">
+                            Google Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        this.panel.style.display = 'block';
     }
-  }
 
-  // Override search execution to log searches
-  const interval = setInterval(() => {
-    if (window.google && google.search && google.search.cse) {
-      const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
-      if (searchBox && searchBox.execute) {
-        clearInterval(interval);
-        const originalExecute = searchBox.execute.bind(searchBox);
-        searchBox.execute = function(query) {
-          if (query && query.trim() !== "") logSearch(query);
-          originalExecute(query);
+    extractStructuredInfo(wikidataInfo) {
+        if (!wikidataInfo || !wikidataInfo.claims) return null;
+
+        const facts = [];
+        
+        // Extract common properties
+        const propertyMap = {
+            'P571': 'Founded',
+            'P159': 'Headquarters',
+            'P112': 'Founders',
+            'P169': 'CEO',
+            'P2139': 'Revenue',
+            'P1128': 'Employees',
+            'P17': 'Country',
+            'P571': 'Inception',
         };
-      }
+
+        for (const [property, label] of Object.entries(propertyMap)) {
+            if (wikidataInfo.claims[property]) {
+                const claim = wikidataInfo.claims[property][0];
+                if (claim.mainsnak && claim.mainsnak.datavalue) {
+                    let value = this.formatWikidataValue(claim.mainsnak.datavalue);
+                    if (value) {
+                        facts.push({ label, value });
+                    }
+                }
+            }
+        }
+
+        return facts.length > 0 ? facts : null;
     }
-  }, 100);
-</script>
 
-<!-- Hamburger functionality from index.html -->
-<script>
-  const hamburger = document.getElementById('hamburger');
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    window.location.href = 'settings.html'; // Opens settings page
-  });
-</script>
+    formatWikidataValue(datavalue) {
+        try {
+            if (datavalue.type === 'time') {
+                return datavalue.value.time.substring(1, 11); // Extract date from timestamp
+            } else if (datavalue.type === 'string') {
+                return datavalue.value;
+            } else if (datavalue.type === 'wikibase-entityid') {
+                return 'Entity'; // For entities, you could fetch the label, but keeping it simple
+            }
+        } catch (error) {
+            console.error('Error formatting Wikidata value:', error);
+        }
+        return null;
+    }
+}
 
-<!-- Anti-bypass protection -->
-<script type="module">
-  import { protectPage } from './antiBypass.js';
-  protectPage(); // will redirect if bypass attempt is detected
-</script>
-<script>
 // AI GPT Search Integration for Results Page
 class TAISEN_AIResults {
     constructor() {
@@ -1647,7 +1245,7 @@ class TAISEN_AIResults {
         this.MODEL = 'google/gemma-3-12b-it';
         this.aiResultsContainer = null;
         this.isProcessing = false;
-        this.MAX_VISIBLE_LENGTH = 800; // Characters to show before truncation
+        this.MAX_VISIBLE_LENGTH = 800;
     }
 
     init() {
@@ -1657,17 +1255,7 @@ class TAISEN_AIResults {
     }
 
     createAIContainer() {
-        this.aiResultsContainer = document.createElement('div');
-        this.aiResultsContainer.id = 'taisen-ai-results';
-        this.aiResultsContainer.style.cssText = `
-            margin-bottom: 30px;
-        `;
-        
-        // Insert before the internal results section
-        const internalResults = document.querySelector('.internal-results');
-        if (internalResults) {
-            internalResults.parentNode.insertBefore(this.aiResultsContainer, internalResults);
-        }
+        this.aiResultsContainer = document.getElementById('taisen-ai-results');
     }
 
     processCurrentSearch() {
@@ -1720,62 +1308,20 @@ class TAISEN_AIResults {
 
     showLoadingState(query) {
         this.aiResultsContainer.innerHTML = `
-            <div class="ai-result-card" style="
-                background: var(--white);
-                border-radius: var(--border-radius-lg);
-                padding: 25px;
-                box-shadow: var(--shadow-md);
-                border-left: 4px solid var(--primary);
-                margin-bottom: 20px;
-            ">
-                <div class="ai-header" style="
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    margin-bottom: 15px;
-                    color: var(--primary);
-                    font-weight: 600;
-                    font-size: 18px;
-                ">
+            <div class="result-card">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px; color: var(--primary); font-weight: 600; font-size: 18px;">
                     <span>🤖 TAISEN AI</span>
-                    <div class="typing-indicator" style="
-                        display: flex;
-                        gap: 4px;
-                    ">
-                        <div class="dot" style="
-                            width: 8px;
-                            height: 8px;
-                            background: var(--primary);
-                            border-radius: 50%;
-                            animation: bounce 1.4s infinite ease-in-out;
-                        "></div>
-                        <div class="dot" style="
-                            width: 8px;
-                            height: 8px;
-                            background: var(--primary);
-                            border-radius: 50%;
-                            animation: bounce 1.4s infinite ease-in-out;
-                            animation-delay: 0.2s;
-                        "></div>
-                        <div class="dot" style="
-                            width: 8px;
-                            height: 8px;
-                            background: var(--primary);
-                            border-radius: 50%;
-                            animation: bounce 1.4s infinite ease-in-out;
-                            animation-delay: 0.4s;
-                        "></div>
+                    <div style="display: flex; gap: 4px;">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
                     </div>
                 </div>
-                <div class="ai-query" style="
-                    color: var(--gray-800);
-                    margin-bottom: 10px;
-                    font-weight: 500;
-                ">Generating AI overview for: "${query}"</div>
+                <div style="color: var(--gray-800); margin-bottom: 10px; font-weight: 500;">
+                    Generating AI overview for: "${query}"
+                </div>
             </div>
         `;
-        
-        this.aiResultsContainer.style.display = 'block';
     }
 
     async fetchAIResponse(query) {
@@ -1812,52 +1358,25 @@ class TAISEN_AIResults {
     }
 
     displayAIResults(query, aiResponse) {
-        // Check if response needs truncation
         const needsTruncation = aiResponse.length > this.MAX_VISIBLE_LENGTH;
         const truncatedResponse = needsTruncation ? 
             aiResponse.substring(0, this.MAX_VISIBLE_LENGTH) + '...' : 
             aiResponse;
         
         this.aiResultsContainer.innerHTML = `
-            <div class="ai-result-card" style="
-                background: var(--white);
-                border-radius: var(--border-radius-lg);
-                padding: 25px;
-                box-shadow: var(--shadow-md);
-                border-left: 4px solid var(--primary);
-                margin-bottom: 30px;
-            ">
-                <div class="ai-header" style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    margin-bottom: 20px;
-                    color: var(--primary);
-                    font-weight: 600;
-                    font-size: 18px;
-                ">
+            <div class="result-card">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; color: var(--primary); font-weight: 600; font-size: 18px;">
                     <span>🤖</span>
                     <span>TAISEN AI Overview</span>
                 </div>
                 
-                <div class="ai-query" style="
-                    color: var(--gray-800);
-                    margin-bottom: 15px;
-                    font-weight: 500;
-                    font-size: 16px;
-                    padding: 10px;
-                    background: var(--gray-100);
-                    border-radius: var(--border-radius);
-                ">${query}</div>
+                <div style="color: var(--gray-800); margin-bottom: 15px; font-weight: 500; font-size: 16px; padding: 10px; background: var(--gray-100); border-radius: var(--border-radius);">
+                    ${query}
+                </div>
                 
-                <div class="ai-response ${needsTruncation ? 'truncated' : ''}" style="
-                    color: var(--gray-700);
-                    line-height: 1.6;
-                    font-size: 15px;
-                    margin-bottom: 15px;
-                    white-space: pre-wrap;
-                    word-wrap: break-word;
-                ">${needsTruncation ? truncatedResponse : aiResponse}</div>
+                <div class="ai-response ${needsTruncation ? 'truncated' : ''}" style="color: var(--gray-700); line-height: 1.6; font-size: 15px; margin-bottom: 15px; white-space: pre-wrap; word-wrap: break-word;">
+                    ${needsTruncation ? truncatedResponse : aiResponse}
+                </div>
                 
                 ${needsTruncation ? `
                 <button class="read-more-btn" data-full-response="${aiResponse.replace(/"/g, '&quot;')}">
@@ -1866,48 +1385,16 @@ class TAISEN_AIResults {
                 </button>
                 ` : ''}
                 
-                <div class="ai-footer" style="
-                    margin-top: 20px;
-                    padding-top: 15px;
-                    border-top: 1px solid var(--gray-300);
-                    color: var(--gray-600);
-                    font-size: 13px;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                ">
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--gray-300); color: var(--gray-600); font-size: 13px; display: flex; justify-content: space-between; align-items: center;">
                     <span>🤖 AI-powered search (Gemma-3-12b) • May include inaccuracies</span>
-                    <div>
-                        <button class="feedback-btn" style="
-                            background: none;
-                            border: 1px solid var(--gray-400);
-                            padding: 6px 12px;
-                            border-radius: var(--border-radius);
-                            cursor: pointer;
-                            font-size: 12px;
-                            color: var(--gray-600);
-                            margin-left: 10px;
-                            transition: var(--transition);
-                        " onmouseover="this.style.background='var(--gray-100)'" 
-                        onmouseout="this.style.background='transparent'">Feedback</button>
-                    </div>
                 </div>
             </div>
         `;
 
-        // Add event listener for read more button if it exists
         if (needsTruncation) {
             const readMoreBtn = this.aiResultsContainer.querySelector('.read-more-btn');
             readMoreBtn.addEventListener('click', this.toggleReadMore.bind(this));
         }
-
-        // Add feedback button functionality
-        const feedbackBtn = this.aiResultsContainer.querySelector('.feedback-btn');
-        feedbackBtn.addEventListener('click', () => {
-            alert('Thank you for your feedback on TAISEN AI results!');
-        });
-
-        this.aiResultsContainer.style.display = 'block';
     }
 
     toggleReadMore(event) {
@@ -1916,14 +1403,12 @@ class TAISEN_AIResults {
         const isExpanded = button.classList.contains('expanded');
         
         if (isExpanded) {
-            // Collapse the response
             const truncatedResponse = button.getAttribute('data-full-response').substring(0, this.MAX_VISIBLE_LENGTH) + '...';
             aiResponseElement.textContent = truncatedResponse;
             aiResponseElement.classList.add('truncated');
             button.innerHTML = '<span>Read more</span><i class="fas fa-chevron-down"></i>';
             button.classList.remove('expanded');
         } else {
-            // Expand the response
             const fullResponse = button.getAttribute('data-full-response');
             aiResponseElement.textContent = fullResponse;
             aiResponseElement.classList.remove('truncated');
@@ -1933,28 +1418,152 @@ class TAISEN_AIResults {
     }
 
     hideAIResults() {
-        this.aiResultsContainer.style.display = 'none';
+        this.aiResultsContainer.innerHTML = '';
     }
 }
 
-// Initialize AI Results when page loads
+// Original code below - with UI integration
+let data = [];
+
+// Helpers
+function getQuery() {
+    const query = new URLSearchParams(window.location.search).get('q') || '';
+    document.getElementById('queryTerm').textContent = query;
+    return query;
+}
+
+function getLabsPreference() {
+    const saved = localStorage.getItem('showLabs');
+    return saved === null ? true : saved === 'true';
+}
+
+function saveLabsPreference(value) {
+    localStorage.setItem('showLabs', value);
+}
+
+// Load internal JSON data
+async function loadData() {
+    const response = await fetch('taisenData.json');
+    data = await response.json();
+
+    const labsToggle = document.getElementById('labsToggle');
+    const filterEl = document.getElementById('filter');
+
+    // Initialize toggle from localStorage
+    labsToggle.checked = getLabsPreference();
+
+    function updateResults() {
+        const showLabs = labsToggle.checked;
+        const label = filterEl.value;
+        const query = getQuery();
+
+        let resultsDiv = document.getElementById('results-internal');
+        const sectionTitle = document.querySelector('.internal-results .section-title');
+
+        if (!showLabs) {
+            // If toggle OFF, hide internal results completely
+            resultsDiv.innerHTML = '';
+            sectionTitle.style.display = 'none';
+            return;
+        }
+        
+        sectionTitle.style.display = 'flex';
+
+        // Filter results based on query & label
+        const filtered = data.filter(item => {
+            const matchesQuery = item.title.toLowerCase().includes(query.toLowerCase()) ||
+                               item.snippet.toLowerCase().includes(query.toLowerCase());
+            const matchesLabel = label === 'all' || item.label === label;
+            return matchesQuery && matchesLabel;
+        });
+
+        // Display
+        resultsDiv.innerHTML = '';
+        if (!filtered.length) {
+            resultsDiv.innerHTML = `
+                <div class="no-results">
+                    <p>No internal results found for your search.</p>
+                    <p>Try adjusting your search terms or changing the category filter.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        filtered.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'result-card';
+            card.innerHTML = `
+                <h3 class="result-title">${item.title}</h3>
+                <p class="result-snippet">${item.snippet}</p>
+                <div class="result-meta">
+                    <span><strong>Type:</strong> ${item.type}</span>
+                    <span><strong>Source:</strong> ${item.source}</span>
+                </div>
+                <a href="${item.link}" target="_blank" class="result-link">Visit Resource →</a>
+            `;
+            resultsDiv.appendChild(card);
+        });
+    }
+
+    // Event listeners
+    labsToggle.addEventListener('change', () => {
+        saveLabsPreference(labsToggle.checked);
+        updateResults();
+    });
+    
+    filterEl.addEventListener('change', updateResults);
+
+    // Initial display
+    updateResults();
+}
+
+// Initialize everything when page loads
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Knowledge Panel
+    const knowledgePanel = new TAISEN_KnowledgePanel();
+    
+    // Initialize AI Results
     const aiResults = new TAISEN_AIResults();
     aiResults.init();
+    
+    // Load internal data
+    loadData();
+    
+    // Override Google CSE to sync with knowledge panel
+    const interval = setInterval(() => {
+        if (window.google && google.search && google.search.cse) {
+            const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
+            if (searchBox && searchBox.execute) {
+                clearInterval(interval);
+                
+                const originalExecute = searchBox.execute.bind(searchBox);
+                searchBox.execute = (query) => {
+                    if (query && query.trim() !== "") {
+                        // Update query term
+                        document.getElementById('queryTerm').textContent = query;
+                        
+                        // Fetch knowledge panel data
+                        knowledgePanel.fetchData(query);
+                    }
+                    originalExecute(query);
+                };
+            }
+        }
+    }, 100);
+});
+
+// Set initial query from URL
+window.addEventListener('load', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('q');
+    if (query) {
+        document.getElementById('queryTerm').textContent = query;
+        
+        // Initialize knowledge panel with initial query
+        const knowledgePanel = new TAISEN_KnowledgePanel();
+        knowledgePanel.fetchData(query);
+    }
 });
 </script>
-
-<style>
-@keyframes bounce {
-    0%, 80%, 100% { 
-        transform: scale(0.8); 
-        opacity: 0.5; 
-    }
-    40% { 
-        transform: scale(1); 
-        opacity: 1; 
-    }
-}
-</style>
 </body>
 </html>
