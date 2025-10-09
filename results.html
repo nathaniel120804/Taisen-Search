@@ -1538,6 +1538,118 @@ footer {
 .gsc-refinementsArea {
     display: none !important;
 }
+
+/* NEW STYLES FOR "PEOPLE ALSO SEARCH FOR" FEATURE */
+.people-also-search {
+    margin: 30px 0;
+    padding: 20px;
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+}
+
+.people-also-search:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.people-also-search-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.people-also-search-header i {
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+.people-also-search-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin: 0;
+}
+
+.people-also-search-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.related-search-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: var(--gray-100);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.related-search-item:hover {
+    background: rgba(0, 119, 255, 0.05);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.related-search-item i {
+    color: var(--primary);
+    font-size: 0.9rem;
+}
+
+.related-search-query {
+    font-weight: 500;
+    color: var(--gray-700);
+    flex: 1;
+}
+
+.related-search-item:hover .related-search-query {
+    color: var(--primary);
+}
+
+/* Responsive adjustments for the new feature */
+@media (max-width: 768px) {
+    .people-also-search {
+        margin: 20px 0;
+        padding: 15px;
+    }
+    
+    .people-also-search-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .related-search-item {
+        padding: 10px 12px;
+    }
+}
+
+/* Dark mode support for the new feature */
+@media (prefers-color-scheme: dark) {
+    .people-also-search {
+        background: var(--white);
+    }
+    
+    .people-also-search-header {
+        border-bottom-color: var(--gray-300);
+    }
+    
+    .related-search-item {
+        background: var(--gray-100);
+    }
+    
+    .related-search-item:hover {
+        background: rgba(0, 119, 255, 0.1);
+    }
+}
 </style>
 </head>
 <body>
@@ -1573,6 +1685,17 @@ footer {
 
     <!-- Google CSE Results -->
     <div class="gcse-searchresults-only"></div>
+    
+    <!-- NEW: People Also Search For Section -->
+    <div id="people-also-search" class="people-also-search" style="display: none;">
+      <div class="people-also-search-header">
+        <i class="fas fa-search"></i>
+        <h3>People also search for</h3>
+      </div>
+      <div class="people-also-search-grid" id="related-searches-container">
+        <!-- Related searches will be populated by JavaScript -->
+      </div>
+    </div>
   </section>
 
   <!-- Knowledge Panel -->
@@ -2253,6 +2376,269 @@ class TAISEN_AIResults {
     }
 }
 
+// NEW: People Also Search For Feature
+class TAISEN_PeopleAlsoSearch {
+    constructor() {
+        this.container = document.getElementById('people-also-search');
+        this.relatedSearchesContainer = document.getElementById('related-searches-container');
+        this.isProcessing = false;
+    }
+
+    init() {
+        this.processCurrentSearch();
+        this.overrideResultsSearch();
+    }
+
+    processCurrentSearch() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
+        if (query && query.trim() !== "") {
+            setTimeout(() => {
+                this.showRelatedSearches(query);
+            }, 1500);
+        }
+    }
+
+    overrideResultsSearch() {
+        const interval = setInterval(() => {
+            if (window.google && google.search && google.search.cse) {
+                const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
+                if (searchBox && searchBox.execute) {
+                    clearInterval(interval);
+                    
+                    const originalExecute = searchBox.execute.bind(searchBox);
+                    searchBox.execute = (query) => {
+                        if (query && query.trim() !== "") {
+                            setTimeout(() => {
+                                this.showRelatedSearches(query);
+                            }, 1500);
+                        }
+                        originalExecute(query);
+                    };
+                }
+            }
+        }, 100);
+    }
+
+    async showRelatedSearches(query) {
+        if (this.isProcessing) return;
+        
+        this.isProcessing = true;
+        
+        try {
+            // First try to get related searches from Google CSE
+            let relatedQueries = await this.getGoogleRelatedSearches(query);
+            
+            // If Google CSE doesn't provide results, fall back to Wikipedia
+            if (!relatedQueries || relatedQueries.length === 0) {
+                relatedQueries = await this.getWikipediaRelatedSearches(query);
+            }
+            
+            // If both methods fail, use our fallback algorithm
+            if (!relatedQueries || relatedQueries.length === 0) {
+                relatedQueries = await this.generateFallbackRelatedQueries(query);
+            }
+            
+            this.displayRelatedSearches(relatedQueries);
+        } catch (error) {
+            console.error('Related Searches Error:', error);
+            this.hideRelatedSearches();
+        } finally {
+            this.isProcessing = false;
+        }
+    }
+
+    async getGoogleRelatedSearches(query) {
+        try {
+            // Wait for Google CSE to load and check for related searches
+            return new Promise((resolve) => {
+                const checkInterval = setInterval(() => {
+                    const relatedSearches = document.querySelector('.gsc-related-searches');
+                    if (relatedSearches) {
+                        clearInterval(checkInterval);
+                        const links = relatedSearches.querySelectorAll('a');
+                        const queries = Array.from(links).map(link => link.textContent.trim());
+                        resolve(queries.slice(0, 8)); // Return top 8
+                    }
+                    
+                    // Timeout after 3 seconds
+                    setTimeout(() => {
+                        clearInterval(checkInterval);
+                        resolve([]);
+                    }, 3000);
+                }, 100);
+            });
+        } catch (error) {
+            console.error('Google CSE related searches error:', error);
+            return [];
+        }
+    }
+
+    async getWikipediaRelatedSearches(query) {
+        try {
+            // Use Wikipedia API to get related searches
+            const url = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srwhat=text&srprop=redirecttitle&format=json&origin=*`;
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (data.query && data.query.search) {
+                // Extract titles from search results
+                const titles = data.query.search.map(item => item.title);
+                
+                // Also get search suggestions from Wikipedia
+                const suggestUrl = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(query)}&limit=8&format=json&origin=*`;
+                const suggestResponse = await fetch(suggestUrl);
+                const suggestData = await suggestResponse.json();
+                
+                // Combine both sources and remove duplicates
+                const allSuggestions = [...titles, ...(suggestData[1] || [])];
+                const uniqueSuggestions = [...new Set(allSuggestions)].slice(0, 8);
+                
+                return uniqueSuggestions;
+            }
+            return [];
+        } catch (error) {
+            console.error('Wikipedia related searches error:', error);
+            return [];
+        }
+    }
+
+    async generateFallbackRelatedQueries(query) {
+        // Fallback algorithm for when both Google CSE and Wikipedia fail
+        const queryLower = query.toLowerCase();
+        
+        // Define some common related search patterns
+        const patterns = {
+            // Technology queries
+            'programming': ['best programming languages', 'programming tutorials', 'coding resources', 'software development'],
+            'python': ['python tutorial', 'python vs javascript', 'python projects', 'python libraries'],
+            'javascript': ['javascript tutorial', 'javascript frameworks', 'node.js', 'react javascript'],
+            
+            // General knowledge queries
+            'history': ['world history', 'ancient history', 'historical events', 'famous people in history'],
+            'science': ['scientific discoveries', 'physics', 'biology', 'chemistry'],
+            'art': ['famous artists', 'art history', 'painting techniques', 'modern art'],
+            
+            // Default fallback patterns
+            'default': [
+                `${query} tutorial`,
+                `${query} definition`,
+                `${query} examples`,
+                `${query} vs`,
+                `best ${query}`,
+                `${query} for beginners`,
+                `how to use ${query}`,
+                `${query} alternatives`
+            ]
+        };
+        
+        // Find matching pattern or use default
+        let related = patterns.default;
+        
+        for (const [key, values] of Object.entries(patterns)) {
+            if (queryLower.includes(key) && key !== 'default') {
+                related = values;
+                break;
+            }
+        }
+        
+        // Add some query-specific variations
+        const words = query.split(' ');
+        if (words.length > 1) {
+            // Add variations with different word orders or synonyms
+            related.push(`${words[1]} ${words[0]}`);
+            related.push(`what is ${query}`);
+            related.push(`${query} meaning`);
+        }
+        
+        // Shuffle and return top 8 unique queries
+        const uniqueQueries = [...new Set(related)].slice(0, 8);
+        return this.shuffleArray(uniqueQueries);
+    }
+
+    shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    displayRelatedSearches(relatedQueries) {
+        if (!relatedQueries || relatedQueries.length === 0) {
+            this.hideRelatedSearches();
+            return;
+        }
+        
+        this.relatedSearchesContainer.innerHTML = '';
+        
+        relatedQueries.forEach(query => {
+            const item = document.createElement('div');
+            item.className = 'related-search-item';
+            item.innerHTML = `
+                <i class="fas fa-search"></i>
+                <span class="related-search-query">${query}</span>
+            `;
+            
+            // Add click handler to perform new search
+            item.addEventListener('click', () => {
+                this.performSearch(query);
+            });
+            
+            this.relatedSearchesContainer.appendChild(item);
+        });
+        
+        this.container.style.display = 'block';
+    }
+
+    performSearch(query) {
+        // Update the search bar with the new query
+        const searchInput = document.querySelector('.gsc-input');
+        if (searchInput) {
+            searchInput.value = query;
+            
+            // Trigger input event to update any listeners
+            const inputEvent = new Event('input', { bubbles: true });
+            searchInput.dispatchEvent(inputEvent);
+        }
+        
+        // Update the URL to reflect the new search
+        const newUrl = new URL(window.location);
+        newUrl.searchParams.set('q', query);
+        window.history.pushState({}, '', newUrl);
+        
+        // Update the displayed query term
+        document.getElementById('queryTerm').textContent = query;
+        
+        // Use the existing Google CSE search functionality
+        if (window.google && google.search && google.search.cse) {
+            const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
+            if (searchBox && searchBox.execute) {
+                searchBox.execute(query);
+            }
+        }
+        
+        // Also trigger the knowledge panel and AI results
+        const knowledgePanel = new TAISEN_KnowledgePanel();
+        knowledgePanel.fetchData(query);
+        
+        const aiResults = new TAISEN_AIResults();
+        aiResults.showAIResults(query);
+        
+        // Hide the current related searches while new ones load
+        this.hideRelatedSearches();
+        
+        // Show new related searches after a delay
+        setTimeout(() => {
+            this.showRelatedSearches(query);
+        }, 2000);
+    }
+
+    hideRelatedSearches() {
+        this.container.style.display = 'none';
+    }
+}
+
 // Original code below - with UI integration
 let data = [];
 
@@ -2364,6 +2750,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize AI Results
     const aiResults = new TAISEN_AIResults();
     aiResults.init();
+    
+    // NEW: Initialize People Also Search For
+    const peopleAlsoSearch = new TAISEN_PeopleAlsoSearch();
+    peopleAlsoSearch.init();
     
     // Load internal data
     loadData();
