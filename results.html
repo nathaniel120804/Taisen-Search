@@ -1976,7 +1976,7 @@ class TAISEN_KnowledgePanel {
     }
 }
 
-// AI GPT Search Integration for Results Page
+// AI GPT Search Integration for Results Page - WITH QUERY FILTERING
 class TAISEN_AIResults {
     constructor() {
         this.API_KEY = '4344c369928a4a26997e233f39cce26d';
@@ -2028,8 +2028,100 @@ class TAISEN_AIResults {
         }, 100);
     }
 
+    // NEW: Query pattern detection for AI mode
+    shouldShowAIResults(query) {
+        const lowerQuery = query.toLowerCase().trim();
+        
+        // Patterns that SHOULD trigger AI results
+        const aiPatterns = [
+            // How-to and step-by-step questions
+            /^how to\b/i,
+            /^how do i\b/i,
+            /^how can i\b/i,
+            /^steps to\b/i,
+            /^guide to\b/i,
+            /^tutorial on\b/i,
+            
+            // Explanations and definitions
+            /^what is\b/i,
+            /^what are\b/i,
+            /^explain\b/i,
+            /^definition of\b/i,
+            /^meaning of\b/i,
+            
+            // Comparisons
+            /\bvs\b|\bversus\b/i,
+            /\bcompared to\b/i,
+            /\bpros and cons\b/i,
+            /\badvantages and disadvantages\b/i,
+            /\bdifferences between\b/i,
+            
+            // Summaries
+            /^summary of\b/i,
+            /^overview of\b/i,
+            /^brief on\b/i,
+            
+            // Predictive and creative queries
+            /^ideas for\b/i,
+            /^suggestions for\b/i,
+            /^best ways to\b/i,
+            /^creative\b/i,
+            /^brainstorm\b/i
+        ];
+
+        // Patterns that should NOT trigger AI results
+        const nonAIPatterns = [
+            // Local searches
+            /\bnear me\b/i,
+            /\bclose to me\b/i,
+            /\bin my area\b/i,
+            /\blocal\b/i,
+            
+            // Transactional searches
+            /^buy\b/i,
+            /^purchase\b/i,
+            /^shop\b/i,
+            /^price of\b/i,
+            /^cost of\b/i,
+            /^order\b/i,
+            
+            // Specific factual queries
+            /^population of\b/i,
+            /^capital of\b/i,
+            /^height of\b/i,
+            /^weight of\b/i,
+            /^age of\b/i,
+            /^when was\b/i,
+            /^where is\b/i
+        ];
+
+        // Check if query matches any non-AI patterns first
+        for (const pattern of nonAIPatterns) {
+            if (pattern.test(lowerQuery)) {
+                return false;
+            }
+        }
+
+        // Check if query matches any AI patterns
+        for (const pattern of aiPatterns) {
+            if (pattern.test(lowerQuery)) {
+                return true;
+            }
+        }
+
+        // For queries that don't match clear patterns, use length and complexity as fallback
+        const words = lowerQuery.split(/\s+/).length;
+        return words >= 3; // Show AI for more complex queries (3+ words)
+    }
+
     async showAIResults(query) {
         if (this.isProcessing) return;
+        
+        // Check if this query should trigger AI mode
+        if (!this.shouldShowAIResults(query)) {
+            this.hideAIResults();
+            return;
+        }
         
         this.isProcessing = true;
         this.showLoadingState(query);
