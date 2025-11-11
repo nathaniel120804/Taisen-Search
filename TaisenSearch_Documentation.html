@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taisen Search – Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+    margin: 50px;
+    color: #1F2937;
+    line-height: 1.6;
+    background-color: #F9FAFB;
+  }
+  h1, h2, h3 {
+    color: #1E40AF;
+    margin-top: 40px;
+  }
+  h1 { font-size: 36px; }
+  h2 { font-size: 26px; border-bottom: 3px solid #3B82F6; padding-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+  h3 { font-size: 20px; margin-top: 20px; color: #1E3A8A; }
+  p { margin: 10px 0; }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    background-color: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+  }
+  th {
+    background: linear-gradient(90deg, #3B82F6, #2563EB);
+    color: white;
+    font-weight: 600;
+  }
+  tr:nth-child(even) { background-color: #F3F4F6; }
+  .version-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, #3B82F6, #2563EB);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .version-badge.new {
+    background: linear-gradient(90deg, #10B981, #059669);
+  }
+  .version-badge.latest {
+    background: linear-gradient(90deg, #8B5CF6, #7C3AED);
+  }
+  ul { margin: 5px 0 5px 20px; }
+  footer {
+    margin-top: 60px;
+    font-size: 14px;
+    text-align: center;
+    color: #6B7280;
+  }
+  .icon-section::before {
+    content: "📄";
+    margin-right: 8px;
+  }
+  .feature-highlight {
+    background-color: #ECFDF5;
+    border-left: 4px solid #10B981;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 0 8px 8px 0;
+  }
+  .feature-highlight.latest {
+    background-color: #F3E8FF;
+    border-left: 4px solid #8B5CF6;
+  }
+  .calculator-preview {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #E5E7EB;
+  }
+  .calculator-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 15px 0;
+  }
+  .calculator-feature {
+    background: #F8FAFC;
+    padding: 12px;
+    border-radius: 6px;
+    border-left: 3px solid #3B82F6;
+  }
+</style>
+</head>
+<body>
+
+<h1>Taisen Search – Software Development Documentation</h1>
+
+<p><strong>Prepared by:</strong> The Taisen Team</p>
+<p><strong>Role:</strong> Project Lead</p>
+<p><strong>Date:</strong> October 9, 2025</p>
+<p><strong>Documentation Version:</strong> 1.15</p>
+
+<h2 class="icon-section">Introduction</h2>
+<p><strong>Purpose:</strong> This document provides a detailed account of the development, improvements, and version history of Taisen Search. It serves as a reference for stakeholders, developers, and future maintainers.</p>
+<p><strong>Scope:</strong> Taisen Search is a search platform combining internal resources (Taisen Labs) and external results via Google Custom Search Engine (CSE), focusing on usability, modern design, internal research functionality, security, and user-configurable settings.</p>
+<p><strong>Audience:</strong> Project stakeholders, development team, QA testers, future maintainers.</p>
+
+<h2 class="icon-section">Versioning Overview</h2>
+<table>
+<tr>
+<th>Version</th>
+<th>Release Date</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><span class="version-badge">1.0</span></td>
+<td>TBD</td>
+<td>Initial release with basic search and Google CSE integration.</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.1</span></td>
+<td>TBD</td>
+<td>UI/UX enhancements: aligned search bar, card-based results, modal popups.</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.2</span></td>
+<td>TBD</td>
+<td>Labs toggle feature: show/hide internal results, improved filtering.</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.3</span></td>
+<td>TBD</td>
+<td>Design & accessibility improvements: responsive layout, shadows, truncation, modal optimization.</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.4</span></td>
+<td>TBD</td>
+<td>Advanced search features: full-text modals, card "Open in New Tab", error handling.</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.5</span></td>
+<td>TBD</td>
+<td>Background & doodle enhancements: animated backgrounds without performance loss.</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.6</span></td>
+<td>TBD</td>
+<td>Functional improvements: input validation, bug fixes, modal optimization, faster load times.</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.7</span></td>
+<td>Planned</td>
+<td>Future enhancements: internal search algorithms, personalization, advanced filters, analytics, multi-language support.</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.8</span></td>
+<td>TBD</td>
+<td>Captcha verification flow added and debug dashboard integrated.</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.9</span></td>
+<td>September 25, 2025</td>
+<td>
+User-configurable Settings added:
+<ul>
+<li>Theme Selection: Light/Dark mode applied immediately.</li>
+<li>Language & Region: saved and restored from localStorage.</li>
+<li>SafeSearch Toggle: stored preference for search filtering.</li>
+<li>Privacy Mode Toggle: stored preference (IP masking/logging placeholder).</li>
+<li>Save Settings button: saves to localStorage and redirects to main page.</li>
+<li>Settings persist across page reloads.</li>
+<li>Mobile and desktop compatibility for settings UI.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.10</span></td>
+<td>October, 2025</td>
+<td>
+Comprehensive Authentication System with Popup Modal:
+<ul>
+<li>Multi-provider authentication: Email/Password, Phone, Google, and Anonymous</li>
+<li>Popup modal interface with tabbed sign-in/sign-up forms</li>
+<li>User session persistence and account management</li>
+<li>Search logging tied to user accounts</li>
+<li>Enhanced security with Firebase Authentication</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.11</span></td>
+<td>October, 2025</td>
+<td>
+AI Mode and AI Integration in Search:
+<ul>
+<li>AI Mode toggle in search interface for enhanced AI-powered results</li>
+<li>AI-enhanced search results with summarization and contextual insights</li>
+<li>AI-powered query suggestions and auto-completion</li>
+<li>Natural language processing for improved search understanding</li>
+<li>AI-generated summaries for complex search queries</li>
+<li>Integration with existing authentication and settings systems</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.12</span></td>
+<td>October, 2025</td>
+<td>
+Customizable Background System:
+<ul>
+<li>Multiple background options: Solid colors, gradients, and images</li>
+<li>Background customization panel with live preview</li>
+<li>Preset themes and custom color picker</li>
+<li>Background blur and opacity controls</li>
+<li>Save and load custom background preferences</li>
+<li>Integration with existing theme system</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.13</span></td>
+<td>October, 2025</td>
+<td>
+Analytics and Settings Integration:
+<ul>
+<li>Analytics system disabled by default for user privacy</li>
+<li>User-controlled analytics toggle in settings</li>
+<li>Anonymous usage data collection when enabled</li>
+<li>Search query analytics and user behavior tracking</li>
+<li>Performance metrics and error reporting</li>
+<li>Privacy-focused data collection with no personal identifiers</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><span class="version-badge">1.14</span></td>
+<td>October 9, 2025</td>
+<td>
+Taisen Labs Removal and AI Query Pattern Filtering:
+<ul>
+<li>Complete removal of Taisen Labs search results from results page</li>
+<li>Elimination of Labs toggle and filtering functionality</li>
+<li>Focus on external Google CSE results for improved performance</li>
+<li>Simplified search interface without internal/external result segregation</li>
+<li>AI Query Pattern Filtering with intelligent detection</li>
+<li>Updated documentation and codebase reflecting Labs removal</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><span class="version-badge latest">1.15</span></td>
+<td>October 9, 2025</td>
+<td>
+<strong>NEW:</strong> Scientific Calculator Integration:
+<ul>
+<li>Context-aware calculator that appears only for calculation-related queries</li>
+<li>Intelligent query detection for mathematical expressions and calculation terms</li>
+<li>Basic and scientific modes with toggle functionality</li>
+<li>Pre-filling calculator with detected mathematical expressions from search queries</li>
+<li>Seamless integration with existing search interface and design system</li>
+<li>Enhanced user experience for mathematical and calculation searches</li>
+</ul>
+</td>
+</tr>
+</table>
+
+<h2 class="icon-section">Detailed Version Improvements</h2>
+
+<!-- Previous version details remain unchanged -->
+
+<div class="feature-highlight latest">
+<h3>Version 1.15 – Scientific Calculator Integration</h3>
+
+<div class="calculator-preview">
+  <h4>Calculator Preview</h4>
+  <p>The scientific calculator appears automatically when users search for calculation-related queries, providing immediate mathematical computation capabilities.</p>
+</div>
+
+<div class="calculator-feature-grid">
+  <div class="calculator-feature">
+    <strong>Query Detection</strong>
+    <p>Intelligent pattern matching for mathematical expressions and calculation-related terms</p>
+  </div>
+  <div class="calculator-feature">
+    <strong>Dual Mode Operation</strong>
+    <p>Toggle between basic and scientific calculator modes</p>
+  </div>
+  <div class="calculator-feature">
+    <strong>Auto-Prefill</strong>
+    <p>Automatically fills calculator with detected mathematical expressions from search queries</p>
+  </div>
+  <div class="calculator-feature">
+    <strong>Seamless Integration</strong>
+    <p>Appears above search results without disrupting the existing interface</p>
+  </div>
+</div>
+
+<ul>
+<li><strong>Context-Aware Display:</strong>
+  <ul>
+    <li>Calculator appears only for relevant mathematical and calculation queries</li>
+    <li>Hidden by default for non-calculation searches</li>
+    <li>Automatic detection of mathematical expressions in search queries</li>
+    <li>Manual close functionality with X button</li>
+  </ul>
+</li>
+<li><strong>Query Pattern Detection:</strong>
+  <ul>
+    <li><strong>Basic Arithmetic:</strong> "2+2", "5*3", "10/2"</li>
+    <li><strong>Mathematical Functions:</strong> "sin(30)", "sqrt(16)", "log(100)"</li>
+    <li><strong>Calculation Requests:</strong> "calculate", "what is 20% of 50"</li>
+    <li><strong>Measurement Conversions:</strong> "10 cm to inches", "celsius to fahrenheit"</li>
+    <li><strong>Financial Calculations:</strong> "interest", "loan", "mortgage"</li>
+    <li><strong>Geometry Calculations:</strong> "area of circle", "perimeter"</li>
+    <li><strong>Algebra:</strong> "solve equation", "quadratic"</li>
+  </ul>
+</li>
+<li><strong>Calculator Features:</strong>
+  <ul>
+    <li><strong>Basic Mode:</strong> Standard arithmetic operations, percentages, parentheses</li>
+    <li><strong>Scientific Mode:</strong> Trigonometric functions, logarithms, exponents, constants</li>
+    <li><strong>Mathematical Functions:</strong>
+      <ul>
+        <li>Trigonometry: sin, cos, tan, asin, acos, atan</li>
+        <li>Logarithms: log, ln</li>
+        <li>Exponents: x^y, square root</li>
+        <li>Constants: π (pi)</li>
+        <li>Advanced: factorial, absolute value</li>
+      </ul>
+    </li>
+    <li><strong>User Interface:</strong>
+      <ul>
+        <li>Clean, modern design matching Taisen aesthetic</li>
+        <li>Dual-mode toggle between basic and scientific</li>
+        <li>Clear display showing expression and result</li>
+        <li>Responsive design for all device sizes</li>
+        <li>Color-coded buttons for different function types</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li><strong>Technical Implementation:</strong>
+  <ul>
+    <li><code>checkForCalculationQuery()</code> function for intelligent query detection</li>
+    <li><code>extractMathExpression()</code> function to pre-fill calculator with detected expressions</li>
+    <li>Modular calculator object with comprehensive mathematical operations</li>
+    <li>Integration with existing Google CSE search execution flow</li>
+    <li>CSS animations for smooth appearance and transitions</li>
+    <li>Dark mode support consistent with Taisen theme system</li>
+  </ul>
+</li>
+<li><strong>User Experience Benefits:</strong>
+  <ul>
+    <li>Immediate access to calculations without leaving search results</li>
+    <li>Contextual appearance reduces interface clutter</li>
+    <li>Pre-filled expressions save time and effort</li>
+    <li>Dual modes cater to both basic and advanced mathematical needs</li>
+    <li>Seamless integration maintains consistent user experience</li>
+  </ul>
+</li>
+</ul>
+</div>
+
+<h2 class="icon-section">Features Summary (v1.15)</h2>
+<ul>
+<li><strong>Scientific Calculator:</strong> Context-aware calculator that appears for mathematical queries</li>
+<li><strong>Intelligent Query Detection:</strong> Automatic detection of calculation-related search terms</li>
+<li><strong>Dual Mode Operation:</strong> Basic and scientific calculator modes with toggle</li>
+<li><strong>Auto-Prefill:</strong> Calculator automatically fills with detected mathematical expressions</li>
+<li><strong>Mathematical Functions:</strong> Comprehensive set including trigonometry, logarithms, exponents</li>
+<li><strong>Seamless Integration:</strong> Appears above search results without disrupting interface</li>
+<li><strong>Taisen Labs Removal:</strong> Complete removal of Labs search results and filtering</li>
+<li><strong>AI Query Pattern Filtering:</strong> Intelligent detection of when to show AI mode</li>
+<li><strong>AI Mode Activation:</strong> Shows for how-to questions, explanations, comparisons, summaries</li>
+<li><strong>AI Mode Suppression:</strong> Hides for local searches, transactional queries, factual queries</li>
+<li><strong>Search Optimization:</strong> Focus on Google CSE results for improved performance</li>
+<li><strong>Simplified Interface:</strong> Cleaner UI without Labs toggle and filtering options</li>
+<li><strong>Analytics System:</strong> User-controlled analytics disabled by default for privacy</li>
+<li><strong>Settings Integration:</strong> Analytics toggle in settings with clear opt-in</li>
+<li><strong>Privacy-Focused:</strong> Anonymous data collection with no personal identifiers</li>
+<li><strong>Customizable Backgrounds:</strong> Solid colors, gradients, and images with live preview</li>
+<li><strong>Background Controls:</strong> Blur, opacity, and preset theme options</li>
+<li><strong>AI Mode:</strong> Toggle for AI-powered search enhancements</li>
+<li><strong>AI Integration:</strong> Enhanced search results with summarization and insights</li>
+<li><strong>Natural Language Processing:</strong> Improved query understanding and suggestions</li>
+<li><strong>Authentication System:</strong> Comprehensive multi-provider login with popup modal</li>
+<li><strong>User Experience:</strong> Seamless sign-in flow with persistent sessions</li>
+<li><strong>Security:</strong> Firebase-backed authentication with search logging</li>
+<li><strong>Integration:</strong> Fully compatible with existing settings and debug features</li>
+<li><strong>Mobile Support:</strong> Responsive design for all devices</li>
+</ul>
+
+<h2 class="icon-section">Future Roadmap</h2>
+<ul>
+<li>Apply SafeSearch and Privacy Mode settings actively in search results</li>
+<li>Enhance multi-language support across UI and results</li>
+<li>Integrate user preferences with search result filtering</li>
+<li>Analytics for user settings usage and behavior</li>
+<li>Advanced user profile management and search history</li>
+<li>Social features: sharing search results, collaborative search</li>
+<li>Expand AI capabilities with conversational search interface</li>
+<li>Implement AI-powered image and voice search</li>
+<li>Add more background customization options (patterns, animations)</li>
+<li>Background scheduling (different backgrounds at different times)</li>
+<li>Enhanced AI pattern recognition with machine learning</li>
+<li>User-customizable AI filtering preferences</li>
+<li><strong>Calculator Enhancements:</strong>
+  <ul>
+    <li>Graphing capabilities for mathematical functions</li>
+    <li>Unit conversion for various measurement systems</li>
+    <li>Currency conversion with real-time exchange rates</li>
+    <li>Calculation history and saved expressions</li>
+    <li>Custom function creation and storage</li>
+  </ul>
+</li>
+</ul>
+
+<h2 class="icon-section">Conclusion</h2>
+<p>Taisen Search continues evolving into a modern, user-friendly platform with both functional search improvements and user-configurable settings. Version 1.15 introduces a sophisticated Scientific Calculator that intelligently appears when users search for calculation-related queries, providing immediate mathematical computation capabilities without leaving the search interface. This context-aware feature automatically detects mathematical expressions and calculation terms, pre-fills the calculator with relevant expressions, and offers both basic and scientific modes to cater to diverse user needs. Combined with the previously implemented Taisen Labs removal, AI query pattern filtering, privacy-focused analytics, customizable backgrounds, AI-powered search capabilities, and comprehensive authentication system, Taisen Search delivers an enhanced, streamlined user experience that maintains security, performance, and ease of use across all devices.</p>
+
+<footer>
+© 2025 Taisen Search. All Rights Reserved.
+</footer>
+
+</body>
+</html>
