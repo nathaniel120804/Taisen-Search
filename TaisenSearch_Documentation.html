@@ -78,7 +78,11 @@
     background-color: #F3E8FF;
     border-left: 4px solid #8B5CF6;
   }
-  .calculator-preview {
+  .feature-highlight.dictionary {
+    background-color: #EFF6FF;
+    border-left: 4px solid #3B82F6;
+  }
+  .calculator-preview, .dictionary-preview {
     background: white;
     border-radius: 8px;
     padding: 15px;
@@ -86,17 +90,20 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     border: 1px solid #E5E7EB;
   }
-  .calculator-feature-grid {
+  .calculator-feature-grid, .dictionary-feature-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 15px;
     margin: 15px 0;
   }
-  .calculator-feature {
+  .calculator-feature, .dictionary-feature {
     background: #F8FAFC;
     padding: 12px;
     border-radius: 6px;
     border-left: 3px solid #3B82F6;
+  }
+  .dictionary-feature {
+    border-left: 3px solid #10B981;
   }
 </style>
 </head>
@@ -260,14 +267,18 @@ Taisen Labs Removal and AI Query Pattern Filtering:
 <td><span class="version-badge latest">1.15</span></td>
 <td>October 9, 2025</td>
 <td>
-<strong>NEW:</strong> Scientific Calculator Integration:
+<strong>NEW:</strong> Scientific Calculator & Dictionary Integration:
 <ul>
 <li>Context-aware calculator that appears only for calculation-related queries</li>
 <li>Intelligent query detection for mathematical expressions and calculation terms</li>
 <li>Basic and scientific modes with toggle functionality</li>
 <li>Pre-filling calculator with detected mathematical expressions from search queries</li>
+<li><strong>NEW:</strong> Context-aware dictionary that appears for word-related queries</li>
+<li>Intelligent detection of dictionary lookup requests and word definitions</li>
+<li>Comprehensive word information: definitions, pronunciation, synonyms, antonyms, etymology</li>
+<li>Audio pronunciation playback and interactive word exploration</li>
 <li>Seamless integration with existing search interface and design system</li>
-<li>Enhanced user experience for mathematical and calculation searches</li>
+<li>Enhanced user experience for mathematical, calculation, and word definition searches</li>
 </ul>
 </td>
 </tr>
@@ -276,6 +287,97 @@ Taisen Labs Removal and AI Query Pattern Filtering:
 <h2 class="icon-section">Detailed Version Improvements</h2>
 
 <!-- Previous version details remain unchanged -->
+
+<div class="feature-highlight dictionary">
+<h3>Version 1.15 – Dictionary Integration</h3>
+
+<div class="dictionary-preview">
+  <h4>Dictionary Preview</h4>
+  <p>The dictionary panel appears automatically when users search for word-related queries, providing immediate access to comprehensive word definitions, pronunciation, and linguistic information.</p>
+</div>
+
+<div class="dictionary-feature-grid">
+  <div class="dictionary-feature">
+    <strong>Smart Query Detection</strong>
+    <p>Intelligent pattern matching for dictionary lookup requests and word definition searches</p>
+  </div>
+  <div class="dictionary-feature">
+    <strong>Comprehensive Word Data</strong>
+    <p>Definitions, pronunciation, synonyms, antonyms, examples, and etymology</p>
+  </div>
+  <div class="dictionary-feature">
+    <strong>Audio Pronunciation</strong>
+    <p>Audio playback for correct word pronunciation with click-to-play functionality</p>
+  </div>
+  <div class="dictionary-feature">
+    <strong>Interactive Exploration</strong>
+    <p>Click synonyms and antonyms to search for related words</p>
+  </div>
+</div>
+
+<ul>
+<li><strong>Context-Aware Display:</strong>
+  <ul>
+    <li>Dictionary appears only for relevant word definition and linguistic queries</li>
+    <li>Hidden by default for non-dictionary searches</li>
+    <li>Automatic detection of dictionary lookup patterns in search queries</li>
+    <li>Manual close functionality with X button matching calculator style</li>
+    <li>Hides knowledge panel when dictionary is active to avoid duplication</li>
+  </ul>
+</li>
+<li><strong>Query Pattern Detection:</strong>
+  <ul>
+    <li><strong>Definition Requests:</strong> "meaning of", "definition of", "what does X mean"</li>
+    <li><strong>Word Lookups:</strong> "define word", "what is X", "X meaning"</li>
+    <li><strong>Linguistic Queries:</strong> "synonyms for", "antonyms for", "similar words to"</li>
+    <li><strong>Pronunciation:</strong> "pronunciation of", "how to pronounce"</li>
+    <li><strong>Etymology:</strong> "origin of word", "etymology of"</li>
+    <li><strong>Single Word Searches:</strong> Automatic detection for single word or short phrase queries</li>
+  </ul>
+</li>
+<li><strong>Dictionary Features:</strong>
+  <ul>
+    <li><strong>Word Information:</strong> Complete word data with phonetic pronunciation</li>
+    <li><strong>Audio Pronunciation:</strong> Click-to-play audio for correct pronunciation</li>
+    <li><strong>Multiple Meanings:</strong> Different definitions organized by part of speech</li>
+    <li><strong>Usage Examples:</strong> Contextual examples for each definition</li>
+    <li><strong>Synonyms & Antonyms:</strong> Related words with click-to-search functionality</li>
+    <li><strong>Word Origin:</strong> Etymology and historical development of words</li>
+  </ul>
+</li>
+<li><strong>User Interface:</strong>
+  <ul>
+    <li>Clean, modern design matching Taisen aesthetic and calculator style</li>
+    <li>Header with word display and phonetic pronunciation</li>
+    <li>Scrollable content area for comprehensive word information</li>
+    <li>Action buttons for extended functionality</li>
+    <li>Responsive design for all device sizes</li>
+    <li>Color-coded sections for different types of word information</li>
+  </ul>
+</li>
+<li><strong>Technical Implementation:</strong>
+  <ul>
+    <li><code>isDictionaryQuery()</code> function for intelligent query detection</li>
+    <li><code>extractWordFromQuery()</code> function to isolate the target word from queries</li>
+    <li>Integration with Free Dictionary API for comprehensive word data</li>
+    <li>Audio playback system for pronunciation</li>
+    <li>Interactive word chips for synonyms and antonyms with search functionality</li>
+    <li>CSS animations and transitions matching calculator appearance</li>
+    <li>Dark mode support consistent with Taisen theme system</li>
+  </ul>
+</li>
+<li><strong>User Experience Benefits:</strong>
+  <ul>
+    <li>Immediate access to word definitions without leaving search results</li>
+    <li>Contextual appearance reduces interface clutter</li>
+    <li>Audio pronunciation aids in language learning</li>
+    <li>Interactive exploration of related words and meanings</li>
+    <li>Comprehensive linguistic information in a single panel</li>
+    <li>Seamless integration maintains consistent user experience</li>
+  </ul>
+</li>
+</ul>
+</div>
 
 <div class="feature-highlight latest">
 <h3>Version 1.15 – Scientific Calculator Integration</h3>
@@ -372,12 +474,17 @@ Taisen Labs Removal and AI Query Pattern Filtering:
 
 <h2 class="icon-section">Features Summary (v1.15)</h2>
 <ul>
+<li><strong>Dictionary Integration:</strong> Context-aware dictionary that appears for word definition queries</li>
+<li><strong>Smart Word Detection:</strong> Automatic detection of dictionary lookup requests and linguistic queries</li>
+<li><strong>Comprehensive Word Data:</strong> Definitions, pronunciation, synonyms, antonyms, etymology</li>
+<li><strong>Audio Pronunciation:</strong> Click-to-play audio for correct word pronunciation</li>
+<li><strong>Interactive Word Exploration:</strong> Click synonyms and antonyms to search related words</li>
 <li><strong>Scientific Calculator:</strong> Context-aware calculator that appears for mathematical queries</li>
 <li><strong>Intelligent Query Detection:</strong> Automatic detection of calculation-related search terms</li>
 <li><strong>Dual Mode Operation:</strong> Basic and scientific calculator modes with toggle</li>
 <li><strong>Auto-Prefill:</strong> Calculator automatically fills with detected mathematical expressions</li>
 <li><strong>Mathematical Functions:</strong> Comprehensive set including trigonometry, logarithms, exponents</li>
-<li><strong>Seamless Integration:</strong> Appears above search results without disrupting interface</li>
+<li><strong>Seamless Integration:</strong> Both features appear above search results without disrupting interface</li>
 <li><strong>Taisen Labs Removal:</strong> Complete removal of Labs search results and filtering</li>
 <li><strong>AI Query Pattern Filtering:</strong> Intelligent detection of when to show AI mode</li>
 <li><strong>AI Mode Activation:</strong> Shows for how-to questions, explanations, comparisons, summaries</li>
@@ -413,6 +520,15 @@ Taisen Labs Removal and AI Query Pattern Filtering:
 <li>Background scheduling (different backgrounds at different times)</li>
 <li>Enhanced AI pattern recognition with machine learning</li>
 <li>User-customizable AI filtering preferences</li>
+<li><strong>Dictionary Enhancements:</strong>
+  <ul>
+    <li>Multi-language dictionary support</li>
+    <li>Word of the day feature</li>
+    <li>Vocabulary building and word lists</li>
+    <li>Word usage statistics and trends</li>
+    <li>Integration with language learning platforms</li>
+  </ul>
+</li>
 <li><strong>Calculator Enhancements:</strong>
   <ul>
     <li>Graphing capabilities for mathematical functions</li>
@@ -425,7 +541,7 @@ Taisen Labs Removal and AI Query Pattern Filtering:
 </ul>
 
 <h2 class="icon-section">Conclusion</h2>
-<p>Taisen Search continues evolving into a modern, user-friendly platform with both functional search improvements and user-configurable settings. Version 1.15 introduces a sophisticated Scientific Calculator that intelligently appears when users search for calculation-related queries, providing immediate mathematical computation capabilities without leaving the search interface. This context-aware feature automatically detects mathematical expressions and calculation terms, pre-fills the calculator with relevant expressions, and offers both basic and scientific modes to cater to diverse user needs. Combined with the previously implemented Taisen Labs removal, AI query pattern filtering, privacy-focused analytics, customizable backgrounds, AI-powered search capabilities, and comprehensive authentication system, Taisen Search delivers an enhanced, streamlined user experience that maintains security, performance, and ease of use across all devices.</p>
+<p>Taisen Search continues evolving into a modern, user-friendly platform with both functional search improvements and user-configurable settings. Version 1.15 introduces two powerful context-aware features: a sophisticated Dictionary that appears for word definition queries and a Scientific Calculator that appears for calculation-related queries. The dictionary provides comprehensive word information including definitions, pronunciation with audio playback, synonyms, antonyms, and etymology, while the calculator offers both basic and scientific mathematical computation capabilities. Both features intelligently detect relevant search queries, appear automatically when needed, and integrate seamlessly with the existing search interface. Combined with the previously implemented Taisen Labs removal, AI query pattern filtering, privacy-focused analytics, customizable backgrounds, AI-powered search capabilities, and comprehensive authentication system, Taisen Search delivers an enhanced, streamlined user experience that maintains security, performance, and ease of use across all devices.</p>
 
 <footer>
 © 2025 Taisen Search. All Rights Reserved.
