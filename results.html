@@ -1650,6 +1650,229 @@ footer {
         background: rgba(0, 119, 255, 0.1);
     }
 }
+/* Calculator Styles */
+.calculator-container {
+  display: none;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.calculator-container.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.calculator-header {
+  background: var(--gradient-primary);
+  color: white;
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calculator-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.calculator-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.calculator-close:hover {
+  transform: scale(1.1);
+}
+
+.calculator-body {
+  padding: 1.5rem;
+}
+
+.calculator-display {
+  background: var(--gray-100);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: right;
+  border: 1px solid var(--gray-300);
+}
+
+.calculator-expression {
+  font-size: 0.9rem;
+  color: var(--gray-600);
+  min-height: 20px;
+  margin-bottom: 5px;
+  word-break: break-all;
+}
+
+.calculator-result {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  min-height: 32px;
+}
+
+.calculator-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.calc-btn {
+  padding: 12px 8px;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  background: var(--gray-200);
+  color: var(--gray-800);
+}
+
+.calc-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.calc-btn.number {
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+}
+
+.calc-btn.number:hover {
+  background: var(--gray-100);
+}
+
+.calc-btn.operator {
+  background: var(--primary);
+  color: white;
+}
+
+.calc-btn.operator:hover {
+  background: var(--primary-dark);
+}
+
+.calc-btn.function {
+  background: var(--info);
+  color: white;
+}
+
+.calc-btn.function:hover {
+  background: #138496;
+}
+
+.calc-btn.scientific {
+  background: var(--success);
+  color: white;
+}
+
+.calc-btn.scientific:hover {
+  background: #2d9248;
+}
+
+.calc-btn.equals {
+  background: var(--danger);
+  color: white;
+  grid-column: span 2;
+}
+
+.calc-btn.equals:hover {
+  background: #c23321;
+}
+
+.calc-btn.clear {
+  background: var(--warning);
+  color: var(--gray-800);
+}
+
+.calc-btn.clear:hover {
+  background: #e0a800;
+}
+
+.calc-btn.zero {
+  grid-column: span 2;
+}
+
+.calculator-mode-toggle {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 8px;
+  background: var(--gray-200);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+}
+
+.mode-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .calculator-buttons {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .calc-btn.scientific {
+    display: none;
+  }
+  
+  .calculator-container.active .calc-btn.scientific {
+    display: block;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .calculator-container {
+    background: var(--white);
+  }
+  
+  .calculator-display {
+    background: var(--gray-100);
+    border-color: var(--gray-300);
+  }
+  
+  .calc-btn.number {
+    background: var(--white);
+    border-color: var(--gray-300);
+  }
+  
+  .calc-btn.number:hover {
+    background: var(--gray-100);
+  }
+  
+  .mode-btn {
+    background: var(--gray-200);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1679,7 +1902,78 @@ footer {
     <div class="results-header-info">
       <p class="results-count">Search results for: <span class="query-term" id="queryTerm">Loading...</span></p>
     </div>
-
+<!-- Calculator Container -->
+<div class="calculator-container" id="calculatorContainer">
+  <div class="calculator-header">
+    <div class="calculator-title">
+      <i class="fas fa-calculator"></i>
+      Scientific Calculator
+    </div>
+    <button class="calculator-close" id="calculatorClose">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="calculator-body">
+    <div class="calculator-mode-toggle">
+      <button class="mode-btn active" id="basicModeBtn">Basic</button>
+      <button class="mode-btn" id="scientificModeBtn">Scientific</button>
+    </div>
+    
+    <div class="calculator-display">
+      <div class="calculator-expression" id="calcExpression"></div>
+      <div class="calculator-result" id="calcResult">0</div>
+    </div>
+    
+    <div class="calculator-buttons">
+      <!-- First Row -->
+      <button class="calc-btn clear" onclick="calculator.clearAll()">C</button>
+      <button class="calc-btn clear" onclick="calculator.backspace()">⌫</button>
+      <button class="calc-btn function" onclick="calculator.appendToDisplay('%')">%</button>
+      <button class="calc-btn operator" onclick="calculator.appendToDisplay('/')">/</button>
+      <button class="calc-btn operator" onclick="calculator.appendToDisplay('*')">×</button>
+      
+      <!-- Second Row -->
+      <button class="calc-btn number" onclick="calculator.appendToDisplay('7')">7</button>
+      <button class="calc-btn number" onclick="calculator.appendToDisplay('8')">8</button>
+      <button class="calc-btn number" onclick="calculator.appendToDisplay('9')">9</button>
+      <button class="calc-btn operator" onclick="calculator.appendToDisplay('-')">-</button>
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('pi')">π</button>
+      
+      <!-- Third Row -->
+      <button class="calc-btn number" onclick="calculator.appendToDisplay('4')">4</button>
+      <button class="calc-btn number" onclick="calculator.appendToDisplay('5')">5</button>
+      <button class="calc-btn number" onclick="calculator.appendToDisplay('6')">6</button>
+      <button class="calc-btn operator" onclick="calculator.appendToDisplay('+')">+</button>
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('sqrt')">√</button>
+      
+      <!-- Fourth Row -->
+      <button class="calc-btn number" onclick="calculator.appendToDisplay('1')">1</button>
+      <button class="calc-btn number" onclick="calculator.appendToDisplay('2')">2</button>
+      <button class="calc-btn number" onclick="calculator.appendToDisplay('3')">3</button>
+      <button class="calc-btn equals" onclick="calculator.calculate()">=</button>
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('pow')">x^y</button>
+      
+      <!-- Fifth Row -->
+      <button class="calc-btn number zero" onclick="calculator.appendToDisplay('0')">0</button>
+      <button class="calc-btn number" onclick="calculator.appendToDisplay('.')">.</button>
+      <button class="calc-btn function" onclick="calculator.appendToDisplay('(')">(</button>
+      <button class="calc-btn function" onclick="calculator.appendToDisplay(')')">)</button>
+      
+      <!-- Scientific Functions Row (Hidden in Basic Mode) -->
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('sin')">sin</button>
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('cos')">cos</button>
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('tan')">tan</button>
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('log')">log</button>
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('ln')">ln</button>
+      
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('asin')">sin⁻¹</button>
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('acos')">cos⁻¹</button>
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('atan')">tan⁻¹</button>
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('fact')">x!</button>
+      <button class="calc-btn scientific" onclick="calculator.scientificFunction('abs')">|x|</button>
+    </div>
+  </div>
+</div>
     <!-- AI Results -->
     <div id="taisen-ai-results"></div>
 
@@ -3305,6 +3599,345 @@ if (gcseElement) {
         subtree: true
     });
 }
+</script>
+<script>
+// Calculator functionality
+const calculator = {
+  display: document.getElementById('calcResult'),
+  expression: document.getElementById('calcExpression'),
+  currentInput: '0',
+  currentExpression: '',
+  shouldResetDisplay: false,
+  isScientificMode: false,
+  angleMode: 'DEG', // DEG or RAD
+
+  updateDisplay() {
+    this.display.textContent = this.currentInput;
+    this.expression.textContent = this.currentExpression;
+  },
+
+  appendToDisplay(value) {
+    if (this.currentInput === '0' || this.shouldResetDisplay) {
+      this.currentInput = value;
+      this.shouldResetDisplay = false;
+    } else {
+      this.currentInput += value;
+    }
+    
+    if (['+', '-', '*', '/', '%', '^'].includes(value)) {
+      this.currentExpression += this.currentInput;
+      this.currentInput = '';
+    }
+    
+    this.updateDisplay();
+  },
+
+  clearAll() {
+    this.currentInput = '0';
+    this.currentExpression = '';
+    this.updateDisplay();
+  },
+
+  backspace() {
+    if (this.currentInput.length > 1) {
+      this.currentInput = this.currentInput.slice(0, -1);
+    } else {
+      this.currentInput = '0';
+    }
+    this.updateDisplay();
+  },
+
+  calculate() {
+    try {
+      let expression = this.currentExpression + this.currentInput;
+      
+      // Replace display symbols with JavaScript operators
+      expression = expression.replace(/×/g, '*').replace(/÷/g, '/');
+      
+      // Replace constants
+      expression = expression.replace(/π/g, Math.PI).replace(/e/g, Math.E);
+      
+      // Handle exponentiation
+      expression = expression.replace(/(\d+)\^(\d+)/g, 'Math.pow($1, $2)');
+      
+      let result = eval(expression);
+      
+      // Handle division by zero and other math errors
+      if (!isFinite(result)) {
+        throw new Error('Math error');
+      }
+      
+      this.currentInput = result.toString();
+      this.currentExpression = '';
+      this.shouldResetDisplay = true;
+      this.updateDisplay();
+    } catch (error) {
+      this.currentInput = 'Error';
+      this.shouldResetDisplay = true;
+      this.updateDisplay();
+    }
+  },
+
+  scientificFunction(func) {
+    let inputValue = parseFloat(this.currentInput);
+    
+    try {
+      let result;
+      switch(func) {
+        case 'sin':
+          if (this.angleMode === 'DEG') {
+            result = Math.sin(inputValue * Math.PI / 180);
+          } else {
+            result = Math.sin(inputValue);
+          }
+          break;
+        case 'cos':
+          if (this.angleMode === 'DEG') {
+            result = Math.cos(inputValue * Math.PI / 180);
+          } else {
+            result = Math.cos(inputValue);
+          }
+          break;
+        case 'tan':
+          if (this.angleMode === 'DEG') {
+            result = Math.tan(inputValue * Math.PI / 180);
+          } else {
+            result = Math.tan(inputValue);
+          }
+          break;
+        case 'asin':
+          result = Math.asin(inputValue);
+          if (this.angleMode === 'DEG') result = result * 180 / Math.PI;
+          break;
+        case 'acos':
+          result = Math.acos(inputValue);
+          if (this.angleMode === 'DEG') result = result * 180 / Math.PI;
+          break;
+        case 'atan':
+          result = Math.atan(inputValue);
+          if (this.angleMode === 'DEG') result = result * 180 / Math.PI;
+          break;
+        case 'log':
+          result = Math.log10(inputValue);
+          break;
+        case 'ln':
+          result = Math.log(inputValue);
+          break;
+        case 'sqrt':
+          result = Math.sqrt(inputValue);
+          break;
+        case 'pow':
+          this.currentExpression = this.currentInput + '^';
+          this.currentInput = '';
+          this.updateDisplay();
+          return;
+        case 'pi':
+          this.currentInput = Math.PI.toString();
+          this.updateDisplay();
+          return;
+        case 'fact':
+          result = this.factorial(inputValue);
+          break;
+        case 'abs':
+          result = Math.abs(inputValue);
+          break;
+        default:
+          return;
+      }
+      
+      if (!isFinite(result)) {
+        throw new Error('Math error');
+      }
+      
+      this.currentInput = result.toString();
+      this.shouldResetDisplay = true;
+      this.updateDisplay();
+    } catch (error) {
+      this.currentInput = 'Error';
+      this.shouldResetDisplay = true;
+      this.updateDisplay();
+    }
+  },
+
+  factorial(n) {
+    if (n < 0) throw new Error('Negative factorial');
+    if (n === 0 || n === 1) return 1;
+    let result = 1;
+    for (let i = 2; i <= n; i++) {
+      result *= i;
+    }
+    return result;
+  },
+
+  toggleMode(isScientific) {
+    this.isScientificMode = isScientific;
+    const scientificButtons = document.querySelectorAll('.calc-btn.scientific');
+    
+    scientificButtons.forEach(btn => {
+      if (isScientific) {
+        btn.style.display = 'block';
+      } else {
+        btn.style.display = 'none';
+      }
+    });
+    
+    // Update mode buttons
+    document.getElementById('basicModeBtn').classList.toggle('active', !isScientific);
+    document.getElementById('scientificModeBtn').classList.toggle('active', isScientific);
+  }
+};
+
+// Initialize calculator
+document.addEventListener('DOMContentLoaded', function() {
+  // Set up mode toggle buttons
+  document.getElementById('basicModeBtn').addEventListener('click', function() {
+    calculator.toggleMode(false);
+  });
+  
+  document.getElementById('scientificModeBtn').addEventListener('click', function() {
+    calculator.toggleMode(true);
+  });
+  
+  // Close calculator button
+  document.getElementById('calculatorClose').addEventListener('click', function() {
+    document.getElementById('calculatorContainer').classList.remove('active');
+  });
+  
+  // Initialize in basic mode
+  calculator.toggleMode(false);
+});
+
+// Query detection for showing calculator
+function checkForCalculationQuery(query) {
+  if (!query) return false;
+  
+  const lowerQuery = query.toLowerCase().trim();
+  
+  // Patterns that indicate a calculation query
+  const calculationPatterns = [
+    // Basic arithmetic
+    /\d+\s*[\+\-\*\/\^]\s*\d+/, // e.g., "2+2", "5 * 3"
+    /calculate|calculator|calc/i,
+    /math|mathematics/i,
+    
+    // Specific calculations
+    /\d+\s*percent|\d+\s*%/i, // e.g., "20 percent of 50"
+    /square root|sqrt/i,
+    /power of|exponent/i,
+    /factorial/i,
+    
+    // Trigonometric functions
+    /sin|cos|tan|asin|acos|atan/i,
+    
+    // Logarithms
+    /log|ln|logarithm/i,
+    
+    // Constants
+    /pi|π|euler's number/i,
+    
+    // Measurement conversions
+    /\d+\s*(cm|m|km|in|ft|yd|mi)\s+to\s+(cm|m|km|in|ft|yd|mi)/i,
+    /\d+\s*(celsius|fahrenheit|kelvin)\s+to\s+(celsius|fahrenheit|kelvin)/i,
+    
+    // Financial calculations
+    /interest|loan|mortgage|investment/i,
+    
+    // Geometry calculations
+    /area|perimeter|volume|circumference/i,
+    
+    // Algebra
+    /solve.*equation|quadratic|polynomial/i,
+    
+    // Simple expressions
+    /^(\d+(\.\d+)?\s*[\+\-\*\/\^]\s*)+\d+(\.\d+)?$/, // e.g., "2+3*4"
+    /^\d+(\.\d+)?\s*[\+\-\*\/\^]\s*\d+(\.\d+)?$/, // e.g., "5/2"
+  ];
+  
+  // Check if query matches any calculation pattern
+  for (const pattern of calculationPatterns) {
+    if (pattern.test(lowerQuery)) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+// Override search to check for calculation queries
+function initializeCalculatorDetection() {
+  const interval = setInterval(() => {
+    if (window.google && google.search && google.search.cse) {
+      const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
+      if (searchBox && searchBox.execute) {
+        clearInterval(interval);
+        
+        const originalExecute = searchBox.execute.bind(searchBox);
+        searchBox.execute = (query) => {
+          // Check if this is a calculation query
+          if (checkForCalculationQuery(query)) {
+            document.getElementById('calculatorContainer').classList.add('active');
+            
+            // Try to pre-fill the calculator with the query
+            try {
+              // Extract just the mathematical expression
+              const mathExpression = extractMathExpression(query);
+              if (mathExpression) {
+                calculator.clearAll();
+                calculator.appendToDisplay(mathExpression);
+              }
+            } catch (e) {
+              console.log("Could not pre-fill calculator with query");
+            }
+          } else {
+            document.getElementById('calculatorContainer').classList.remove('active');
+          }
+          
+          originalExecute(query);
+        };
+      }
+    }
+  }, 100);
+}
+
+// Extract mathematical expression from query
+function extractMathExpression(query) {
+  // Remove common non-mathematical words
+  const cleanedQuery = query.replace(/(calculate|what is|value of|equals|equal to|result of)/gi, '').trim();
+  
+  // Look for patterns like "2+2", "5 * 3", etc.
+  const mathRegex = /([\d\.]+\s*[\+\-\*\/\^]\s*)+[\d\.]+/;
+  const match = cleanedQuery.match(mathRegex);
+  
+  if (match) {
+    return match[0].replace(/\s+/g, '');
+  }
+  
+  return null;
+}
+
+// Initialize calculator detection when page loads
+document.addEventListener('DOMContentLoaded', initializeCalculatorDetection);
+
+// Also check the initial query on page load
+window.addEventListener('load', function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const query = urlParams.get('q');
+  
+  if (checkForCalculationQuery(query)) {
+    document.getElementById('calculatorContainer').classList.add('active');
+    
+    // Try to pre-fill the calculator with the query
+    try {
+      const mathExpression = extractMathExpression(query);
+      if (mathExpression) {
+        calculator.clearAll();
+        calculator.appendToDisplay(mathExpression);
+      }
+    } catch (e) {
+      console.log("Could not pre-fill calculator with initial query");
+    }
+  }
+});
 </script>
 </body>
 </html>
