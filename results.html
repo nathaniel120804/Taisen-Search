@@ -1872,7 +1872,298 @@ footer {
     background: var(--gray-200);
   }
 }
+/* Dictionary Panel Styles - Calculator Style */
+.dictionary-panel {
+  display: none;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  transition: var(--transition);
+}
 
+.dictionary-panel.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+.dictionary-header {
+  background: var(--gradient-primary);
+  color: white;
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dictionary-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dictionary-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.dictionary-close:hover {
+  transform: scale(1.1);
+}
+
+.dictionary-body {
+  padding: 1.5rem;
+}
+
+.dictionary-display {
+  background: var(--gray-100);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--gray-300);
+}
+
+.dictionary-word {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-bottom: 0.5rem;
+}
+
+.dictionary-phonetic {
+  color: var(--gray-600);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.dictionary-content {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.dictionary-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dictionary-content::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 3px;
+}
+
+.dictionary-content::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 3px;
+}
+
+.dictionary-content::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+.dictionary-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.dictionary-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.meaning-item {
+  margin-bottom: 1.25rem;
+}
+
+.part-of-speech {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.definition-list {
+  margin-left: 0;
+}
+
+.definition-item {
+  margin-bottom: 0.75rem;
+  color: var(--gray-700);
+  line-height: 1.5;
+  padding: 0.5rem;
+  background: var(--gray-50);
+  border-radius: var(--border-radius);
+  border-left: 3px solid var(--primary);
+}
+
+.example {
+  color: var(--gray-600);
+  font-style: italic;
+  margin-top: 0.25rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--gray-300);
+}
+
+.synonyms-section, .antonyms-section {
+  margin-top: 1rem;
+}
+
+.related-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.word-chip {
+  background: var(--gray-100);
+  color: var(--gray-700);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid var(--gray-300);
+}
+
+.word-chip:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.dictionary-loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--gray-600);
+}
+
+.dictionary-error {
+  text-align: center;
+  padding: 2rem;
+  color: var(--danger);
+}
+
+.audio-button {
+  background: var(--success);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.audio-button:hover {
+  background: #2d9248;
+  transform: scale(1.1);
+}
+
+.origin-section {
+  background: var(--gray-100);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-top: 1rem;
+}
+
+.origin-text {
+  color: var(--gray-600);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.dictionary-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.dictionary-action-btn {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--gray-200);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.dictionary-action-btn:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.dictionary-action-btn.primary {
+  background: var(--primary);
+  color: white;
+}
+
+.dictionary-action-btn.primary:hover {
+  background: var(--primary-dark);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dictionary-body {
+    padding: 1rem;
+  }
+  
+  .dictionary-word {
+    font-size: 1.5rem;
+  }
+  
+  .dictionary-actions {
+    flex-direction: column;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .dictionary-panel {
+    background: var(--white);
+  }
+  
+  .dictionary-display {
+    background: var(--gray-100);
+    border-color: var(--gray-300);
+  }
+  
+  .definition-item {
+    background: var(--gray-50);
+  }
+  
+  .word-chip {
+    background: var(--gray-100);
+    border-color: var(--gray-300);
+  }
+  
+  .dictionary-action-btn {
+    background: var(--gray-200);
+  }
+}
 </style>
 </head>
 <body>
@@ -1902,6 +2193,44 @@ footer {
     <div class="results-header-info">
       <p class="results-count">Search results for: <span class="query-term" id="queryTerm">Loading...</span></p>
     </div>
+    <!-- Dictionary Container - Calculator Style -->
+<div class="dictionary-panel" id="dictionaryContainer">
+  <div class="dictionary-header">
+    <div class="dictionary-title">
+      <i class="fas fa-book"></i>
+      Dictionary
+    </div>
+    <button class="dictionary-close" id="dictionaryClose">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="dictionary-body">
+    <div class="dictionary-display">
+      <div class="dictionary-word" id="dictWord">Word</div>
+      <div class="dictionary-phonetic" id="dictPhonetic">
+        <span id="dictPhoneticText">Pronunciation</span>
+        <button class="audio-button" id="dictAudioBtn" style="display: none;">
+          <i class="fas fa-volume-up"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="dictionary-content" id="dictContent">
+      <!-- Dictionary content will be populated by JavaScript -->
+    </div>
+    
+    <div class="dictionary-actions">
+      <button class="dictionary-action-btn" onclick="dictionary.searchMore()">
+        <i class="fas fa-search"></i>
+        Search More
+      </button>
+      <button class="dictionary-action-btn primary" onclick="dictionary.openFullDefinition()">
+        <i class="fas fa-external-link-alt"></i>
+        Full Definition
+      </button>
+    </div>
+  </div>
+</div>
 <!-- Calculator Container -->
 <div class="calculator-container" id="calculatorContainer">
   <div class="calculator-header">
@@ -1996,6 +2325,7 @@ footer {
   <aside class="knowledge-panel" id="knowledgePanel">
     <!-- Knowledge panel will be populated by JavaScript -->
   </aside>
+
 </main>
 
 <!-- Footer from index.html -->
@@ -2244,6 +2574,7 @@ class TAISEN_KnowledgePanel {
     }
 
     showLoading() {
+        if (!this.panel) return;
         this.panel.innerHTML = `
             <div class="knowledge-header">
                 <div class="knowledge-title">Loading Knowledge Panel</div>
@@ -2261,6 +2592,7 @@ class TAISEN_KnowledgePanel {
     }
 
     showNoResults() {
+        if (!this.panel) return;
         this.panel.innerHTML = `
             <div class="knowledge-header">
                 <div class="knowledge-title">No Knowledge Panel Available</div>
@@ -2274,6 +2606,7 @@ class TAISEN_KnowledgePanel {
     }
 
     showError() {
+        if (!this.panel) return;
         this.panel.innerHTML = `
             <div class="knowledge-header">
                 <div class="knowledge-title">Error Loading Knowledge Panel</div>
@@ -2287,6 +2620,8 @@ class TAISEN_KnowledgePanel {
     }
 
     displayKnowledgePanel(pageTitle, pageData, wikidataInfo) {
+        if (!this.panel) return;
+        
         const extract = pageData.extract ? pageData.extract.substring(0, 300) + '...' : 'No description available.';
         const thumbnail = pageData.thumbnail ? pageData.thumbnail.source : null;
         
@@ -2412,6 +2747,10 @@ class TAISEN_AIResults {
 
     createAIContainer() {
         this.aiResultsContainer = document.getElementById('taisen-ai-results');
+        if (!this.aiResultsContainer) {
+            console.warn('AI results container not found');
+            return;
+        }
     }
 
     processCurrentSearch() {
@@ -2555,6 +2894,7 @@ class TAISEN_AIResults {
     }
 
     showLoadingState(query) {
+        if (!this.aiResultsContainer) return;
         this.aiResultsContainer.innerHTML = `
             <div class="result-card">
                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px; color: var(--primary); font-weight: 600; font-size: 18px;">
@@ -2606,6 +2946,8 @@ class TAISEN_AIResults {
     }
 
     displayAIResults(query, aiResponse) {
+        if (!this.aiResultsContainer) return;
+        
         const needsTruncation = aiResponse.length > this.MAX_VISIBLE_LENGTH;
         const truncatedResponse = needsTruncation ? 
             aiResponse.substring(0, this.MAX_VISIBLE_LENGTH) + '...' : 
@@ -2641,12 +2983,16 @@ class TAISEN_AIResults {
 
         if (needsTruncation) {
             const readMoreBtn = this.aiResultsContainer.querySelector('.read-more-btn');
-            readMoreBtn.addEventListener('click', this.toggleReadMore.bind(this));
+            if (readMoreBtn) {
+                readMoreBtn.addEventListener('click', this.toggleReadMore.bind(this));
+            }
         }
     }
 
     toggleReadMore(event) {
         const button = event.target.closest('.read-more-btn');
+        if (!button) return;
+        
         const aiResponseElement = button.previousElementSibling;
         const isExpanded = button.classList.contains('expanded');
         
@@ -2666,7 +3012,9 @@ class TAISEN_AIResults {
     }
 
     hideAIResults() {
-        this.aiResultsContainer.innerHTML = '';
+        if (this.aiResultsContainer) {
+            this.aiResultsContainer.innerHTML = '';
+        }
     }
 }
 
@@ -2679,6 +3027,10 @@ class TAISEN_PeopleAlsoSearch {
     }
 
     init() {
+        if (!this.container || !this.relatedSearchesContainer) {
+            console.warn('People also search elements not found');
+            return;
+        }
         this.processCurrentSearch();
         this.overrideResultsSearch();
     }
@@ -2902,7 +3254,10 @@ class TAISEN_PeopleAlsoSearch {
         window.history.pushState({}, '', newUrl);
         
         // Update the displayed query term
-        document.getElementById('queryTerm').textContent = query;
+        const queryTerm = document.getElementById('queryTerm');
+        if (queryTerm) {
+            queryTerm.textContent = query;
+        }
         
         // Use the existing Google CSE search functionality
         if (window.google && google.search && google.search.cse) {
@@ -2929,9 +3284,541 @@ class TAISEN_PeopleAlsoSearch {
     }
 
     hideRelatedSearches() {
-        this.container.style.display = 'none';
+        if (this.container) {
+            this.container.style.display = 'none';
+        }
     }
 }
+
+// Dictionary Integration Class - Calculator Style
+class TAISEN_Dictionary {
+    constructor() {
+        this.container = document.getElementById('dictionaryContainer');
+        this.wordElement = document.getElementById('dictWord');
+        this.phoneticElement = document.getElementById('dictPhoneticText');
+        this.audioButton = document.getElementById('dictAudioBtn');
+        this.contentElement = document.getElementById('dictContent');
+        this.isProcessing = false;
+        this.API_URL = 'https://api.dictionaryapi.dev/api/v2/entries/en';
+        this.currentWord = '';
+        
+        this.initializeEventListeners();
+    }
+
+    initializeEventListeners() {
+        // Close button
+        const closeBtn = document.getElementById('dictionaryClose');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                this.hide();
+            });
+        }
+
+        // Audio button
+        if (this.audioButton) {
+            this.audioButton.addEventListener('click', () => {
+                this.playAudio();
+            });
+        }
+    }
+
+    // Check if query is dictionary-related
+    isDictionaryQuery(query) {
+        if (!query) return false;
+        
+        const lowerQuery = query.toLowerCase().trim();
+        const dictionaryPatterns = [
+            /meaning of/i,
+            /definition of/i,
+            /what does .* mean/i,
+            /synonyms? for/i,
+            /antonyms? for/i,
+            /similar words to/i,
+            /pronunciation of/i,
+            /etymology of/i,
+            /^define\s+/i,
+            /^what is.*meaning/i,
+            /^dictionary.*/i,
+            /^thesaurus.*/i,
+            /^word meaning/i
+        ];
+
+        // Check for patterns
+        for (const pattern of dictionaryPatterns) {
+            if (pattern.test(lowerQuery)) {
+                return true;
+            }
+        }
+
+        // Also check if it's a single word or short phrase (likely dictionary lookup)
+        const words = lowerQuery.split(/\s+/).filter(word => word.length > 0);
+        if (words.length <= 3 && words.every(word => word.length > 1)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Extract word from query
+    extractWordFromQuery(query) {
+        const lowerQuery = query.toLowerCase().trim();
+        
+        // Remove common dictionary phrases to extract the actual word
+        const cleanedQuery = lowerQuery
+            .replace(/(meaning of|definition of|what does|mean|synonyms? for|antonyms? for|similar words to|pronunciation of|etymology of|define|what is|dictionary|thesaurus|word meaning)/gi, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        return cleanedQuery;
+    }
+
+    async fetchData(query) {
+        if (this.isProcessing || !this.isDictionaryQuery(query)) return;
+        
+        const word = this.extractWordFromQuery(query);
+        if (!word || word.length < 2) return;
+
+        this.currentWord = word;
+        this.isProcessing = true;
+        this.showLoading(word);
+
+        try {
+            const response = await fetch(`${this.API_URL}/${encodeURIComponent(word)}`);
+            
+            if (!response.ok) {
+                if (response.status === 404) {
+                    this.showNoResults(word);
+                } else {
+                    throw new Error('Dictionary API error');
+                }
+                return;
+            }
+
+            const data = await response.json();
+            this.displayDictionaryData(word, data);
+            
+        } catch (error) {
+            console.error('Dictionary Error:', error);
+            this.showError();
+        } finally {
+            this.isProcessing = false;
+        }
+    }
+
+    showLoading(word) {
+        if (!this.container || !this.wordElement || !this.contentElement) return;
+        
+        this.container.classList.add('active');
+        this.wordElement.textContent = word;
+        this.phoneticElement.textContent = 'Loading...';
+        this.audioButton.style.display = 'none';
+        
+        this.contentElement.innerHTML = `
+            <div class="dictionary-loading">
+                <div class="loading-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <p style="margin-top: 1rem;">Fetching word information...</p>
+            </div>
+        `;
+    }
+
+    showNoResults(word) {
+        if (!this.container || !this.wordElement || !this.contentElement) return;
+        
+        this.container.classList.add('active');
+        this.wordElement.textContent = word;
+        this.phoneticElement.textContent = 'Not found';
+        this.audioButton.style.display = 'none';
+        
+        this.contentElement.innerHTML = `
+            <div class="dictionary-error">
+                <i class="fas fa-book" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                <p>No dictionary entries found for "<strong>${word}</strong>"</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Check the spelling or try a different word.</p>
+            </div>
+        `;
+    }
+
+    showError() {
+        if (!this.container || !this.wordElement || !this.contentElement) return;
+        
+        this.container.classList.add('active');
+        this.wordElement.textContent = 'Error';
+        this.phoneticElement.textContent = 'Unable to load';
+        this.audioButton.style.display = 'none';
+        
+        this.contentElement.innerHTML = `
+            <div class="dictionary-error">
+                <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                <p>Unable to fetch dictionary information at this time.</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Please try again later.</p>
+            </div>
+        `;
+    }
+
+    displayDictionaryData(word, data) {
+        if (!this.container || !this.wordElement || !this.contentElement) return;
+        
+        const entry = data[0];
+        this.container.classList.add('active');
+        this.wordElement.textContent = entry.word;
+        
+        // Phonetics and audio
+        let phoneticText = 'No pronunciation available';
+        let audioUrl = null;
+        
+        if (entry.phonetics && entry.phonetics.length > 0) {
+            const phonetic = entry.phonetics.find(p => p.text) || entry.phonetics[0];
+            if (phonetic.text) {
+                phoneticText = `/${phonetic.text}/`;
+                audioUrl = phonetic.audio;
+            }
+        }
+        
+        this.phoneticElement.textContent = phoneticText;
+        
+        // Show/hide audio button
+        if (audioUrl) {
+            this.audioButton.style.display = 'inline-flex';
+            this.audioButton.setAttribute('data-audio-url', audioUrl);
+        } else {
+            this.audioButton.style.display = 'none';
+        }
+
+        // Build content HTML
+        let html = '';
+
+        // Meanings
+        if (entry.meanings && entry.meanings.length > 0) {
+            entry.meanings.forEach(meaning => {
+                html += `
+                    <div class="dictionary-section">
+                        <div class="meaning-item">
+                            <span class="part-of-speech">${meaning.partOfSpeech}</span>
+                            <div class="definition-list">
+                `;
+
+                if (meaning.definitions && meaning.definitions.length > 0) {
+                    meaning.definitions.slice(0, 3).forEach((def, index) => {
+                        html += `
+                            <div class="definition-item">
+                                <strong>${index + 1}.</strong> ${def.definition}
+                                ${def.example ? `<div class="example">"${def.example}"</div>` : ''}
+                            </div>
+                        `;
+                    });
+                }
+
+                html += `</div></div>`;
+
+                // Synonyms
+                if (meaning.synonyms && meaning.synonyms.length > 0) {
+                    html += `
+                        <div class="synonyms-section">
+                            <div class="section-title">
+                                <i class="fas fa-sync-alt"></i> Synonyms
+                            </div>
+                            <div class="related-words">
+                                ${meaning.synonyms.slice(0, 5).map(synonym => 
+                                    `<span class="word-chip" onclick="dictionary.searchWord('${synonym}')">${synonym}</span>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Antonyms
+                if (meaning.antonyms && meaning.antonyms.length > 0) {
+                    html += `
+                        <div class="antonyms-section">
+                            <div class="section-title">
+                                <i class="fas fa-exchange-alt"></i> Antonyms
+                            </div>
+                            <div class="related-words">
+                                ${meaning.antonyms.slice(0, 5).map(antonym => 
+                                    `<span class="word-chip" onclick="dictionary.searchWord('${antonym}')">${antonym}</span>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += `</div>`;
+            });
+        }
+
+        // Etymology/Origin
+        if (entry.origin) {
+            html += `
+                <div class="origin-section">
+                    <div class="section-title">
+                        <i class="fas fa-history"></i> Origin
+                    </div>
+                    <div class="origin-text">${entry.origin}</div>
+                </div>
+            `;
+        }
+
+        this.contentElement.innerHTML = html;
+    }
+
+    playAudio() {
+        const audioUrl = this.audioButton.getAttribute('data-audio-url');
+        if (audioUrl) {
+            const audio = new Audio(audioUrl);
+            audio.play().catch(e => console.log('Audio play failed:', e));
+        }
+    }
+
+    searchWord(word) {
+        // Update search input and trigger search
+        const searchInput = document.querySelector('.gsc-input');
+        if (searchInput) {
+            searchInput.value = word;
+            const inputEvent = new Event('input', { bubbles: true });
+            searchInput.dispatchEvent(inputEvent);
+        }
+
+        // Update URL
+        const newUrl = new URL(window.location);
+        newUrl.searchParams.set('q', word);
+        window.history.pushState({}, '', newUrl);
+
+        // Update displayed query
+        const queryTerm = document.getElementById('queryTerm');
+        if (queryTerm) {
+            queryTerm.textContent = word;
+        }
+
+        // Trigger Google CSE search
+        if (window.google && google.search && google.search.cse) {
+            const searchBox = google.search.cse.element.getElement("gcse-searchbox-only");
+            if (searchBox && searchBox.execute) {
+                searchBox.execute(word);
+            }
+        }
+
+        // Fetch new dictionary data after a delay
+        setTimeout(() => {
+            this.fetchData(word);
+        }, 1000);
+    }
+
+    searchMore() {
+        if (this.currentWord) {
+            window.open(`https://www.google.com/search?q=define+${encodeURIComponent(this.currentWord)}`, '_blank');
+        }
+    }
+
+    openFullDefinition() {
+        if (this.currentWord) {
+            window.open(`https://www.merriam-webster.com/dictionary/${encodeURIComponent(this.currentWord)}`, '_blank');
+        }
+    }
+
+    hide() {
+        if (this.container) {
+            this.container.classList.remove('active');
+        }
+    }
+
+    show() {
+        if (this.container) {
+            this.container.classList.add('active');
+        }
+    }
+}
+
+// Calculator functionality
+const calculator = {
+  display: document.getElementById('calcResult'),
+  expression: document.getElementById('calcExpression'),
+  currentInput: '0',
+  currentExpression: '',
+  shouldResetDisplay: false,
+  isScientificMode: false,
+  angleMode: 'DEG', // DEG or RAD
+
+  updateDisplay() {
+    if (this.display) this.display.textContent = this.currentInput;
+    if (this.expression) this.expression.textContent = this.currentExpression;
+  },
+
+  appendToDisplay(value) {
+    if (this.currentInput === '0' || this.shouldResetDisplay) {
+      this.currentInput = value;
+      this.shouldResetDisplay = false;
+    } else {
+      this.currentInput += value;
+    }
+    
+    if (['+', '-', '*', '/', '%', '^'].includes(value)) {
+      this.currentExpression += this.currentInput;
+      this.currentInput = '';
+    }
+    
+    this.updateDisplay();
+  },
+
+  clearAll() {
+    this.currentInput = '0';
+    this.currentExpression = '';
+    this.updateDisplay();
+  },
+
+  backspace() {
+    if (this.currentInput.length > 1) {
+      this.currentInput = this.currentInput.slice(0, -1);
+    } else {
+      this.currentInput = '0';
+    }
+    this.updateDisplay();
+  },
+
+  calculate() {
+    try {
+      let expression = this.currentExpression + this.currentInput;
+      
+      // Replace display symbols with JavaScript operators
+      expression = expression.replace(/×/g, '*').replace(/÷/g, '/');
+      
+      // Replace constants
+      expression = expression.replace(/π/g, Math.PI).replace(/e/g, Math.E);
+      
+      // Handle exponentiation
+      expression = expression.replace(/(\d+)\^(\d+)/g, 'Math.pow($1, $2)');
+      
+      let result = eval(expression);
+      
+      // Handle division by zero and other math errors
+      if (!isFinite(result)) {
+        throw new Error('Math error');
+      }
+      
+      this.currentInput = result.toString();
+      this.currentExpression = '';
+      this.shouldResetDisplay = true;
+      this.updateDisplay();
+    } catch (error) {
+      this.currentInput = 'Error';
+      this.shouldResetDisplay = true;
+      this.updateDisplay();
+    }
+  },
+
+  scientificFunction(func) {
+    let inputValue = parseFloat(this.currentInput);
+    
+    try {
+      let result;
+      switch(func) {
+        case 'sin':
+          if (this.angleMode === 'DEG') {
+            result = Math.sin(inputValue * Math.PI / 180);
+          } else {
+            result = Math.sin(inputValue);
+          }
+          break;
+        case 'cos':
+          if (this.angleMode === 'DEG') {
+            result = Math.cos(inputValue * Math.PI / 180);
+          } else {
+            result = Math.cos(inputValue);
+          }
+          break;
+        case 'tan':
+          if (this.angleMode === 'DEG') {
+            result = Math.tan(inputValue * Math.PI / 180);
+          } else {
+            result = Math.tan(inputValue);
+          }
+          break;
+        case 'asin':
+          result = Math.asin(inputValue);
+          if (this.angleMode === 'DEG') result = result * 180 / Math.PI;
+          break;
+        case 'acos':
+          result = Math.acos(inputValue);
+          if (this.angleMode === 'DEG') result = result * 180 / Math.PI;
+          break;
+        case 'atan':
+          result = Math.atan(inputValue);
+          if (this.angleMode === 'DEG') result = result * 180 / Math.PI;
+          break;
+        case 'log':
+          result = Math.log10(inputValue);
+          break;
+        case 'ln':
+          result = Math.log(inputValue);
+          break;
+        case 'sqrt':
+          result = Math.sqrt(inputValue);
+          break;
+        case 'pow':
+          this.currentExpression = this.currentInput + '^';
+          this.currentInput = '';
+          this.updateDisplay();
+          return;
+        case 'pi':
+          this.currentInput = Math.PI.toString();
+          this.updateDisplay();
+          return;
+        case 'fact':
+          result = this.factorial(inputValue);
+          break;
+        case 'abs':
+          result = Math.abs(inputValue);
+          break;
+        default:
+          return;
+      }
+      
+      if (!isFinite(result)) {
+        throw new Error('Math error');
+      }
+      
+      this.currentInput = result.toString();
+      this.shouldResetDisplay = true;
+      this.updateDisplay();
+    } catch (error) {
+      this.currentInput = 'Error';
+      this.shouldResetDisplay = true;
+      this.updateDisplay();
+    }
+  },
+
+  factorial(n) {
+    if (n < 0) throw new Error('Negative factorial');
+    if (n === 0 || n === 1) return 1;
+    let result = 1;
+    for (let i = 2; i <= n; i++) {
+      result *= i;
+    }
+    return result;
+  },
+
+  toggleMode(isScientific) {
+    this.isScientificMode = isScientific;
+    const scientificButtons = document.querySelectorAll('.calc-btn.scientific');
+    
+    scientificButtons.forEach(btn => {
+      if (isScientific) {
+        btn.style.display = 'block';
+      } else {
+        btn.style.display = 'none';
+      }
+    });
+    
+    // Update mode buttons
+    const basicModeBtn = document.getElementById('basicModeBtn');
+    const scientificModeBtn = document.getElementById('scientificModeBtn');
+    if (basicModeBtn) basicModeBtn.classList.toggle('active', !isScientific);
+    if (scientificModeBtn) scientificModeBtn.classList.toggle('active', isScientific);
+  }
+};
 
 // Original code below - with UI integration
 let data = [];
@@ -2939,7 +3826,10 @@ let data = [];
 // Helpers
 function getQuery() {
     const query = new URLSearchParams(window.location.search).get('q') || '';
-    document.getElementById('queryTerm').textContent = query;
+    const queryTerm = document.getElementById('queryTerm');
+    if (queryTerm) {
+        queryTerm.textContent = query;
+    }
     return query;
 }
 
@@ -2954,90 +3844,116 @@ function saveLabsPreference(value) {
 
 // Load internal JSON data
 async function loadData() {
-  // Apply theme first
-  applyTheme();
-  
-  // CAPTCHA Verification Check
-  if (!verifyCaptcha()) {
-    return; // Redirect will happen automatically
-  }
+    try {
+        // Apply theme first
+        applyTheme();
+        
+        // CAPTCHA Verification Check
+        if (!verifyCaptcha()) {
+            return; // Redirect will happen automatically
+        }
 
-  const response = await fetch('taisenData.json');
-  data = await response.json();
+        const response = await fetch('taisenData.json');
+        data = await response.json();
 
-  const labsToggle = document.getElementById('labsToggle');
-  const filterEl = document.getElementById('filter');
+        const labsToggle = document.getElementById('labsToggle');
+        const filterEl = document.getElementById('filter');
 
-  // Initialize toggle from localStorage
-  labsToggle.checked = getLabsPreference();
+        // Only proceed if elements exist
+        if (!labsToggle || !filterEl) {
+            console.warn('Required DOM elements not found for internal results');
+            return;
+        }
 
-  function updateResults() {
-    const showLabs = labsToggle.checked;
-    const label = filterEl.value;
-    const query = getQuery();
+        // Initialize toggle from localStorage
+        labsToggle.checked = getLabsPreference();
 
-    let resultsDiv = document.getElementById('results-internal');
-    const sectionTitle = document.querySelector('.internal-results .section-title');
+        function updateResults() {
+            const showLabs = labsToggle.checked;
+            const label = filterEl.value;
+            const query = getQuery();
 
-    if (!showLabs) {
-      // If toggle OFF, hide internal results completely
-      resultsDiv.innerHTML = '';
-      sectionTitle.style.display = 'none';
-      return;
+            let resultsDiv = document.getElementById('results-internal');
+            const sectionTitle = document.querySelector('.internal-results .section-title');
+
+            if (!resultsDiv) return;
+
+            if (!showLabs) {
+                // If toggle OFF, hide internal results completely
+                resultsDiv.innerHTML = '';
+                if (sectionTitle) {
+                    sectionTitle.style.display = 'none';
+                }
+                return;
+            }
+            
+            if (sectionTitle) {
+                sectionTitle.style.display = 'flex';
+            }
+
+            // Filter results based on query & label
+            const filtered = data.filter(item => {
+                const matchesQuery = item.title.toLowerCase().includes(query.toLowerCase()) ||
+                                   item.snippet.toLowerCase().includes(query.toLowerCase());
+                const matchesLabel = label === 'all' || item.label === label;
+                return matchesQuery && matchesLabel;
+            });
+
+            // Display
+            resultsDiv.innerHTML = '';
+            if (!filtered.length) {
+                resultsDiv.innerHTML = `
+                    <div class="no-results">
+                        <p>No internal results found for your search.</p>
+                        <p>Try adjusting your search terms or changing the category filter.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <h3 class="result-title">${item.title}</h3>
+                    <p class="result-snippet">${item.snippet}</p>
+                    <div class="result-meta">
+                        <span><strong>Type:</strong> ${item.type}</span>
+                        <span><strong>Source:</strong> ${item.source}</span>
+                    </div>
+                    <a href="${item.link}" target="_blank" class="result-link">Visit Resource →</a>
+                `;
+                resultsDiv.appendChild(card);
+            });
+        }
+
+        // Event listeners
+        labsToggle.addEventListener('change', () => {
+            saveLabsPreference(labsToggle.checked);
+            updateResults();
+        });
+        
+        filterEl.addEventListener('change', updateResults);
+
+        // Initial display
+        updateResults();
+
+    } catch (error) {
+        console.error('Error loading data:', error);
     }
-    
-    sectionTitle.style.display = 'flex';
-
-    // Filter results based on query & label
-    const filtered = data.filter(item => {
-      const matchesQuery = item.title.toLowerCase().includes(query.toLowerCase()) ||
-                           item.snippet.toLowerCase().includes(query.toLowerCase());
-      const matchesLabel = label === 'all' || item.label === label;
-      return matchesQuery && matchesLabel;
-    });
-
-    // Display
-    resultsDiv.innerHTML = '';
-    if (!filtered.length) {
-      resultsDiv.innerHTML = `
-        <div class="no-results">
-          <p>No internal results found for your search.</p>
-          <p>Try adjusting your search terms or changing the category filter.</p>
-        </div>
-      `;
-      return;
-    }
-    
-    filtered.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'result-card';
-      card.innerHTML = `
-        <h3 class="result-title">${item.title}</h3>
-        <p class="result-snippet">${item.snippet}</p>
-        <div class="result-meta">
-          <span><strong>Type:</strong> ${item.type}</span>
-          <span><strong>Source:</strong> ${item.source}</span>
-        </div>
-        <a href="${item.link}" target="_blank" class="result-link">Visit Resource →</a>
-      `;
-      resultsDiv.appendChild(card);
-    });
-  }
-
-  // Event listeners
-  labsToggle.addEventListener('change', () => {
-    saveLabsPreference(labsToggle.checked);
-    updateResults();
-  });
-  
-  filterEl.addEventListener('change', updateResults);
-
-  // Initial display
-  updateResults();
 }
 
 // Initialize everything when page loads
 document.addEventListener('DOMContentLoaded', () => {
+    // Fix for hamburger null error
+    const hamburger = document.getElementById('hamburger');
+    if (hamburger) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            window.location.href = 'settings.html';
+        });
+    }
+
     // Initialize Knowledge Panel
     const knowledgePanel = new TAISEN_KnowledgePanel();
     
@@ -3048,6 +3964,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // NEW: Initialize People Also Search For
     const peopleAlsoSearch = new TAISEN_PeopleAlsoSearch();
     peopleAlsoSearch.init();
+    
+    // Initialize Dictionary
+    const dictionary = new TAISEN_Dictionary();
+    
+    // Initialize Calculator
+    initializeCalculator();
     
     // Load internal data
     loadData();
@@ -3063,10 +3985,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 searchBox.execute = (query) => {
                     if (query && query.trim() !== "") {
                         // Update query term
-                        document.getElementById('queryTerm').textContent = query;
+                        const queryTerm = document.getElementById('queryTerm');
+                        if (queryTerm) {
+                            queryTerm.textContent = query;
+                        }
                         
                         // Fetch knowledge panel data
                         knowledgePanel.fetchData(query);
+                        
+                        // Show dictionary if applicable
+                        if (dictionary.isDictionaryQuery(query)) {
+                            const knowledgePanelEl = document.getElementById('knowledgePanel');
+                            if (knowledgePanelEl) {
+                                knowledgePanelEl.style.display = 'none';
+                            }
+                            dictionary.fetchData(query);
+                        } else {
+                            dictionary.hide();
+                        }
+                        
+                        // Show calculator if applicable
+                        if (checkForCalculationQuery(query)) {
+                            const calculatorContainer = document.getElementById('calculatorContainer');
+                            if (calculatorContainer) {
+                                calculatorContainer.classList.add('active');
+                                
+                                // Try to pre-fill the calculator with the query
+                                try {
+                                    const mathExpression = extractMathExpression(query);
+                                    if (mathExpression) {
+                                        calculator.clearAll();
+                                        calculator.appendToDisplay(mathExpression);
+                                    }
+                                } catch (e) {
+                                    console.log("Could not pre-fill calculator with query");
+                                }
+                            }
+                        } else {
+                            const calculatorContainer = document.getElementById('calculatorContainer');
+                            if (calculatorContainer) {
+                                calculatorContainer.classList.remove('active');
+                            }
+                        }
                     }
                     originalExecute(query);
                 };
@@ -3080,13 +4040,150 @@ window.addEventListener('load', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const query = urlParams.get('q');
     if (query) {
-        document.getElementById('queryTerm').textContent = query;
+        const queryTerm = document.getElementById('queryTerm');
+        if (queryTerm) {
+            queryTerm.textContent = query;
+        }
         
         // Initialize knowledge panel with initial query
         const knowledgePanel = new TAISEN_KnowledgePanel();
         knowledgePanel.fetchData(query);
+        
+        // Check for dictionary query
+        const dictionary = new TAISEN_Dictionary();
+        if (dictionary.isDictionaryQuery(query)) {
+            const knowledgePanelEl = document.getElementById('knowledgePanel');
+            if (knowledgePanelEl) {
+                knowledgePanelEl.style.display = 'none';
+            }
+            dictionary.fetchData(query);
+        }
+        
+        // Check for calculation query
+        if (checkForCalculationQuery(query)) {
+            const calculatorContainer = document.getElementById('calculatorContainer');
+            if (calculatorContainer) {
+                calculatorContainer.classList.add('active');
+                
+                // Try to pre-fill the calculator with the query
+                try {
+                    const mathExpression = extractMathExpression(query);
+                    if (mathExpression) {
+                        calculator.clearAll();
+                        calculator.appendToDisplay(mathExpression);
+                    }
+                } catch (e) {
+                    console.log("Could not pre-fill calculator with initial query");
+                }
+            }
+        }
     }
 });
+
+// Calculator initialization
+function initializeCalculator() {
+    // Set up mode toggle buttons
+    const basicModeBtn = document.getElementById('basicModeBtn');
+    const scientificModeBtn = document.getElementById('scientificModeBtn');
+    const calculatorClose = document.getElementById('calculatorClose');
+    
+    if (basicModeBtn) {
+        basicModeBtn.addEventListener('click', function() {
+            calculator.toggleMode(false);
+        });
+    }
+    
+    if (scientificModeBtn) {
+        scientificModeBtn.addEventListener('click', function() {
+            calculator.toggleMode(true);
+        });
+    }
+    
+    // Close calculator button
+    if (calculatorClose) {
+        calculatorClose.addEventListener('click', function() {
+            const calculatorContainer = document.getElementById('calculatorContainer');
+            if (calculatorContainer) {
+                calculatorContainer.classList.remove('active');
+            }
+        });
+    }
+    
+    // Initialize in basic mode
+    calculator.toggleMode(false);
+}
+
+// Query detection for showing calculator
+function checkForCalculationQuery(query) {
+    if (!query) return false;
+    
+    const lowerQuery = query.toLowerCase().trim();
+    
+    // Patterns that indicate a calculation query
+    const calculationPatterns = [
+        // Basic arithmetic
+        /\d+\s*[\+\-\*\/\^]\s*\d+/, // e.g., "2+2", "5 * 3"
+        /calculate|calculator|calc/i,
+        /math|mathematics/i,
+        
+        // Specific calculations
+        /\d+\s*percent|\d+\s*%/i, // e.g., "20 percent of 50"
+        /square root|sqrt/i,
+        /power of|exponent/i,
+        /factorial/i,
+        
+        // Trigonometric functions
+        /sin|cos|tan|asin|acos|atan/i,
+        
+        // Logarithms
+        /log|ln|logarithm/i,
+        
+        // Constants
+        /pi|π|euler's number/i,
+        
+        // Measurement conversions
+        /\d+\s*(cm|m|km|in|ft|yd|mi)\s+to\s+(cm|m|km|in|ft|yd|mi)/i,
+        /\d+\s*(celsius|fahrenheit|kelvin)\s+to\s+(celsius|fahrenheit|kelvin)/i,
+        
+        // Financial calculations
+        /interest|loan|mortgage|investment/i,
+        
+        // Geometry calculations
+        /area|perimeter|volume|circumference/i,
+        
+        // Algebra
+        /solve.*equation|quadratic|polynomial/i,
+        
+        // Simple expressions
+        /^(\d+(\.\d+)?\s*[\+\-\*\/\^]\s*)+\d+(\.\d+)?$/, // e.g., "2+3*4"
+        /^\d+(\.\d+)?\s*[\+\-\*\/\^]\s*\d+(\.\d+)?$/, // e.g., "5/2"
+    ];
+    
+    // Check if query matches any calculation pattern
+    for (const pattern of calculationPatterns) {
+        if (pattern.test(lowerQuery)) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+// Extract mathematical expression from query
+function extractMathExpression(query) {
+    // Remove common non-mathematical words
+    const cleanedQuery = query.replace(/(calculate|what is|value of|equals|equal to|result of)/gi, '').trim();
+    
+    // Look for patterns like "2+2", "5 * 3", etc.
+    const mathRegex = /([\d\.]+\s*[\+\-\*\/\^]\s*)+[\d\.]+/;
+    const match = cleanedQuery.match(mathRegex);
+    
+    if (match) {
+        return match[0].replace(/\s+/g, '');
+    }
+    
+    return null;
+}
 </script>
 
 <!-- AUTHENTICATION SCRIPT FROM INDEX.HTML -->
@@ -3413,15 +4510,6 @@ window.addEventListener('load', () => {
   }, 100);
 </script>
 
-<!-- Hamburger functionality from index.html -->
-<script>
-  const hamburger = document.getElementById('hamburger');
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    window.location.href = 'settings.html'; // Opens settings page
-  });
-</script>
-
 <!-- Anti-bypass protection -->
 <script type="module">
   import { protectPage } from './antiBypass.js';
@@ -3612,8 +4700,8 @@ const calculator = {
   angleMode: 'DEG', // DEG or RAD
 
   updateDisplay() {
-    this.display.textContent = this.currentInput;
-    this.expression.textContent = this.currentExpression;
+    if (this.display) this.display.textContent = this.currentInput;
+    if (this.expression) this.expression.textContent = this.currentExpression;
   },
 
   appendToDisplay(value) {
@@ -3782,26 +4870,41 @@ const calculator = {
     });
     
     // Update mode buttons
-    document.getElementById('basicModeBtn').classList.toggle('active', !isScientific);
-    document.getElementById('scientificModeBtn').classList.toggle('active', isScientific);
+    const basicModeBtn = document.getElementById('basicModeBtn');
+    const scientificModeBtn = document.getElementById('scientificModeBtn');
+    if (basicModeBtn) basicModeBtn.classList.toggle('active', !isScientific);
+    if (scientificModeBtn) scientificModeBtn.classList.toggle('active', isScientific);
   }
 };
 
 // Initialize calculator
 document.addEventListener('DOMContentLoaded', function() {
   // Set up mode toggle buttons
-  document.getElementById('basicModeBtn').addEventListener('click', function() {
-    calculator.toggleMode(false);
-  });
+  const basicModeBtn = document.getElementById('basicModeBtn');
+  const scientificModeBtn = document.getElementById('scientificModeBtn');
+  const calculatorClose = document.getElementById('calculatorClose');
   
-  document.getElementById('scientificModeBtn').addEventListener('click', function() {
-    calculator.toggleMode(true);
-  });
+  if (basicModeBtn) {
+    basicModeBtn.addEventListener('click', function() {
+      calculator.toggleMode(false);
+    });
+  }
+  
+  if (scientificModeBtn) {
+    scientificModeBtn.addEventListener('click', function() {
+      calculator.toggleMode(true);
+    });
+  }
   
   // Close calculator button
-  document.getElementById('calculatorClose').addEventListener('click', function() {
-    document.getElementById('calculatorContainer').classList.remove('active');
-  });
+  if (calculatorClose) {
+    calculatorClose.addEventListener('click', function() {
+      const calculatorContainer = document.getElementById('calculatorContainer');
+      if (calculatorContainer) {
+        calculatorContainer.classList.remove('active');
+      }
+    });
+  }
   
   // Initialize in basic mode
   calculator.toggleMode(false);
@@ -3875,21 +4978,27 @@ function initializeCalculatorDetection() {
         searchBox.execute = (query) => {
           // Check if this is a calculation query
           if (checkForCalculationQuery(query)) {
-            document.getElementById('calculatorContainer').classList.add('active');
-            
-            // Try to pre-fill the calculator with the query
-            try {
-              // Extract just the mathematical expression
-              const mathExpression = extractMathExpression(query);
-              if (mathExpression) {
-                calculator.clearAll();
-                calculator.appendToDisplay(mathExpression);
+            const calculatorContainer = document.getElementById('calculatorContainer');
+            if (calculatorContainer) {
+              calculatorContainer.classList.add('active');
+              
+              // Try to pre-fill the calculator with the query
+              try {
+                // Extract just the mathematical expression
+                const mathExpression = extractMathExpression(query);
+                if (mathExpression) {
+                  calculator.clearAll();
+                  calculator.appendToDisplay(mathExpression);
+                }
+              } catch (e) {
+                console.log("Could not pre-fill calculator with query");
               }
-            } catch (e) {
-              console.log("Could not pre-fill calculator with query");
             }
           } else {
-            document.getElementById('calculatorContainer').classList.remove('active');
+            const calculatorContainer = document.getElementById('calculatorContainer');
+            if (calculatorContainer) {
+              calculatorContainer.classList.remove('active');
+            }
           }
           
           originalExecute(query);
@@ -3924,17 +5033,20 @@ window.addEventListener('load', function() {
   const query = urlParams.get('q');
   
   if (checkForCalculationQuery(query)) {
-    document.getElementById('calculatorContainer').classList.add('active');
-    
-    // Try to pre-fill the calculator with the query
-    try {
-      const mathExpression = extractMathExpression(query);
-      if (mathExpression) {
-        calculator.clearAll();
-        calculator.appendToDisplay(mathExpression);
+    const calculatorContainer = document.getElementById('calculatorContainer');
+    if (calculatorContainer) {
+      calculatorContainer.classList.add('active');
+      
+      // Try to pre-fill the calculator with the query
+      try {
+        const mathExpression = extractMathExpression(query);
+        if (mathExpression) {
+          calculator.clearAll();
+          calculator.appendToDisplay(mathExpression);
+        }
+      } catch (e) {
+        console.log("Could not pre-fill calculator with initial query");
       }
-    } catch (e) {
-      console.log("Could not pre-fill calculator with initial query");
     }
   }
 });
