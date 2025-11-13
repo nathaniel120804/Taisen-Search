@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Analytics - Taisen</title>
+    <script src="remote-kill-switch.js"></script>
     <style>
         :root {
             --primary: #4361ee;
@@ -798,8 +799,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // Use the SAME Firebase configuration as index.html
-        const firebaseConfig = {
+        // DUAL FIREBASE CONFIGURATION - FIXED VERSION
+        const mainFirebaseConfig = {
             apiKey: "AIzaSyCMy4SNOU3eAl4iSfbmHWTxae9pVcnJFmc",
             authDomain: "taisen-search-ad9eb.firebaseapp.com",
             projectId: "taisen-search-ad9eb",
@@ -808,10 +809,22 @@
             appId: "1:779736719927:web:07ccea945f7549ad56d5b2"
         };
 
-        // Initialize Firebase with the main app configuration
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth(app);
-        const db = firebase.firestore(app);
+        const analyticsFirebaseConfig = {
+            apiKey: "AIzaSyDKWcglmmQhiVwkmx9ACYvk7Jnhh2kGheM",
+            authDomain: "taisen-analytics-e2f7f.firebaseapp.com",
+            projectId: "taisen-analytics-e2f7f",
+            storageBucket: "taisen-analytics-e2f7f.firebasestorage.app",
+            messagingSenderId: "334559308937",
+            appId: "1:334559308937:web:3930ff78b17f8569f8aa58"
+        };
+
+        // Initialize both Firebase apps
+        const mainApp = firebase.initializeApp(mainFirebaseConfig);
+        const analyticsApp = firebase.initializeApp(analyticsFirebaseConfig, "Analytics");
+        
+        const auth = firebase.auth(mainApp);
+        const mainDb = firebase.firestore(mainApp);
+        const analyticsDb = firebase.firestore(analyticsApp);
 
         class AnalyticsDashboard {
             constructor() {
@@ -837,10 +850,12 @@
                 auth.onAuthStateChanged((user) => {
                     if (user) {
                         this.userId = user.uid;
+                        console.log('✅ User authenticated:', this.userId);
                         this.updateUserButton(user);
                         this.loadUserData(user);
                     } else {
                         this.userId = null;
+                        console.log('❌ No user authenticated');
                         this.updateUserButton(null);
                         this.showSignInPrompt();
                     }
@@ -1006,47 +1021,130 @@
                 if (!this.userId) return;
 
                 try {
+                    console.log('📊 Loading analytics data for user:', this.userId);
                     document.getElementById('loading').style.display = 'block';
                     document.getElementById('signInPrompt').style.display = 'none';
 
-                    // Load data from all tracking collections
+                    // Reset data
+                    this.userData = {
+                        searches: [],
+                        userInfo: {},
+                        sessionInfo: {},
+                        activityLogs: [],
+                        collectionStats: {
+                            events: 0,
+                            page_views: 0,
+                            search_queries: 0,
+                            sessions: 0
+                        }
+                    };
+
+                    // Load data from BOTH Firestore instances
                     await Promise.all([
                         this.loadEventsData(),
                         this.loadPageViewsData(),
                         this.loadSearchQueriesData(),
                         this.loadSessionsData(),
-                        this.loadUserDocumentData(user)
+                        this.loadUserDocumentData(user),
+                        this.loadMainDbData() // NEW: Load data from main Firestore too
                     ]);
+                    
+                    console.log('✅ Data loaded successfully:', {
+                        searches: this.userData.searches.length,
+                        logs: this.userData.activityLogs.length,
+                        collections: this.userData.collectionStats
+                    });
                     
                     this.renderDashboard();
                     
                 } catch (error) {
-                    console.error('Error loading user data:', error);
+                    console.error('❌ Error loading user data:', error);
                     this.showError("Error loading analytics data. Please try again.");
                 }
             }
 
-            async loadUserDocumentData(user) {
-                // Load user document from Firestore
-                const userDoc = await db.collection('users').doc(this.userId).get();
-                
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
+            // NEW: Load data from main Firestore (where your index page might be sending data)
+            async loadMainDbData() {
+                try {
+                    console.log('🔍 Loading data from main Firestore...');
                     
-                    // Process search data
-                    this.userData.searches = [];
-                    if (userData.lastSearch) {
-                        this.userData.searches.push({
-                            query: userData.lastSearch,
-                            timestamp: userData.timestamp || user.metadata.lastSignInTime || new Date(),
-                            type: 'Web Search'
+                    // Check if there's user data in main Firestore
+                    const userDoc = await mainDb.collection('users').doc(this.userId).get();
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        console.log('📝 Found user data in main Firestore:', userData);
+                        
+                        // Add searches from main user document
+                        if (userData.lastSearch) {
+                            this.userData.searches.push({
+                                query: userData.lastSearch,
+                                timestamp: userData.timestamp || new Date(),
+                                type: 'Web Search',
+                                source: 'main_firestore'
+                            });
+                            
+                            this.userData.activityLogs.push({
+                                id: 'main_search_' + Date.now(),
+                                action: 'Search Query',
+                                details: `Searched for: "${userData.lastSearch}"`,
+                                timestamp: userData.timestamp || new Date(),
+                                type: 'search',
+                                collection: 'users',
+                                source: 'main_firestore'
+                            });
+                        }
+                    }
+                    
+                    // Also check for any analytics data in main Firestore
+                    const mainAnalyticsSnapshot = await mainDb.collection('analytics')
+                        .where('userId', '==', this.userId)
+                        .limit(20)
+                        .get();
+                    
+                    console.log(`📊 Found ${mainAnalyticsSnapshot.size} analytics records in main Firestore`);
+                    
+                    mainAnalyticsSnapshot.forEach(doc => {
+                        const data = doc.data();
+                        this.userData.activityLogs.push({
+                            id: doc.id,
+                            action: data.eventName || 'Analytics Event',
+                            details: JSON.stringify(data),
+                            timestamp: data.timestamp || new Date(),
+                            type: 'event',
+                            collection: 'analytics',
+                            source: 'main_firestore'
                         });
-                    }
+                    });
+                    
+                } catch (error) {
+                    console.error('❌ Error loading main Firestore data:', error);
+                }
+            }
 
-                    // Load activity logs from user document if they exist
-                    if (userData.activityLogs && Array.isArray(userData.activityLogs)) {
-                        this.userData.activityLogs = [...this.userData.activityLogs, ...userData.activityLogs];
+            async loadUserDocumentData(user) {
+                try {
+                    // Load user document from MAIN Firestore (for user profile data)
+                    const userDoc = await mainDb.collection('users').doc(this.userId).get();
+                    
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        
+                        // Process search data from main user document
+                        if (userData.lastSearch) {
+                            this.userData.searches.push({
+                                query: userData.lastSearch,
+                                timestamp: userData.timestamp || user.metadata.lastSignInTime || new Date(),
+                                type: 'Web Search'
+                            });
+                        }
+
+                        // Load activity logs from user document if they exist
+                        if (userData.activityLogs && Array.isArray(userData.activityLogs)) {
+                            this.userData.activityLogs = [...this.userData.activityLogs, ...userData.activityLogs];
+                        }
                     }
+                } catch (error) {
+                    console.error('Error loading user document:', error);
                 }
 
                 // Store user info
@@ -1065,13 +1163,15 @@
 
             async loadEventsData() {
                 try {
-                    const eventsSnapshot = await db.collection('events')
+                    console.log('📈 Loading events data from analytics Firestore...');
+                    const eventsSnapshot = await analyticsDb.collection('events')
                         .where('userId', '==', this.userId)
                         .orderBy('timestamp', 'desc')
                         .limit(50)
                         .get();
 
                     this.userData.collectionStats.events = eventsSnapshot.size;
+                    console.log(`📈 Found ${eventsSnapshot.size} events in analytics Firestore`);
 
                     eventsSnapshot.forEach(doc => {
                         const eventData = doc.data();
@@ -1081,49 +1181,55 @@
                             details: this.formatEventDetails(eventData),
                             timestamp: eventData.timestamp,
                             type: 'event',
-                            collection: 'events'
+                            collection: 'events',
+                            source: 'analytics_firestore'
                         });
                     });
                 } catch (error) {
-                    console.error('Error loading events:', error);
+                    console.error('❌ Error loading events:', error);
                 }
             }
 
             async loadPageViewsData() {
                 try {
-                    const pageViewsSnapshot = await db.collection('page_views')
+                    console.log('🌐 Loading page views data from analytics Firestore...');
+                    const pageViewsSnapshot = await analyticsDb.collection('page_views')
                         .where('userId', '==', this.userId)
                         .orderBy('timestamp', 'desc')
                         .limit(50)
                         .get();
 
                     this.userData.collectionStats.page_views = pageViewsSnapshot.size;
+                    console.log(`🌐 Found ${pageViewsSnapshot.size} page views in analytics Firestore`);
 
                     pageViewsSnapshot.forEach(doc => {
                         const pageData = doc.data();
                         this.userData.activityLogs.push({
                             id: doc.id,
                             action: 'Page View',
-                            details: `Viewed ${pageData.pageUrl || pageData.pageName || 'Unknown Page'}`,
+                            details: `Viewed ${pageData.url || pageData.pageTitle || 'Unknown Page'}`,
                             timestamp: pageData.timestamp,
                             type: 'pageview',
-                            collection: 'page_views'
+                            collection: 'page_views',
+                            source: 'analytics_firestore'
                         });
                     });
                 } catch (error) {
-                    console.error('Error loading page views:', error);
+                    console.error('❌ Error loading page views:', error);
                 }
             }
 
             async loadSearchQueriesData() {
                 try {
-                    const searchQueriesSnapshot = await db.collection('search_queries')
+                    console.log('🔍 Loading search queries data from analytics Firestore...');
+                    const searchQueriesSnapshot = await analyticsDb.collection('search_queries')
                         .where('userId', '==', this.userId)
                         .orderBy('timestamp', 'desc')
                         .limit(50)
                         .get();
 
                     this.userData.collectionStats.search_queries = searchQueriesSnapshot.size;
+                    console.log(`🔍 Found ${searchQueriesSnapshot.size} search queries in analytics Firestore`);
 
                     searchQueriesSnapshot.forEach(doc => {
                         const searchData = doc.data();
@@ -1133,30 +1239,34 @@
                             details: `Searched for: "${searchData.query}"` + (searchData.resultsCount ? ` (${searchData.resultsCount} results)` : ''),
                             timestamp: searchData.timestamp,
                             type: 'search',
-                            collection: 'search_queries'
+                            collection: 'search_queries',
+                            source: 'analytics_firestore'
                         });
 
                         // Also add to searches for the search history section
                         this.userData.searches.push({
                             query: searchData.query,
                             timestamp: searchData.timestamp,
-                            type: 'Web Search'
+                            type: 'Web Search',
+                            source: 'analytics_firestore'
                         });
                     });
                 } catch (error) {
-                    console.error('Error loading search queries:', error);
+                    console.error('❌ Error loading search queries:', error);
                 }
             }
 
             async loadSessionsData() {
                 try {
-                    const sessionsSnapshot = await db.collection('sessions')
+                    console.log('💻 Loading sessions data from analytics Firestore...');
+                    const sessionsSnapshot = await analyticsDb.collection('sessions')
                         .where('userId', '==', this.userId)
                         .orderBy('startTime', 'desc')
                         .limit(20)
                         .get();
 
                     this.userData.collectionStats.sessions = sessionsSnapshot.size;
+                    console.log(`💻 Found ${sessionsSnapshot.size} sessions in analytics Firestore`);
 
                     sessionsSnapshot.forEach(doc => {
                         const sessionData = doc.data();
@@ -1166,11 +1276,12 @@
                             details: `Session ${sessionData.sessionId ? sessionData.sessionId.substring(0, 8) + '...' : 'started'} - Duration: ${this.formatSessionDuration(sessionData)}`,
                             timestamp: sessionData.startTime,
                             type: 'session',
-                            collection: 'sessions'
+                            collection: 'sessions',
+                            source: 'analytics_firestore'
                         });
                     });
                 } catch (error) {
-                    console.error('Error loading sessions:', error);
+                    console.error('❌ Error loading sessions:', error);
                 }
             }
 
@@ -1238,6 +1349,12 @@
                 const hasLogs = this.userData.activityLogs.length > 0;
                 const totalRecords = Object.values(this.userData.collectionStats).reduce((sum, count) => sum + count, 0);
                 
+                console.log('🎨 Rendering dashboard:', {
+                    searches: hasSearches,
+                    logs: hasLogs,
+                    totalRecords: totalRecords
+                });
+
                 // Update user info
                 document.getElementById('userEmail').textContent = this.userData.userInfo.email || 'Not set';
                 document.getElementById('userDisplayName').textContent = this.userData.userInfo.displayName || 'Not set';
@@ -1325,6 +1442,8 @@
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 document.getElementById('noData').style.display = 'none';
+                
+                console.log('✅ Dashboard rendered successfully!');
             }
 
             getLogTypeClass(type) {
@@ -1376,6 +1495,7 @@
 
         // Initialize dashboard when page loads
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Initializing Analytics Dashboard...');
             new AnalyticsDashboard();
         });
     </script>
